@@ -1,0 +1,14 @@
+No, this isn't a real script. It's a reminder of the commands to do things
+
+zf create module siteMap
+zf create controller Generate 1 siteMap
+zf create action Container Generate 1 siteMap
+
+Don't forget to change this controller segment:
+
+extends Q_Controller_Base
+{
+    public function init() //this is called by the Zend __construct() method
+    {
+        parent::init(array('controllerType'=>'cms'));
+    }

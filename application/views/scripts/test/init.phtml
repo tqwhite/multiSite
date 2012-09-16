@@ -1,0 +1,27 @@
+<?php
+$sqlString='';
+if ($this->sqlList){
+	foreach ($this->sqlList as $sqlItem){
+		$sqlString.='<p/>----------<p/>';
+		$sqlString.=str_replace(',', ',<p/>', $sqlItem);
+	}
+}
+
+?>
+<br /><br />
+<div id="view-content">
+	<p><?php echo $this->message;?></p>
+	<?php echo $sqlString; ?>
+	<?php
+		echo "<div style='margin:20px 0px 20px 0px;padding:20px;border-bottom:2pt solid red;;border-top:2pt solid red;'>";
+		if (count($this->listingArrays)>0){
+			foreach ($this->listingArrays as $label=>$proofList){
+				Q\Utils::dumpWeb($proofList);
+			}
+		}
+		else{
+			echo "No Listings";
+		}
+		echo "</div>";
+	?>
+</div>

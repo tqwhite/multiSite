@@ -1,0 +1,25 @@
+<?php
+\Q\Utils::validateProperties(array(
+	'validatedEntity'=>$this,
+	'source'=>__file__,
+	'propertyList'=>array(
+		array('name'=>'codeNav'),
+		array('name'=>'contentObj')
+	)));
+
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$this->headTitle($request->getActionName().'/')
+     ->headTitle($request->getControllerName());
+
+$this->contentArray=$this->contentObj->contentArray;
+
+
+$outString=$this->contentArray['index.html'];
+$elementList=$this->contentArray['elements'];
+
+foreach ($elementList as $label=>$data){
+	$outString=str_replace("elements/$label", $data, $outString);
+}
+
+?>
+<?php  echo $outString;?>

@@ -1,0 +1,35 @@
+<?/*php require_once($_SERVER['DOCUMENT_ROOT'].'/tools/mailNotificationInclude.php');*/?>
+<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
+   'http://www.w3.org/TR/html4/strict.dtd'>
+<html>
+
+<head>
+<META HTTP-EQUIV='Content-Type' CONTENT='text/html; charset=UTF-8'>
+<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.6.0/build/cssreset/cssreset-min.css">
+<link rel='stylesheet' type='text/css' href='/css/baseCss/foundation.css'>
+
+<?php echo $this->headTitle(" ({$this->codeNav['layoutShortPath']})") ?>
+
+<style type='text/css'><!--
+	html {background:#E3EAD9;}
+	a {text-decoration:none;}
+--></style>
+
+<?php echo $this->headStyle(); ?>
+</head>
+
+<body >
+<?php echo $this->serverComm; ?>
+
+<?php echo $this->layout()->content; ?>
+
+</body>
+
+<?php echo $this->headScript()->appendFile('/js/steal/steal.js?widgets'); ?>
+<!--
+routeName: <?php echo $this->codeNav['routeName']; ?><br/>
+controller: <?php echo $this->codeNav['controller']; ?><br/>
+content: <?php echo $this->codeNav['contentDirPath']; ?><br/>
+layout: <?php echo $this->codeNav['layoutFullPath']; ?><br/>
+-->
+</html>

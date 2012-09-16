@@ -1,0 +1,19 @@
+<?php
+\Q\Utils::validateProperties(array(
+	'validatedEntity'=>$this,
+	'source'=>__file__,
+	'propertyList'=>array(
+		array('name'=>'codeNav'),
+		array('name'=>'contentObj')
+	)));
+
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$this->headTitle($request->getActionName().'/')
+     ->headTitle($request->getControllerName());
+
+$this->contentArray=$this->contentObj->contentArray;
+
+
+?>
+<div style='height:40px;width:100%;background:white;'></div>
+<iframe style='height:4000px;width:100%;border:none;background:transparent;' src='<?php  echo $this->contentArray["targetUrl.txt"];?>'></iframe>

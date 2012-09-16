@@ -1,0 +1,28 @@
+<?php
+
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$this->headTitle($request->getActionName().'/')
+     ->headTitle($request->getControllerName());
+
+
+
+$firstString="<div style='margin:50px 0px 0px 200px;color:#436235;'>Welcome to cmERDC (".SITE_VARIATION.")</div>";
+
+
+	$list=$this->contentArray['elements'];
+	$outString2='';
+	$count=0;
+	foreach ($list as $label=>$data){
+		$count++;
+		$outString2.="$count) $data<br/>";
+	}
+	$outString2="<div style='color:gray;'>$outString2</div>";
+
+$outString="
+$firstString<p/>
+{$this->message}<p/>
+{$this->contentArray['firstFile.txt']}<p/>
+$outString2
+";
+?>
+<?php echo $outString;?>

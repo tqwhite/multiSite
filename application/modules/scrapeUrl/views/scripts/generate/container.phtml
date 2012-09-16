@@ -1,0 +1,28 @@
+<?php
+//http://www.erdc.k12.mn.us/system/readfile.php?file=images/modules/rte/w2709z6tlrc2lxmszewtcq4ae67w81wrzukae1w/boy3.jpg
+//http://cmerdc.local/system/readfile.php?file=images/modules/rte/w2709z6tlrc2lxmszewtcq4ae67w81wrzukae1w/boy3.jpg
+
+\Q\Utils::validateProperties(array(
+	'validatedEntity'=>$this,
+	'source'=>__file__,
+	'propertyList'=>array(
+		array('name'=>'codeNav'),
+	//	array('name'=>'codeNav'), //not needed by template
+		array('name'=>'contentArray')
+	)));
+
+
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$this->headTitle($request->getActionName().'/')
+     ->headTitle($request->getControllerName());
+
+$outString=str_replace('src="/"', 'src="http://www.erdc.k12.mn.us/"', $this->contentArray["scrapeData"]);
+
+?>
+<div style='height:100px;width:500px;background:white;padding-left:300px;'>HEADER</div>
+<div style='width:100%'>
+<div style='width:175px;height:800px;;background:white;float:left;padding-top:300px;padding-left:25px;'>SIDEBAR</div>
+<table style='width:600px;float:left;'><tr>
+<?php  echo $outString;?>
+</tr></table>
+</div>

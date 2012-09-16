@@ -1,0 +1,63 @@
+<?php
+\Q\Utils::validateProperties(array(
+	'validatedEntity'=>$this,
+	'source'=>__file__,
+	'propertyList'=>array(
+		array('name'=>'codeNav'),
+	//	array('name'=>'codeNav'), //not needed by template
+		array('name'=>'contentArray')
+	)));
+
+\Q\Utils::validateProperties(array(
+	'validatedEntity'=>$this->contentArray,
+	'source'=>__file__,
+	'propertyList'=>array(
+		array('name'=>'scrapeDataList'),
+		array('name'=>'headBanner.html')
+	)));
+
+$this->headStyle()->appendStyle("
+	#containerContent{
+		margin-top:20px;
+		width:100%;
+	}
+
+	#containerLinkSection{width:175px;height:800px;float:left;padding-left:25px;}
+	#containerLinkSection a:hover{color:black;font-weight:bold;}
+
+	#contentList{float:left;}
+
+	#contentList ul li  {width:500px;border-bottom:1pt solid gray;padding:10px 0px 10px 0px;}
+");
+
+$headBanner=$this->contentArray['headBanner.html'];
+
+$request = Zend_Controller_Front::getInstance()->getRequest();
+$this->headTitle($request->getActionName().'/')
+     ->headTitle($request->getControllerName());
+
+
+$scrapeDataList=$this->contentArray['scrapeDataList'];
+$linkSectionString='';
+$contentListString='';
+
+foreach($scrapeDataList as $data){
+	$id=md5($data['content']);
+	$contentListString.="<li class='switchablePanel' id='$id'><div>{$data['content']}</div></li>";
+	$linkSectionString.="<a class='contentListActivator' href='#$id'>{$data['title']}</a><br/>";
+
+}
+$contentListString=preg_replace('/<img.*?>/', '', $contentListString);
+
+?>
+<div ><?php echo $headBanner; ?></div>
+<div id='containerContent'>
+	<div id='containerLinkSection'>
+		<?php echo $linkSectionString;?>
+	</div>
+	<div id='contentList'>
+		<ul>
+			<?php  echo $contentListString;?>
+		</ul>
+	</div>
+</div>
