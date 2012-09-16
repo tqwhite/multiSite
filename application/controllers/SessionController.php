@@ -13,6 +13,7 @@ class SessionController extends Q_Controller_Base
 
     public function checkAction()
     {
+    echo "unused"; exit;
 		$hello=$this->getRequest()->getPost('data');
 
 		$namespace = new Zend_Session_Namespace('sessionData'); // default namespace
@@ -60,11 +61,25 @@ class SessionController extends Q_Controller_Base
         	$identity='';
         }
 
-		$this->_helper->json(array(
-			status=>$status,
-			messages=>$messageList,
-			data=>\Application_Model_User::formatOutput($identity)
-		));
+		if ($this->_getParam('callback')){
+			$this->_helper->jsonp(
+				array(
+					status=>$status,
+					messages=>$messageList,
+					data=>\Application_Model_User::formatOutput($identity)
+				),
+				$this->_getParam('callback')
+			);
+		}
+		else{
+			$this->_helper->json(
+				array(
+					status=>$status,
+					messages=>$messageList,
+					data=>\Application_Model_User::formatOutput($identity)
+				)
+			);
+		}
     }
 
     public function startAction()
@@ -81,10 +96,24 @@ class SessionController extends Q_Controller_Base
         	$identity='';
         }
 
-		$this->_helper->json(array(
-			'status'=>$status,
-			'data'=>\Application_Model_User::formatOutput($identity, null)
-		));
+
+		if ($this->_getParam('callback')){
+			$this->_helper->jsonp(
+				array(
+					'status'=>$status,
+					'data'=>\Application_Model_User::formatOutput($identity, null)
+				),
+				$this->_getParam('callback')
+			);
+		}
+		else{
+			$this->_helper->json(
+				array(
+					'status'=>$status,
+					'data'=>\Application_Model_User::formatOutput($identity, null)
+				)
+			);
+		}
 
     }
 
@@ -97,6 +126,23 @@ class SessionController extends Q_Controller_Base
 			status=>$status,
 			data=>array()
 		));
+		if ($this->_getParam('callback')){
+			$this->_helper->jsonp(
+				array(
+					status=>$status,
+					data=>array()
+				),
+				$this->_getParam('callback')
+			);
+		}
+		else{
+			$this->_helper->json(
+				array(
+					status=>$status,
+					data=>array()
+				)
+			);
+		}
 
 
     }
