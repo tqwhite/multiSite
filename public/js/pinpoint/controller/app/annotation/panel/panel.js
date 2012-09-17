@@ -13,7 +13,7 @@ Pinpoint.Controller.Base.extend('Pinpoint.Controller.App.Annotation.Panel',
 {
 	init : function(){
 		this.element.html("//pinpoint/controller/app/annotation/panel/views/init.ejs",{
-			message: "<img id='hello' src='http://"+GLOBALS.serverDomain+"/media/accessButton.png'><p/>You can drag this."
+			message: "<div id='demoSpace' style='color:red;font-size:24pt;width:900px;height:600px;background:url(http://"+GLOBALS.serverDomain+"/media/pushPinAtomBiggerPin.png);'><img id='hello' src='http://"+GLOBALS.serverDomain+"/media/accessButton.png'><p/><div style='background:white;width:200px;'>You can drag the button.</div></div>"
 		});
 
 		$('#hello').draggable({drag:this.callback('tmpDrag')});
@@ -22,11 +22,11 @@ Pinpoint.Controller.Base.extend('Pinpoint.Controller.App.Annotation.Panel',
 
 	tmpDrag:function(){
 
-		this.element.append('dragging ');
+		$('#demoSpace').append('<span style="color:#bbbbbb;font-size:10pt;">dragging </span>');
 	},
 
 	tmpClick:function(){
-		this.element.append('click<br/>');
+		$('#demoSpace').append('click<br/>');
 	}
 })
 
