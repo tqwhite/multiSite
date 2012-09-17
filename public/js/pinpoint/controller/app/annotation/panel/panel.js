@@ -13,8 +13,20 @@ Pinpoint.Controller.Base.extend('Pinpoint.Controller.App.Annotation.Panel',
 {
 	init : function(){
 		this.element.html("//pinpoint/controller/app/annotation/panel/views/init.ejs",{
-			message: "Hello World!!"
+			message: "<img id='hello' src='http://"+GLOBALS.serverDomain+"/media/accessButton.png'><p/>You can drag this."
 		});
+
+		$('#hello').draggable({drag:this.callback('tmpDrag')});
+		$('#hello').click(this.callback('tmpClick'));
+	},
+
+	tmpDrag:function(){
+
+		this.element.append('dragging ');
+	},
+
+	tmpClick:function(){
+		this.element.append('click<br/>');
 	}
 })
 

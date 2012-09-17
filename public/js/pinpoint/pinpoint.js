@@ -12,6 +12,7 @@ steal(
 	'./resources/jqueryPlugins/jquery.md5.js',
 	'./resources/jqueryPlugins/jquery.qprompt.js',
 	'./resources/jqueryPlugins/spin.js',
+	'./resources/jqueryPlugins/jquery-ui-1.8.23.custom.min.js', //this file only contains draggable/dropable
 
 	'./controller/session/register/register.js',
 	'./controller/session/dispatch/dispatch.js',
