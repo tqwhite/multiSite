@@ -1,6 +1,6 @@
 <?php
 
-class TestController extends Q_Controller_Base
+class TestController extends Zend_Controller_Action
 {
 
     private $doctrineContainer = null;
@@ -18,7 +18,7 @@ class TestController extends Q_Controller_Base
 
     public function indexAction()
     {
-		// action body
+		echo "helloX"; exit;
     }
 
     public function databaseAction()
