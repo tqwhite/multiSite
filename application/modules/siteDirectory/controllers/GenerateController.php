@@ -1,6 +1,6 @@
 <?php
 
-class ErdcLegacyList_GenerateController extends Q_Controller_Base
+class SiteDirectory_GenerateController extends Q_Controller_Base
 {
     public function init() //this is called by the Zend __construct() method
     {
@@ -9,7 +9,7 @@ class ErdcLegacyList_GenerateController extends Q_Controller_Base
 
     public function indexAction()
     {
-        $this->containerAction();
+        // action body
     }
 
     public function containerAction()
@@ -35,7 +35,7 @@ class ErdcLegacyList_GenerateController extends Q_Controller_Base
 			);
      	$serverComm=$this->_helper->ArrayToServerCommList('controller_startup_list', $jsControllerList);
 
-		$this->setVariationLayout('layout');
+		$this->setVariationLayout('minimal');
 
 		$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
 		$this->view->contentArray=$contentArray;
@@ -62,18 +62,19 @@ class ErdcLegacyList_GenerateController extends Q_Controller_Base
 	private function getContentZone($inData){
 		$targetUrl=$inData['url'];
 		$handler=curl_init($targetUrl);
+
 		curl_setopt($handler, CURLOPT_RETURNTRANSFER, true);
 		$rawPage=curl_exec($handler);
 		curl_close($handler);
-
 		$dom = new Zend_Dom_Query($rawPage);
-
 		if (isset($inData['selector'])){
 		$results = $dom->query($inData['selector']);
+
+
 		foreach ($results as $node) {
 			$nodeHtml=$results->getDocument()->saveXML($node);
-			if ($nodeHtml){break;}
-		}
+			if ($nodeHtml){break;} //verify that it found something
+			}
 		}
 		else{
 			$nodeHtml=$rawPage;
@@ -83,6 +84,7 @@ class ErdcLegacyList_GenerateController extends Q_Controller_Base
 
 
 	public function validateContentStructure($contentArray){
+
 	//this is passed to QHelpersFileContent ($this->FileContainer) by Q_Controller_Base::init()
 		if (!$contentArray){$contentArray=$this->contentArray;}
 
@@ -93,6 +95,7 @@ class ErdcLegacyList_GenerateController extends Q_Controller_Base
 				array('name'=>'urlList.ini')
 			)));
 	}
+
 
 }
 

@@ -1,35 +1,65 @@
-<?/*php require_once($_SERVER['DOCUMENT_ROOT'].'/tools/mailNotificationInclude.php');*/?>
-<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
-   'http://www.w3.org/TR/html4/strict.dtd'>
-<html>
+<?php
 
-<head>
-<META HTTP-EQUIV='Content-Type' CONTENT='text/html; charset=UTF-8'>
-<link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.6.0/build/cssreset/cssreset-min.css">
-<link rel='stylesheet' type='text/css' href='/css/baseCss/foundation.css'>
+$serverComm=$this->serverComm;
 
-<?php echo $this->headTitle(" ({$this->codeNav['layoutShortPath']})") ?>
+$headTitle=$this->headTitle();
+$headStyle=$this->headStyle();
 
-<style type='text/css'><!--
-	html {background:#E3EAD9;}
-	a {text-decoration:none;}
---></style>
+$viewContent=$this->layout()->content;
 
-<?php echo $this->headStyle(); ?>
-</head>
+$javascript=$this->headScript(); //note: call for steal.js is literal so it always executes first, others can count on it
 
-<body >
-<?php echo $this->serverComm; ?>
+$siteDirectory=$this->render('default/siteDirectory.phtml');
+$contactFooter=$this->render('default/contactFooter.phtml');
 
-<?php echo $this->layout()->content; ?>
+$footer="
+<div style='margin-top:20px;background:#D7E3C4;width:1000px;min-height:200px;padding-top:20px;'>
+	<div style='clear:both;overflow:hidden;'>
+		$siteDirectory
+	</div>
+	<div style='clear:both;'>
+		$contactFooter
+	</div>
+</div>
+";
 
-</body>
+$codeNavHtml=$this->showCodeNav($this->codeNav);
 
-<?php echo $this->headScript()->appendFile('/js/steal/steal.js?widgets'); ?>
-<!--
-routeName: <?php echo $this->codeNav['routeName']; ?><br/>
-controller: <?php echo $this->codeNav['controller']; ?><br/>
-content: <?php echo $this->codeNav['contentDirPath']; ?><br/>
-layout: <?php echo $this->codeNav['layoutFullPath']; ?><br/>
--->
-</html>
+//MAIN CONTENT SECTION =========================================================================
+
+echo "
+	<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
+	   'http://www.w3.org/TR/html4/strict.dtd'>
+	<html>
+
+	<head>
+	<META HTTP-EQUIV='Content-Type' CONTENT='text/html; charset=UTF-8'>
+	<link rel='stylesheet' type='text/css' href='http://yui.yahooapis.com/3.6.0/build/cssreset/cssreset-min.css'>
+	<link rel='stylesheet' type='text/css' href='/css/baseCss/foundation.css'>
+
+	$headTitle
+
+	<style type='text/css'><!--
+		html {background:#E3EAD9;}
+		a {text-decoration:none;}
+	--></style>
+
+	$headStyle
+
+	</head>
+
+	<body >
+	$serverComm
+
+	$viewContent
+
+	$footer
+
+	</body>
+
+	<script type='text/javascript' src='/js/steal/steal.js?widgets'>
+	$javascript
+
+	$codeNavHtml
+	</html>
+";

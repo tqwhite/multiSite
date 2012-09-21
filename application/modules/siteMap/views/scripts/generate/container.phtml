@@ -4,71 +4,79 @@
 	'source'=>__file__,
 	'propertyList'=>array(
 		array('name'=>'codeNav'),
-		array('name'=>'routes')
+		array('name'=>'routes'),
+		array('name'=>'section', 'importance'=>'optional')
 	)));
 
 $outString='';
 $outArray=array();
 
+function removeEmpty($inArray){
+		$outArray=array();
+			foreach ($inArray as $label=>$data){
+				if ($data){$outArray[$label]=$data;}
+		}
+		return $outArray;
+}
+
 function makeArray($sub, $url, &$outArray){
+
 	$element=array_shift($sub);
 
-	while ($element=='' && count($sub)>0){$element=array_shift($sub);}
 
-if (isset($outArray[$element])){
-	if (count($sub)>0){
-		$outArray[$element][]=makeArray($sub, $url, $outArray);
-	}
-	else{
-			$outArray[$element]=$url;
+	if (!isset($outArray[$element])){
+		$outArray[$element]=array();
 	}
 
-}
+		$working=&$outArray[$element];
 
-	if (count($sub)>0){
-		if (isset($outArray[$element])){
-	echo "elementa=$element<BR>";
-			$outArray[$element][]=makeArray($sub, $url, $outArray);
+			if (!isset($working['links'])){ $working['links']=array();}
+		if (count($sub)===0){
+			$working['url']=$url;
 		}
 		else{
-	echo "elementb=$element<BR>";
-			$outArray[$element]=makeArray($sub, $url, $outArray);
+			makeArray($sub, $url, $working['links']);
 		}
-	}
-	else{
-	echo "elementc=$element<BR>";
-		if ($element){
-		$outArray[$element]=$url;
-		}
-	}
+
 }
+
+//=======================
 
 		foreach ($this->routes['routes'] as $label=>$data){
 
 				if (isset($data['noList']) && $data['noList']==true){continue;}
+				if (isset($this->section) && !preg_match('/'.str_replace('/', '\\/', $this->section).'/', $data['route'])){continue;}
 
 				$url=$_SERVER['HTTP_HOST'].$data['route'];
-				if (isset($data['title'])){
-					$title=$data['title'];
+
+				if (isset($data['defaults']['title'])){
+					$title=$data['defaults']['title'];
 				}
 				else{
 					$title=$url;
 				}
 
 				$pathComponents=explode('/', $data['route']?$data['route']:'/parent/');
+				$pathComponents=removeEmpty($pathComponents);
 
-\Q\Utils::dumpWeb($pathComponents, "pathComponents-$url");
-				$outArray[]=makeArray($pathComponents, $url, $outArray);
+// NOTE: I got makeArray() to create a nicely nested assoc array
+// representing the route.ini. I decided to defer the next step of
+// turning it into a working outline-oriented navigation because
+// it was taking too long. For now, simply listing all (qualified) the URLs in a route
+// is good enough. tqii
 
-\Q\Utils::dumpWeb($outArray, 'workingOUtArray');
-echo "<div style='background:red;height:10px;width:100%;'></div>";
+// 				$outArray[]=makeArray($pathComponents, $url, $outArray);
+// 				$outArray=removeEmpty($outArray);
+
+//=======================simple works
 				$outString.="<li><a href='http://$url'>$title</a></li>";
 				$items[$data['route']]="<a href='http://$url'>$title</a>";
+//======================
 		}
-\Q\Utils::dumpWeb($outArray, 'outArray');
-$outString="<ul>$outString</UL>";
-$outString=$this->htmlList($items, false, array('id'=>'siteList'), false);
+
+
+$outString="<ul class='contentzone'>$outString</UL>";
+//$outString=$this->htmlList($outArray, false, array('id'=>'siteList'), false);
 echo $outString;
 
 ?>
-

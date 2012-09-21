@@ -30,13 +30,12 @@ class MultiPanel_GenerateController extends Q_Controller_Base
 		$this->view->codeNav=$this->getCodeNav(__method__);
 		$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
 
-		$this->view->message='hello!';
     }
 
 
 
 	public function validateContentStructure($contentArray){
-	//this is passed to QHelpersFileContent ($this->FileContainer) by Q_Controller_Base::init()
+		//this is passed to QHelpersFileContent ($this->FileContainer) by Q_Controller_Base::init()
 		if (!$contentArray){$contentArray=$this->contentArray;}
 
 		\Q\Utils::validateProperties(array(

@@ -1,0 +1,13 @@
+<?
+$siteDirectory=$this->generateSiteDirectory($this->contentArray['siteDirectoryUrlList.ini']);
+
+$siteDirectoryString='';
+		foreach ($siteDirectory as $label=>$data){
+			$siteDirectoryString.="
+				<div style='float:left;margin-left:20px;margin-right:20px;'>
+					<div style='font-weight:bold;border-bottom:1pt solid gray;margin-bottom:5px;'>{$data['title']}</div>
+					<div>{$data['content']}</div>
+				</div>
+			";
+		}
+echo $siteDirectoryString;

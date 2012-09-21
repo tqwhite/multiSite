@@ -14,12 +14,16 @@ class SiteMap_GenerateController extends Q_Controller_Base
 
     public function containerAction()
     {
+		//blah.com/sitemap?section=elearning/blah filters to only routed URLs containing that string
+
+    	$section=$this->getRequest()->getQuery('section');
 
 		$this->setVariationLayout('minimal');
 
     //	$contentArray=$this->contentObj->contentArray;
 
 		$this->view->routes=$this->getRoutes();
+		$this->view->section=$section;
 		$this->view->codeNav=$this->getCodeNav(__method__);
 
     }

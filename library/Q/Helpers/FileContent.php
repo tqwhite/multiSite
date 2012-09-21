@@ -29,9 +29,12 @@ private $hashDir;
 
 public function __construct($args){
 	$this->initIgnoreList();
+	$this->args=$args;
 	if ($args['contentDirPath']){
 		$this->contentDirPath=$args['contentDirPath'];
-	//	$this->contentArray=$this->startFileExamination($this->contentDirPath);
+		}
+	if ($args['globalItemsDirectoryPath']){
+		$this->globalItemsDirectoryPath=$args['globalItemsDirectoryPath'];
 		}
 	if ($args['employer']){
 		$this->employer=$args['employer'];
@@ -197,7 +200,10 @@ private function putToMediaHash($filePath){
 public function __get($property){
 	switch($property){
 		case 'contentArray':
+			if (isset($this->contentArray)){return $this->contentArray;}
+
 			$this->contentArray=$this->startFileExamination($this->contentDirPath);
+			$this->contentArray['globalItems']=$this->startFileExamination($this->globalItemsDirectoryPath);
 
 			$employer=$this->employer;
 			$validatorName=$this->validatorName;

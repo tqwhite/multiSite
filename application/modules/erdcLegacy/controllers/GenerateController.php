@@ -24,7 +24,7 @@ class ErdcLegacy_GenerateController extends Q_Controller_Base
     	$contentArray=array();
     	$contentArray['scrapeData']=$this->getContentZone($targetUrl);
 
-		$this->setVariationLayout('minimal');
+		$this->setVariationLayout('layout');
 
 		$this->view->contentArray=$contentArray;
 	//	$this->view->contentObj=$this->contentObj; //not needed by template

@@ -1,0 +1,33 @@
+<?php
+\Q\Utils::validateProperties(array(
+	'validatedEntity'=>$this,
+	'source'=>__file__,
+	'propertyList'=>array(
+		array('name'=>'codeNav'),
+	//	array('name'=>'codeNav'), //not needed by template
+		array('name'=>'contentArray')
+	)));
+
+\Q\Utils::validateProperties(array(
+	'validatedEntity'=>$this->contentArray,
+	'source'=>__file__,
+	'propertyList'=>array(
+		array('name'=>'scrapeDataList')
+	)));
+
+
+$scrapeDataList=$this->contentArray['scrapeDataList'];
+$contentListString='';
+
+foreach($scrapeDataList as $data){
+	$id=md5($data['content']);
+	$contentListString.="<div class='sitemap' style='border:1pt solid red;float:left;'>{$data['content']}</div>";
+
+}
+$contentListString=preg_replace('/<img.*?>/', '', $contentListString);
+
+?>
+<div id='containerContent'>
+
+			<?php  echo $contentListString;?>
+</div>

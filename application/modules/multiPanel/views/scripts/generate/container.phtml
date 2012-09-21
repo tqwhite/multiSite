@@ -8,6 +8,22 @@
 		array('name'=>'contentObj')
 	)));
 
+//INIT =========================================================================
+
+
+$this->contentArray=$this->contentObj->contentArray; //needs to be a property so helpers can see it
+
+if (isset($this->contentArray['pageTitle.txt'])){
+	$this->headTitle($this->contentArray['pageTitle.txt']);
+}
+else{
+	$request = Zend_Controller_Front::getInstance()->getRequest();
+	$this->headTitle($request->getActionName().'/')
+		 ->headTitle($request->getControllerName());
+}
+
+//DROPDOWN MENU =========================================================================
+
 $dropdownStyles="
 
 	/*
@@ -46,7 +62,6 @@ $ieStyle="ul.dropdown ul li					{ display: inline; width: 100%; } ";
 
 $dropdownScript="
 $(function(){
-
     $('ul.dropdown li').hover(function(){
 
         $(this).addClass('hover');
@@ -64,16 +79,11 @@ $(function(){
 });
 ";
 
-$this->InlineScript()->appendScript($dropdownScript);
+$this->headScript()->appendScript($dropdownScript); //inlineScript() DOES NOT WORK. The code is never expressed.
 
 $this->headStyle()->appendStyle($dropdownStyles);
 $this->headStyle()->appendStyle($ieStyle, array('conditional'=>"lte IE 7"));
 
-$request = Zend_Controller_Front::getInstance()->getRequest();
-$this->headTitle($request->getActionName().'/')
-     ->headTitle($request->getControllerName());
-
-$this->contentArray=$this->contentObj->contentArray;
 
 
 $controlsString=$this->unorderedListForSelect(
@@ -82,6 +92,24 @@ $controlsString=$this->unorderedListForSelect(
 );
 
 $controlsString=$this->translateUrls($controlsString);
+
+$controlsString="
+<div style='width:1000px;background:#def;height:50px;margin:0px 0px 20px 0px;'>
+	<div style='width:860px;padding-top:20px;margin:0px 70px 20px 70px;'>$controlsString</div>
+</div>";
+
+//GLOBAL OVERRIDES (from content dir) =========================================================================
+global $thiss;
+$thiss=$this;
+function applyStyle($cssString){
+	global $thiss;
+	$thiss->headStyle()->appendStyle($cssString);
+}
+
+//$this->headStyle()->appendStyle($this->contentArray['globalItems']['CSS']['main.css']);
+array_map('applyStyle', $this->contentArray['globalItems']['CSS']);
+
+//MAIN CONTENT SECTION =========================================================================
 
 $panelContentString='';
 		$list=$this->contentObj->contentArray['slideshow'];
@@ -99,18 +127,15 @@ foreach ($elementList as $label=>$data){
 	$headBanner=str_replace("images/$label", $data, $headBanner);
 }
 
-$controlsString="
-<div style='width:1000px;background:#def;height:50px;margin:0px 0px 20px 0px;'>
-	<div style='width:860px;padding-top:20px;margin:0px 70px 20px 70px;'>$controlsString</div>
-</div>";
-
 $panelString="
-	<div id='anythingslider' style='width:800px;height:500px;margin-left:90px;margin-top:20px;'>
+	<div id='anythingslider' style='width:800px;height:500px;margin-left:90px;margin-top:20px;overflow:hidden;'>
 		$panelContentString
 	</div>
 ";
-?>
-<?php  echo $headBanner;?>
-<?php  echo $controlsString;?>
-<?php echo $panelString;?>
-</div>
+
+
+//OUTPUT SECTION =========================================================================
+
+echo $headBanner;
+echo $controlsString;
+echo $panelString;

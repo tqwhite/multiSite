@@ -1,8 +1,8 @@
 No, this isn't a real script. It's a reminder of the commands to do things
 
-zf create module siteMap
-zf create controller Generate 1 siteMap
-zf create action Container Generate 1 siteMap
+zf create module siteDirectory
+zf create controller Generate 1 siteDirectory
+zf create action Container Generate 1 siteDirectory
 
 Don't forget to change this controller segment:
 

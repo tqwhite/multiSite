@@ -2,35 +2,81 @@
 
 class Q_Controller_Base extends Zend_Controller_Action
 {
+	private $multiSite;
+	private $baseDir;
 	private $defaultLayoutPath;
 	private $layoutDirectoryPath;
 	private $layoutSiteDirectoryName;
-	private $setVariationLayout;
+	private $siteDirectoryPath;
 	private $layoutFullPath;
-	private $contentDirectoryPath;
 	private $layoutName;
+	private $contentDirectoryPath;
+	private $globalItemsDirectoryPath;
 
 	private $contentObj;
 	private $layoutContainer;
 
     public function init($args)
     {
-		$this->defaultLayoutPath=Zend_Layout::getMvcInstance()->getLayoutPath();
-		$this->layoutSiteDirectoryName=SITE_VARIATION.'/';
-		$this->routeName=Zend_Controller_Front::getInstance()->getRouter()->getCurrentRouteName();
-
-		$multiSite=Zend_Registry::get('multiSite');
 
 		if (isset($args['controllerType']) && $args['controllerType']=='cms'){
-			$this->contentDirectoryPath=$multiSite['content']['path'].'/'.SITE_VARIATION.'/'.$this->routeName.'/';
-			$this->layoutDirectoryPath=$this->genLayoutContentDir();
+			$initFlag=($this->getRequest()->getParam('initIfNeeded')=='true');
+
+			$this->multiSite=Zend_Registry::get('multiSite');
+
+			$this->baseDir=$this->getBaseDir().'/';
+
+			$this->defaultLayoutPath=Zend_Layout::getMvcInstance()->getLayoutPath();
+			$this->routeName=Zend_Controller_Front::getInstance()->getRouter()->getCurrentRouteName();
+			$this->layoutSiteDirectoryName=SITE_VARIATION.'/';
+
+			$this->siteDirectoryPath=$this->getSiteDirectoryPath();
+			$this->contentDirectoryPath=$this->getContentDir();
+			$this->globalItemsDirectoryPath=$this->getGlobalItemsDir();
+			$this->setVariationLayout('layout'); //set default
+
+			//echo Zend_Layout::getMvcInstance()->getLayoutPath(); exit;
 		}
-		$this->setVariationLayout('layout'); //set default
+    }
+
+    private function getSiteDirectoryPath(){
+    	$directory=$this->baseDir.SITE_VARIATION;
+    	return $this->checkDir($directory);
+    }
+
+    private function getBaseDir(){
+    	$directory=$this->multiSite['content']['path'].'/';
+    	return $this->checkDir($directory);
+    }
+
+    private function getContentDir(){
+    	$directory=$this->siteDirectoryPath.'/'.$this->routeName.'/';
+    	return $this->checkDir($directory);
+    }
+
+    private function getGlobalItemsDir(){
+    	$directory=$this->siteDirectoryPath.'/_GLOBAL/';
+    	return $this->checkDir($directory);
     }
 
     private function genLayoutContentDir(){
-		$multiSite=Zend_Registry::get('multiSite');
-    	return $multiSite['content']['path'].'/'.SITE_VARIATION.'/LAYOUTS/';
+    	$directory=$this->siteDirectoryPath.'/_GLOBAL/LAYOUTS/';
+    	return $this->checkDir($directory);
+    }
+
+    private function genCssDir(){
+    	$directory=$this->siteDirectoryPath.'/_GLOBAL/CSS/';
+    	return $this->checkDir($directory);
+    }
+
+    private function checkDir($directory){
+
+    	if (is_dir($directory)){
+    		return realpath($directory);
+    	}
+    	else{
+    		echo("controller_base::getContentDir says, $directory does not exist 3");
+    	}
     }
 
     public function getCodeNav($method){
@@ -41,6 +87,8 @@ class Q_Controller_Base extends Zend_Controller_Action
 		$codeNav['contentDirPath']=$this->contentObj->contentDirPath;
 		$codeNav['routeName']=$this->routeName;
 		$codeNav['contentDirectoryPath']=$this->contentDirectoryPath;
+		$codeNav['globalItemsDirectoryPath']=$this->globalItemsDirectoryPath;
+		$codeNav['zendLayoutFullPath']=$this->defaultLayoutPath;
 		return $codeNav;
     }
 
@@ -49,7 +97,7 @@ class Q_Controller_Base extends Zend_Controller_Action
 		Sets the layout in the SITE_VARIATION folder if it exists
 		or in the folder named in multiSite.layout.defaultDirName (in application.ini)
 	*/
-		$multiSite=Zend_Registry::get('multiSite');
+		$multiSite=$this->multiSite;
 		$defaultDirName=$multiSite['layout']['defaultDirName'].'/';
 
 		$siteLayout=$this->layoutDirectoryPath.$layoutName;
@@ -90,6 +138,7 @@ public function __get($property){
 		case 'contentObj':
 			$this->contentObj=new Q\Helpers\FileContent(array(
 				'contentDirPath'=>$this->contentDirectoryPath,
+				'globalItemsDirectoryPath'=>$this->globalItemsDirectoryPath,
 				'employer'=>$this,
 				'validatorName'=>'validateContentStructure'
 				));
@@ -107,6 +156,10 @@ public function __get($property){
 
 public function __set($property, $value){
 	$this->$property=$value;
+}
+
+private function initDir(){
+
 }
 }
 

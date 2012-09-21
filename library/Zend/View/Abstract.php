@@ -889,6 +889,17 @@ abstract class Zend_View_Abstract implements Zend_View_Interface
 
         return $this->_filter(ob_get_clean()); // filter output
     }
+    public function renderX($name)
+    {
+        // find the script file name using the parent private method
+        $this->_file = $this->_script($name);
+        unset($name); // remove $name from local scope
+
+        ob_start();
+        $this->_runX($this->_file);
+
+        return $this->_filter(ob_get_clean()); // filter output
+    }
 
     /**
      * Escapes a value for output in a view script.
