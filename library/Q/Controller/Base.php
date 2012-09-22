@@ -30,6 +30,7 @@ class Q_Controller_Base extends Zend_Controller_Action
 			$this->routeName=Zend_Controller_Front::getInstance()->getRouter()->getCurrentRouteName();
 			$this->layoutSiteDirectoryName=SITE_VARIATION.'/';
 
+			$this->layoutDirectoryPath=$this->genLayoutContentDir();
 			$this->siteDirectoryPath=$this->getSiteDirectoryPath();
 			$this->contentDirectoryPath=$this->getContentDir();
 			$this->globalItemsDirectoryPath=$this->getGlobalItemsDir();
@@ -102,13 +103,15 @@ class Q_Controller_Base extends Zend_Controller_Action
 
 		$siteLayout=$this->layoutDirectoryPath.$layoutName;
 		$defaultlayout=$this->defaultLayoutPath.$defaultDirName.$layoutName;
-
+echo "siteLayout=$siteLayout<BR>";
 		if ($this->checkLayoutExists($siteLayout)){
+		echo "AAA";
 			$this->layoutFullPath=$siteLayout;
 			Zend_Layout::getMvcInstance()->setLayoutPath($this->layoutDirectoryPath);
 			$this->_helper->layout()->setLayout($layoutName);
 		}
 		elseif ($this->checkLayoutExists($defaultlayout)){
+		echo "BBB";
 			$this->layoutFullPath=$defaultlayout;
 			Zend_Layout::getMvcInstance()->setLayoutPath($this->defaultLayoutPath);
 			$this->_helper->layout()->setLayout($defaultDirName.$layoutName);
@@ -118,7 +121,6 @@ class Q_Controller_Base extends Zend_Controller_Action
 		}
 
 		$this->layoutName=$layoutName;
-		$this->layoutDirectoryPath=$this->genLayoutContentDir();
 	}
 
 	private function checkLayoutExists($layout){
