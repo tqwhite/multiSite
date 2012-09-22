@@ -8,7 +8,7 @@ class Q_Controller_Base extends Zend_Controller_Action
 	private $layoutDirectoryPath;
 	private $layoutSiteDirectoryName;
 	private $siteDirectoryPath;
-	private $layoutFullPath;
+	private $actualLayoutFullPath;
 	private $layoutName;
 	private $contentDirectoryPath;
 	private $globalItemsDirectoryPath;
@@ -84,12 +84,12 @@ class Q_Controller_Base extends Zend_Controller_Action
     	$codeNav=array();
 		$codeNav['controller']=$method;
 		$codeNav['layoutShortPath']=$this->_helper->layout()->getLayout();
-		$codeNav['layoutFullPath']=$this->layoutFullPath;
+		$codeNav['actualLayoutFullPath']=$this->actualLayoutFullPath;
 		$codeNav['contentDirPath']=$this->contentObj->contentDirPath;
 		$codeNav['routeName']=$this->routeName;
 		$codeNav['contentDirectoryPath']=$this->contentDirectoryPath;
 		$codeNav['globalItemsDirectoryPath']=$this->globalItemsDirectoryPath;
-		$codeNav['zendLayoutFullPath']=$this->defaultLayoutPath;
+		$codeNav['zendactualLayoutFullPath']=$this->defaultLayoutPath;
 		return $codeNav;
     }
 
@@ -103,16 +103,14 @@ class Q_Controller_Base extends Zend_Controller_Action
 
 		$siteLayout=$this->layoutDirectoryPath.$layoutName;
 		$defaultlayout=$this->defaultLayoutPath.$defaultDirName.$layoutName;
-echo "siteLayout=$siteLayout<BR>";
+
 		if ($this->checkLayoutExists($siteLayout)){
-		echo "AAA";
-			$this->layoutFullPath=$siteLayout;
+			$this->actualLayoutFullPath=$siteLayout;
 			Zend_Layout::getMvcInstance()->setLayoutPath($this->layoutDirectoryPath);
 			$this->_helper->layout()->setLayout($layoutName);
 		}
 		elseif ($this->checkLayoutExists($defaultlayout)){
-		echo "BBB";
-			$this->layoutFullPath=$defaultlayout;
+			$this->actualLayoutFullPath=$defaultlayout;
 			Zend_Layout::getMvcInstance()->setLayoutPath($this->defaultLayoutPath);
 			$this->_helper->layout()->setLayout($defaultDirName.$layoutName);
 		}

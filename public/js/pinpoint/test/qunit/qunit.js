@@ -1,1 +1,1 @@
-steal("funcunit/qunit", "./pinpoint_test.js", './base_test.js', './local_storage_test.js', './session_test.js');
+steal('./account_test.js')

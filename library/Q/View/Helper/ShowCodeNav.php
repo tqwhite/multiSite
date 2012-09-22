@@ -7,7 +7,7 @@
 			routeName: {$codeNav['routeName']}	<br/>
 			controller: {$codeNav['controller']}<br/>
 			content: {$codeNav['contentDirPath']}<br/>
-			layout: {$codeNav['layoutFullPath']}<br/>
+			layout: {$codeNav['actualLayoutFullPath']}<br/>
 			-->";
 
 	 }

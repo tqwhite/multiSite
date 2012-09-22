@@ -1,9 +1,9 @@
 steal(
-	'./base.css', 			// application CSS file
 	'./models/models.js',		// steals all your models
 	'./fixtures/fixtures.js'	// sets up fixtures for your models
 )
 .then(
+	'./stylesheets/base.css', 			// application CSS file
 	'./controller/base/base.js'
 )
 .then(
@@ -20,6 +20,8 @@ steal(
 
 
 	'./controller/app/annotation/panel/panel.js',
+
+	'./controller/app/signup/show_work_script/show_work_script.js',
 
 
 
