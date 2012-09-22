@@ -30,8 +30,8 @@ class Q_Controller_Base extends Zend_Controller_Action
 			$this->routeName=Zend_Controller_Front::getInstance()->getRouter()->getCurrentRouteName();
 			$this->layoutSiteDirectoryName=SITE_VARIATION.'/';
 
-			$this->layoutDirectoryPath=$this->genLayoutContentDir();
 			$this->siteDirectoryPath=$this->getSiteDirectoryPath();
+			$this->layoutDirectoryPath=$this->genLayoutContentDir();
 			$this->contentDirectoryPath=$this->getContentDir();
 			$this->globalItemsDirectoryPath=$this->getGlobalItemsDir();
 			$this->setVariationLayout('layout'); //set default
