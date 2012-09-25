@@ -16,6 +16,7 @@ public function _initExposeStructures(){
 
 public function _initSiteDirectory(){
     $initFlag=($_GET['initIfNeeded']=='true' || $_POST['initIfNeeded']=='true');
+	Zend_Registry::set('initIfNeeded', $initFlag);
 
     if ($initFlag){
 
@@ -29,79 +30,41 @@ public function _initSiteDirectory(){
 		}
 		shell_exec("rm $testFileName");
 
-		$directory = $multiSite['content']['path'];
-		if (!is_dir($directory)){
-			echo "creating $directory<BR>";
-			$cmdString="mkdir $directory";
-			echo "making $directory result=".shell_exec($cmdString)."<BR>";
-		}
+$defaultRoute=<<<defaultRoute
+routes._default.route = ''
+routes._default.defaults.title='Home'
+routes._default.defaults.module = multiPanel		;page type
+routes._default.defaults.controller = generate		;always the same
+routes._default.defaults.action =container			;always the same
 
-		$directory = $multiSite['content']['path'].'/'.SITE_VARIATION;
-		if (!is_dir($directory)){
-			echo "creating $directory<BR>";
-			$cmdString="mkdir $directory";
-			echo "making $directory result=".shell_exec($cmdString)."<BR>";
-		}
+routes.sitemap.route = '/sitemap/'
+routes.sitemap.noList = true						;noList==true prevents route from appearing on sitemap
+routes.sitemap.defaults.module = siteMap		;page type
+routes.sitemap.defaults.controller = generate		;always the same
+routes.sitemap.defaults.action =container			;always the same
+defaultRoute;
 
-		$directory = $multiSite['content']['path'].'/'.SITE_VARIATION.'/_GLOBAL';
-		if (!is_dir($directory)){
-			echo "creating $directory<BR>";
-			$cmdString="mkdir $directory";
-			echo "making $directory result=".shell_exec($cmdString)."<BR>";
-		}
 
-		$directory = $multiSite['content']['path'].'/'.SITE_VARIATION.'/_GLOBAL/CSS';
-		if (!is_dir($directory)){
-			echo "creating $directory<BR>";
-			$cmdString="mkdir $directory";
-			echo "making $directory result=".shell_exec($cmdString)."<BR>";
-		}
+	$directories=array(
+		$multiSite['content']['path']=>'',
+		$multiSite['content']['path'].'/'.SITE_VARIATION=>array(
+			'routes.ini'=>$defaultRoute
+		),
+		$multiSite['content']['path'].'/'.SITE_VARIATION.'/_GLOBAL'=>'',
+		$multiSite['content']['path'].'/'.SITE_VARIATION.'/_GLOBAL/CSS'=>'',
+		$multiSite['content']['path'].'/'.SITE_VARIATION.'/_GLOBAL/LAYOUTS'=>'',
+		$multiSite['content']['path'].'/'.SITE_VARIATION.'/sitemap'=>'',
+		$multiSite['content']['path'].'/'.SITE_VARIATION.'/sitemap/noFilesRequired'=>'',
+	);
 
-		$directory = $multiSite['content']['path'].'/'.SITE_VARIATION.'/_GLOBAL/LAYOUTS';
-		if (!is_dir($directory)){
-			echo "creating $directory<BR>";
-			$cmdString="mkdir $directory";
-			echo "making $directory result=".shell_exec($cmdString)."<BR>";
-		}
-
-		$filePath = realpath($multiSite['content']['path']).'/'.SITE_VARIATION.'/routes.ini';
-		if (!is_readable($filePath)){
-			echo "creating $filePath<BR>";
-			$routeInit="
-				routes._default.route = ''
-				routes._default.defaults.title='Home'
-				routes._default.defaults.module = multiPanel		;page type
-				routes._default.defaults.controller = generate		;always the same
-				routes._default.defaults.action =container			;always the same
-
-				routes.sitemap.route = '/sitemap/'
-				routes.sitemap.noList = true						;noList==true prevents route from appearing on sitemap
-				routes.sitemap.defaults.module = siteMap		;page type
-				routes.sitemap.defaults.controller = generate		;always the same
-				routes.sitemap.defaults.action =container			;always the same
-			";
-			file_put_contents($filePath, $routeInit);
-		}
-
-		$directory = $multiSite['content']['path'].'/'.SITE_VARIATION.'/_default';
-		if (!is_dir($directory)){
-			echo "creating $directory<BR>";
-			$cmdString="mkdir $directory";
-			echo "making $directory result=".shell_exec($cmdString)."<BR>";
-		}
-
-		$directory = $multiSite['content']['path'].'/'.SITE_VARIATION.'/sitemap';
-		if (!is_dir($directory)){
-			echo "creating $directory<BR>";
-			$cmdString="mkdir $directory";
-			echo "making $directory result=".shell_exec($cmdString)."<BR>";
-		}
-
-		$directory = $multiSite['content']['path'].'/'.SITE_VARIATION.'/sitemap/noFilesRequired';
-		if (!is_readable($filePath)){
-			echo "creating $filePath<BR>";
-			$routeInit="placeholder";
-			file_put_contents($filePath, $routeInit);
+		foreach ($directories as $directory=>$data){
+			$this->makeDir($directory);
+			if ($data){
+				foreach ($data as $label2=>$data2){
+					$filePath=$directory.'/'.$label2;
+					$this->makeFile($filePath, $data2);
+				}
+			}
 		}
 
 		echo "base site init complete<BR>";
@@ -132,6 +95,28 @@ protected function _initRoutes() {
 
     $router->addConfig($config,'routes');
 
+}
+
+private function makeDir($directory){
+	if (!is_dir($directory)){
+		$cmdString="mkdir $directory";
+		echo "<div style='color:green;'>DIRECTORY: creating $directory, result=".shell_exec($cmdString)."</div>";
+	}
+	else{
+
+		echo "<div style='color:gray;'>DIRECTORY: $directory <u>already exists</u></div>";
+	}
+}
+
+
+private function makeFile($filePath, $contents){
+		if (!is_readable($filePath)){
+			echo "<div style='color:green;'>FILE: creating $filePath</siv>";
+			file_put_contents($filePath, $contents);
+		}
+	else{
+		echo "<div style='color:gray;'>FILE: $filePath <u>already exists</u></div>";
+	}
 }
 
 }//end of class

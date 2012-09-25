@@ -2,6 +2,7 @@
 
 class Q_Controller_Base extends Zend_Controller_Action
 {
+	private $moduleDirectoryPath;
 	private $multiSite;
 	private $baseDir;
 	private $defaultLayoutPath;
@@ -16,11 +17,19 @@ class Q_Controller_Base extends Zend_Controller_Action
 	private $contentObj;
 	private $layoutContainer;
 
-    public function init($args)
-    {
+    public function init($args){
 
 		if (isset($args['controllerType']) && $args['controllerType']=='cms'){
-			$initFlag=($this->getRequest()->getParam('initIfNeeded')=='true');
+
+			$initFlag=Zend_Registry::get('initIfNeeded');
+
+			if ($initFlag){
+				$this->executeInit();
+				die("<div style='font-weight:bold;margin-top:20px;'>Default directories/files initialization complete.</div><div style='margin-top:20px;'>Check it out: <a href='".'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REDIRECT_URL']."'>". $_SERVER['SERVER_NAME'] . $_SERVER['REDIRECT_URL']."</a></div>");
+			}
+
+			$front = Zend_Controller_Front::getInstance();
+			$this->moduleDirectoryPath=$front->getModuleDirectory();
 
 			$this->multiSite=Zend_Registry::get('multiSite');
 
@@ -87,6 +96,7 @@ class Q_Controller_Base extends Zend_Controller_Action
 		$codeNav['actualLayoutFullPath']=$this->actualLayoutFullPath;
 		$codeNav['contentDirPath']=$this->contentObj->contentDirPath;
 		$codeNav['routeName']=$this->routeName;
+		$codeNav['moduleDirectoryPath']=$this->moduleDirectoryPath;
 		$codeNav['contentDirectoryPath']=$this->contentDirectoryPath;
 		$codeNav['globalItemsDirectoryPath']=$this->globalItemsDirectoryPath;
 		$codeNav['zendactualLayoutFullPath']=$this->defaultLayoutPath;
@@ -131,36 +141,39 @@ class Q_Controller_Base extends Zend_Controller_Action
 		return false;
 	}
 
+	public function __get($property){
+		switch($property){
+			case 'contentObj':
+				$this->contentObj=new Q\Helpers\FileContent(array(
+					'contentDirPath'=>$this->contentDirectoryPath,
+					'globalItemsDirectoryPath'=>$this->globalItemsDirectoryPath,
+					'employer'=>$this,
+					'validatorName'=>'validateContentStructure'
+					));
 
+				return $this->contentObj;
+				break;
+			case 'layoutContainer':
 
-public function __get($property){
-	switch($property){
-		case 'contentObj':
-			$this->contentObj=new Q\Helpers\FileContent(array(
-				'contentDirPath'=>$this->contentDirectoryPath,
-				'globalItemsDirectoryPath'=>$this->globalItemsDirectoryPath,
-				'employer'=>$this,
-				'validatorName'=>'validateContentStructure'
-				));
+				$this->layoutContainer=new Q\Helpers\FileContent(array('contentDirPath'=>$this->layoutDirectoryPath));
+				return $this->layoutContainer;
+				break;
 
-			return $this->contentObj;
-			break;
-		case 'layoutContainer':
-
-			$this->layoutContainer=new Q\Helpers\FileContent(array('contentDirPath'=>$this->layoutDirectoryPath));
-			return $this->layoutContainer;
-			break;
-
+		}
 	}
-}
 
-public function __set($property, $value){
-	$this->$property=$value;
-}
+	public function __set($property, $value){
+		$this->$property=$value;
+	}
 
-private function initDir(){
-
-}
+	private function executeInit(){
+		if (method_exists($this, 'initializeContentDirectory')){
+			$this->initializeContentDirectory();
+		}
+		else{
+			die("No directory initiallization available");
+		}
+	}
 }
 
 
