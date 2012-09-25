@@ -12,8 +12,8 @@ Pinpoint.Controller.Base.extend('Pinpoint.Controller.App.Annotation.Panel',
 /** @Prototype */
 {
 	init : function(){
-		this.element.html("//pinpoint/controller/app/annotation/panel/views/init.ejs",{
-			message: "<div id='demoSpace' style='color:red;font-size:24pt;width:900px;height:600px;background:url(http://"+GLOBALS.serverDomain+"/media/pushPinAtomBiggerPin.png);'><img id='hello' src='http://"+GLOBALS.serverDomain+"/media/accessButton.png'><p/><div style='background:white;width:200px;'>You can drag the button.</div></div>"
+		this.element.prepend("//pinpoint/controller/app/annotation/panel/views/init.ejs",{
+			message: "<div id='demoSpace' style='position:absolute;top:0px;right:0px;'><img id='hello' style='z-index:1000;' src='http://"+GLOBALS.serverDomain+"/media/accessButton.png'><p/><div style='background:white;width:200px;'></div>"
 		});
 
 		$('#hello').draggable({drag:this.callback('tmpDrag')});
@@ -22,11 +22,26 @@ Pinpoint.Controller.Base.extend('Pinpoint.Controller.App.Annotation.Panel',
 
 	tmpDrag:function(){
 
-		$('#demoSpace').append('<span style="color:#bbbbbb;font-size:10pt;">dragging </span>');
+//		$('#demoSpace').append('<span style="color:#bbbbbb;font-size:10pt;">dragging </span>');
 	},
 
 	tmpClick:function(){
-		$('#demoSpace').append('click<br/>');
+		var top=$('#hello').css('top').replace('px', '')*1+55,
+			right=$('#hello').css('right').replace('px', '')*1+50;
+
+		$('#demoSpace')
+			.append("<div class='simpleInputPanel' style='position:absolute;top:"+top+"px;right:"+right+"px;height:1px;width:1px;border:3pt solid green;padding:20px;'></div>")
+		$('.simpleInputPanel').animate(
+			{
+				width:'+=200',
+				height:'+=100'
+			},
+			1000,
+			function(){
+				$('.simpleInput').html("<textarea style='height:50px;width:150px;'></textarea><br/>submit");
+			}
+			);
+
 	}
 })
 

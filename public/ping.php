@@ -33,7 +33,7 @@
 <?php
 
 	if ($_SERVER['QUERY_STRING']!='DEBUG'){
-		$outString=$production="<script type='text/javascript'>serverDomain='work.pinpoint.local';</script><script type='text/javascript' src='http://work.pinpoint.local/js/steal/steal.production.js?pinpoint'></script>";
+		$outString=$production="<script type='text/javascript'>serverDomain='work.pinpoint.local';</script><script type='text/javascript' src='http://work.pinpoint.local/js/steal/steal.js?pinpoint'></script>";
 
 	}
 	else{
