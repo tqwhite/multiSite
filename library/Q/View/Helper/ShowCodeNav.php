@@ -5,6 +5,7 @@
 		return "
 			<!--
 			routeName: {$codeNav['routeName']}	<br/>
+			module: {$codeNav['moduleDirectoryPath']}<br/>
 			controller: {$codeNav['controller']}<br/>
 			content: {$codeNav['contentDirPath']}<br/>
 			layout: {$codeNav['actualLayoutFullPath']}<br/>

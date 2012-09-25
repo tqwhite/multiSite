@@ -76,33 +76,6 @@
             <viewFiltersDirectory/>
           </viewsDirectory>
         </moduleDirectory>
-        <moduleDirectory moduleName="content1">
-          <apisDirectory enabled="false"/>
-          <configsDirectory enabled="false"/>
-          <controllersDirectory>
-            <controllerFile controllerName="Generate">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="container"/>
-            </controllerFile>
-          </controllersDirectory>
-          <formsDirectory enabled="false"/>
-          <layoutsDirectory enabled="false">
-            <layoutScriptsDirectory enabled="false"/>
-          </layoutsDirectory>
-          <modelsDirectory/>
-          <viewsDirectory>
-            <viewScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Generate">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Generate">
-                <viewScriptFile forActionName="container"/>
-              </viewControllerScriptsDirectory>
-            </viewScriptsDirectory>
-            <viewHelpersDirectory/>
-            <viewFiltersDirectory/>
-          </viewsDirectory>
-        </moduleDirectory>
         <moduleDirectory moduleName="pureHtml">
           <apisDirectory enabled="false"/>
           <configsDirectory enabled="false"/>
@@ -390,14 +363,6 @@
         </testApplicationControllerDirectory>
         <testApplicationModulesDirectory>
           <testApplicationModuleDirectory forModuleName="multiPanel">
-            <testApplicationControllerDirectory>
-              <testApplicationControllerFile forControllerName="Generate">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="container"/>
-              </testApplicationControllerFile>
-            </testApplicationControllerDirectory>
-          </testApplicationModuleDirectory>
-          <testApplicationModuleDirectory forModuleName="content1">
             <testApplicationControllerDirectory>
               <testApplicationControllerFile forControllerName="Generate">
                 <testApplicationActionMethod forActionName="index"/>
