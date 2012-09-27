@@ -73,7 +73,10 @@ $index="<div style='margin:20px;'>$index</div>";
 				'index.html'=>$index
 
 			),
-			'elements'=>'' //an empty element says empty directory
+			'elements'=>array(  //ROOTFILES is the keyword for files that are peered at the base level of the route.
+				'README'=>'fill this directory with image files used by your page'
+
+			)
 
 		);
 

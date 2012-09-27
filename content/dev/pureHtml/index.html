@@ -1,9 +1,23 @@
-<div style='width:400px;height:200px;margin:100px 100px 100px 100px;background:white;'>
-
-This is pure HTML.<p/>
-
-<img src='elements/gifIMG_0120.jpg' style='width:200px;'><p/>
-<img src='elements/DSC_1566.JPG' style='width:200px;'><p/>
-<img src='elements/DSC_1615.jpg' style='width:200px;'><p/>
-
+<div style='margin:20px;'><br />
+<br />
+Edit index.html to customize this page. Everything you enter will be put into the &lt;body&gt; tag. No filtering is done.<br />
+<br />
+You can put images into the elements folder as well as any other linkable things (stylesheets, .js, video, etc). Address them<br />
+as usual (&lt;img src='elements/imageName.png'&gt;).<br />
+<br />
+You can communicate with the Widgets library using the serverData div. EG,<br />
+<br />
+&lt;div id='serverData' style='display:none;'&gt;<br />
+&lt;input type=hidden name='controller_startup_list[0][domSelector]' value='body'&gt;<br />
+&lt;input type=hidden name='controller_startup_list[0][controllerName]' value='widgets_SOMETHINGINTERESTING'&gt;<br />
+&lt;input type=hidden name='controller_startup_list[0][parameters]' value='{&quot;background&quot;:&quot;gray&quot;,&quot;color&quot;:&quot;red&quot;}'&gt;<br />
+&lt;/div&gt;<br />
+<br />
+Someday, there will be a library of widgets you can use.<br />
+<br />
+jQuery is available, too, but it has to be addressed through the serverData mechanism. Replace the controllerName value 'widgets_SOMETHINGINTERESTING' with<br />
+a jQuery routine, eg, 'fade' or something.<br />
+<br /><br />
+<br />
+You can see demo's of the various page types linked <a href='/sitemap'>HERE</a>
 </div>
