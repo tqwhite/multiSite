@@ -1,141 +1,136 @@
 <?php
 
-\Q\Utils::validateProperties(array(
-	'validatedEntity'=>$this,
-	'source'=>__file__,
-	'propertyList'=>array(
-		array('name'=>'codeNav'),
-		array('name'=>'contentObj')
-	)));
+class MultiPanel_GenerateController extends Q_Controller_Base
+{
+    public function init() //this is called by the Zend __construct() method
+    {
+        parent::init(array('controllerType'=>'cms'));
+    }
 
-//INIT =========================================================================
+    public function indexAction()
+    {
+        $this->containerAction();
+    }
 
+    public function containerAction()
+    {
+    	//operates with default layout 'layout'
 
-$contentArray=$this->contentObj->contentArray; //needs to be a property so helpers can see it
+		$serverComm[]=array("fieldName"=>"message", "value"=>'hello from the server via javascript');
 
-if (isset($contentArray['pageTitle.txt'])){
-	$this->headTitle($contentArray['pageTitle.txt']);
-}
-else{
-	$request = Zend_Controller_Front::getInstance()->getRequest();
-	$this->headTitle($request->getActionName().'/')
-		 ->headTitle($request->getControllerName());
-}
+				$jsControllerList[]=array(
+				"domSelector"=>"#anythingslider",
+				"controllerName"=>'widgets_display_anythingslider',
+				"parameters"=>json_encode(array('background'=>'gray', 'color'=>'red'))
+			);
 
-//DROPDOWN MENU =========================================================================
+     	$serverComm=$this->_helper->ArrayToServerCommList('controller_startup_list', $jsControllerList);
 
-$dropdownStyles="
+		$this->view->contentObj=$this->contentObj;
+		$this->view->codeNav=$this->getCodeNav(__method__);
+		$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
 
-	/*
-		LEVEL ONE
-	*/
-	ul.dropdown                         { position: relative; float:right; z-index:1000;}
-	ul.dropdown li                      { float: left; zoom: 1; }
-	ul.dropdown a:hover		            { color: #000; }
-	ul.dropdown a:active                { color: #ffa500; }
-	ul.dropdown li a                    { display: block; padding: 4px 8px; border-right: 1px solid #333;
-										  color: #222; text-decoration:none; }
-	ul.dropdown li:last-child a         { border-right: none; } /* Doesn't work in IE */
-	ul.dropdown li.hover,
-	ul.dropdown li:hover                { background: #F3D673; color: black; position: relative; }
-	ul.dropdown li.hover a              { color: black; }
-
-
-	/*
-		LEVEL TWO
-	*/
-	ul.dropdown ul 						{ width: 220px; visibility: hidden; position: absolute; top: 100%; left: 0; }
-	ul.dropdown ul li 					{ font-weight: normal; background: #f6f6f6; color: #000;
-										  border-bottom: 1px solid #ccc; float: none; }
-
-										/* IE 6 & 7 Needs Inline Block */
-	ul.dropdown ul li a					{ border-right: none; width: 100%; display: inline-block; }
-
-	/*
-		LEVEL THREE
-	*/
-	ul.dropdown ul ul 					{ left: 100%; top: 0; }
-	ul.dropdown li:hover > ul 			{ visibility: visible; }
-";
-
-$ieStyle="ul.dropdown ul li					{ display: inline; width: 100%; } ";
-
-$dropdownScript="
-$(function(){
-    $('ul.dropdown li').hover(function(){
-
-        $(this).addClass('hover');
-        $('ul:first',this).css('visibility', 'visible');
-
-    }, function(){
-
-        $(this).removeClass('hover');
-        $('ul:first',this).css('visibility', 'hidden');
-
-    });
-
-    $('ul.dropdown li ul li:has(ul)').find('a:first').append(' &raquo; ');
-
-});
-";
-
-$this->headScript()->appendScript($dropdownScript); //inlineScript() DOES NOT WORK. The code is never expressed.
-
-$this->headStyle()->appendStyle($dropdownStyles);
-$this->headStyle()->appendStyle($ieStyle, array('conditional'=>"lte IE 7"));
+    }
 
 
 
-$controlsString=$this->unorderedListForSelect(
-	$this->contentObj->contentArray['headNav.ini']['menu'],
-	array('mainClass'=>'dropdown')
-);
+	public function validateContentStructure($contentArray){
+		//this is passed to QHelpersFileContent ($this->FileContainer) by Q_Controller_Base::init()
+		if (!$contentArray){$contentArray=$this->contentArray;}
 
-$controlsString=$this->translateUrls($controlsString);
+		\Q\Utils::validateProperties(array(
+			'validatedEntity'=>$contentArray,
+			'source'=>__file__,
+			'propertyList'=>array(
+				array('name'=>'headNav.ini'),
+				array('name'=>'headBanner.html'),
+				array('name'=>'slideshow', 'assertNotEmptyFlag'=>true)
+			)));
 
-$controlsString="
-<div style='width:1000px;background:#def;height:50px;margin:0px 0px 20px 0px;'>
-	<div style='width:860px;padding-top:20px;margin:0px 70px 20px 70px;'>$controlsString</div>
-</div>";
+	}
 
-//GLOBAL OVERRIDES (from content dir) =========================================================================
-global $thiss;
-$thiss=$this;
-function applyStyle($cssString){
-	global $thiss;
-	$thiss->headStyle()->appendStyle($cssString);
-}
+	public function initializeContentDirectory(){
+	$headNav=<<<HEADNAV
 
-//$this->headStyle()->appendStyle($contentArray['globalItems']['CSS']['main.css']);
-array_map('applyStyle', $contentArray['globalItems']['CSS']);
+menu.0.title="About Us"
 
-//MAIN CONTENT SECTION =========================================================================
+menu.0.links.0.title='Our Story'
+menu.0.links.0.url='#ourStory'
 
-$panelContentString='';
-		$list=$this->contentObj->contentArray['slideshow'];
-		foreach ($list as $label=>$element){
-			$panelContentString.="<li>$element</li>";
-		}
-$panelContentString="<ul id='slideshow'>$panelContentString</ul>";
-
-$headBanner=$contentArray['headBanner.html'];
-
-$elementList=$contentArray['images'];
-
-foreach ($elementList as $label=>$data){
-	$panelContentString=str_replace("../images/$label", $data, $panelContentString);
-	$headBanner=str_replace("images/$label", $data, $headBanner);
-}
-
-$panelString="
-	<div id='anythingslider' style='width:800px;height:500px;margin-left:90px;margin-top:20px;overflow:hidden;'>
-		$panelContentString
-	</div>
-";
+menu.0.links.1.title='Contact Info'
+menu.0.links.1.url='#contactInfo'
 
 
-//OUTPUT SECTION =========================================================================
+menu.1.title="Our Partners"
 
-echo $headBanner;
-echo $controlsString;
-echo $panelString;
+menu.1.links.0.title='The Cambridge Group'
+menu.1.links.0.url='http://www.cambridgestrategics.com/'
+
+menu.1.links.1.title='Anoka-Henepin School District'
+menu.1.links.1.url='http://www.---.com/'
+
+HEADNAV;
+
+$siteDirectoryUrlList=<<<SITEDIR
+
+;if you do not want a site directory, leave the rest of this file blank
+a.0.title="Company List"
+
+a.0.links.0.title='Administrative Solutions'
+a.0.links.0.url='http://admin.cmerdc.local/sitemap'
+a.0.links.0.selector='.contentzone'	;this is a jQuery selector for the content to extract from target page
+
+a.0.links.1.title='Document Imaging'
+a.0.links.1.url='http://imaging.cmerdc.local/sitemap'
+a.0.links.1.selector='.contentzone'	;this is a jQuery selector for the content to extract from target page
+
+SITEDIR;
+
+$demoSlideShowA=<<<demoSlideShowA
+<div style='height:500px;width:800px;'>
+SLIDESHOW ELEMENT: edit slideShow/a_demoSlide.html to customize<br/>
+<br/>
+remember:<br/>
+<br/>
+1) You can put images in the images directory. Show them in the normal way:<br/>&lt;img src='images/imageFileName.png'&gt;<p/>
+2) You can add additional .html files into the slideShow directory if you need more slides.<p/>
+3) Slides are shown in the same order they appear in the file system, ie, alphabetically.<br/>Hence, the prefix 'a_'.
+</div>
+demoSlideShowA;
+
+$demoSlideShowB=<<<demoSlideShowA
+<div style='height:500px;width:800px;'>
+SLIDESHOW ELEMENT: edit slideShow/b_demoSlide to customize<br/>
+<br/>
+remember:<br/>
+<br/>
+1) You can put images in the images directory. Show them in the normal way:<br/>&lt;img src='images/imageFileName.png'&gt;<p/>
+2) You can add additional .html files into the slideShow directory if you need more slides.<p/>
+3) Slides are shown in the same order they appear in the file system, ie, alphabetically.<br/>Hence, the prefix 'b_'.
+</div>
+demoSlideShowA;
+
+		$directories=array(
+			'ROOTFILES'=>array(  //ROOTFILES is the keyword for files that are peered at the base level of the route.
+				'contactFooter.html'=>"FOOTER: edit contactFooter.html to customize",
+				'headBanner.html'=>"HEAD BANNER: edit headBanner.html to customize",
+				'headNav.ini'=>$headNav,
+				'pageTitle.txt'=>"TITLE: edit pageTitle.txt to customize",
+				'siteDirectoryUrlList.ini'=>$siteDirectoryUrlList,
+
+			),
+			'images'=>'', //an empty element says empty directory
+			'slideshow'=>array( //a directory can only contain files, not subdirectories
+				'a_demoSlide.html'=>$demoSlideShowA,
+				'b_demoSlide.html'=>$demoSlideShowB
+			)
+
+		);
+
+		$this->_helper->InitPageTypeDirectory($directories);
+	}
+
+} //end of class
+
+
+

@@ -11,10 +11,10 @@
 //INIT =========================================================================
 
 
-$this->contentArray=$this->contentObj->contentArray; //needs to be a property so helpers can see it
+$contentArray=$this->contentObj->contentArray; //needs to be a property so helpers can see it
 
-if (isset($this->contentArray['pageTitle.txt'])){
-	$this->headTitle($this->contentArray['pageTitle.txt']);
+if (isset($contentArray['pageTitle.txt'])){
+	$this->headTitle($contentArray['pageTitle.txt']);
 }
 else{
 	$request = Zend_Controller_Front::getInstance()->getRequest();
@@ -106,8 +106,8 @@ function applyStyle($cssString){
 	$thiss->headStyle()->appendStyle($cssString);
 }
 
-//$this->headStyle()->appendStyle($this->contentArray['globalItems']['CSS']['main.css']);
-array_map('applyStyle', $this->contentArray['globalItems']['CSS']);
+//$this->headStyle()->appendStyle($contentArray['globalItems']['CSS']['main.css']);
+array_map('applyStyle', $contentArray['globalItems']['CSS']);
 
 //MAIN CONTENT SECTION =========================================================================
 
@@ -118,9 +118,9 @@ $panelContentString='';
 		}
 $panelContentString="<ul id='slideshow'>$panelContentString</ul>";
 
-$headBanner=$this->contentArray['headBanner.html'];
+$headBanner=$contentArray['headBanner.html'];
 
-$elementList=$this->contentArray['images'];
+$elementList=$contentArray['images'];
 
 foreach ($elementList as $label=>$data){
 	$panelContentString=str_replace("../images/$label", $data, $panelContentString);
