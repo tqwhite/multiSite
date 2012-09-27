@@ -123,7 +123,7 @@ private function makeFile($filePath, $contents){
 			echo "<div style='color:green;'>FILE: creating $filePath</siv>";
 			file_put_contents($filePath, $contents);}
 		else{
-			echo "<div style='color:red;'>MISSING FILE: $directory</div>";
+			echo "<div style='color:red;'>MISSING FILE: $filePath</div>";
 		}
 
 		}
