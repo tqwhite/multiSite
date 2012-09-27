@@ -3,7 +3,10 @@
 
  	private $routeDirectory;
 
+ 	private $alreadyExistsList;
+
 	 public function direct($directories) {
+		$this->alreadyExistsList=array();
 
 		$this->routeDirectory=$this->getRouteDirectory();
 
@@ -20,6 +23,7 @@
 
 			if ($data){
 				foreach ($data as $label2=>$data2){
+					if ($this->alreadyExistsList[$directory]){continue;}
 					$filePath=$directory.'/'.$label2;
 					$this->makeFile($filePath, $data2);
 				}
@@ -34,7 +38,7 @@ private function makeDir($directory){
 		echo "<div style='color:green;'>DIRECTORY: creating $directory, result=".shell_exec($cmdString)."</div>";
 	}
 	else{
-
+		$this->alreadyExistsList[$directory]=true;
 		echo "<div style='color:gray;'>DIRECTORY: $directory <u>already exists</u></div>";
 	}
 }
