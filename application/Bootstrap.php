@@ -55,8 +55,12 @@ defaultRoute;
 			'routes.ini'=>$defaultRoute
 		),
 		$multiSite['content']['path'].'/'.SITE_VARIATION.'/_GLOBAL'=>'',
-		$multiSite['content']['path'].'/'.SITE_VARIATION.'/_GLOBAL/CSS'=>'',
-		$multiSite['content']['path'].'/'.SITE_VARIATION.'/_GLOBAL/LAYOUTS'=>'',
+		$multiSite['content']['path'].'/'.SITE_VARIATION.'/_GLOBAL/CSS'=>array(
+			'siteSpecific.css'=>'.filesInThisDirectoryAreAppliedToYourPages{a:red;}'
+		),
+		$multiSite['content']['path'].'/'.SITE_VARIATION.'/_GLOBAL/LAYOUTS'=>array(
+			'README'=>'Site specific variations of the files in application/layout override the distribution versions'
+		),
 		$multiSite['content']['path'].'/'.SITE_VARIATION.'/sitemap'=>array(
 			'noFilesRequired'=>'This is a placeholder to let you know that you no user files are needed for this page type.'
 		)
