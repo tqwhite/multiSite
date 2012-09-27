@@ -85,7 +85,7 @@ class Q_Controller_Base extends Zend_Controller_Action
     		return realpath($directory);
     	}
     	else{
-    		echo("controller_base::getContentDir says, $directory does not exist 3");
+    		echo("controller_base::getContentDir says, $directory does not exist 3<br/>");
     	}
     }
 
@@ -144,6 +144,7 @@ class Q_Controller_Base extends Zend_Controller_Action
 	public function __get($property){
 		switch($property){
 			case 'contentObj':
+				if (isset($this->contentObj)){return $this->contentObj;}
 				$this->contentObj=new Q\Helpers\FileContent(array(
 					'contentDirPath'=>$this->contentDirectoryPath,
 					'globalItemsDirectoryPath'=>$this->globalItemsDirectoryPath,
@@ -171,7 +172,7 @@ class Q_Controller_Base extends Zend_Controller_Action
 			$this->initializeContentDirectory();
 		}
 		else{
-			die("No directory initiallization available");
+			die("No directory initialization available");
 		}
 	}
 }

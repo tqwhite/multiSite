@@ -78,7 +78,7 @@ public function startFileExamination($contentDirPath){
 
 	if(!$contentDirPath){$contentDirPath=$this->contentDirPath;}
 	else{ $this->contentDirPath=$contentDirPath;}
-	if(!$contentDirPath){die("Q\\Helpers\\FileContent\\get() says, no contentDirPath");}
+	if(!$contentDirPath){die("Q\\Helpers\\FileContent\\get() says, \$contentDirPath is undefined and that is bad<br/>");}
 
 	$workingFileArray=array();
 	$finishArray=array();
@@ -155,6 +155,7 @@ private function getContents($filePath){
 	$mimeArray=array();
 
 	$nameParts=explode('.', basename($filePath));
+	if (!isset($nameParts[1])){$nameParts[1]='default';}
 
 	switch ($nameParts[1]/*file extension*/){
 		default:

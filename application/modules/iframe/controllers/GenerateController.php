@@ -33,6 +33,19 @@ class Iframe_GenerateController extends Q_Controller_Base
 
 	}
 
+	public function initializeContentDirectory(){
+		$contents='https://github.com/tqwhite/multiSite';
+
+		$directories=array(
+			'ROOTFILES'=>array(  //ROOTFILES is the keyword for files that are peered at the base level of the route.
+				'targetUrl.txt'=>$contents
+				)
+		);
+
+		$this->_helper->InitPageTypeDirectory($directories);
+	}
+
+
 }
 
 

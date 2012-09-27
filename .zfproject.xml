@@ -130,88 +130,7 @@
             <viewFiltersDirectory/>
           </viewsDirectory>
         </moduleDirectory>
-        <moduleDirectory moduleName="scrapeUrl">
-          <apisDirectory enabled="false"/>
-          <configsDirectory enabled="false"/>
-          <controllersDirectory>
-            <controllerFile controllerName="Generate">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="container"/>
-            </controllerFile>
-          </controllersDirectory>
-          <formsDirectory enabled="false"/>
-          <layoutsDirectory enabled="false">
-            <layoutScriptsDirectory enabled="false"/>
-          </layoutsDirectory>
-          <modelsDirectory/>
-          <viewsDirectory>
-            <viewScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Generate">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Generate">
-                <viewScriptFile forActionName="container"/>
-              </viewControllerScriptsDirectory>
-            </viewScriptsDirectory>
-            <viewHelpersDirectory/>
-            <viewFiltersDirectory/>
-          </viewsDirectory>
-        </moduleDirectory>
-        <moduleDirectory moduleName="erdcLegacy">
-          <apisDirectory enabled="false"/>
-          <configsDirectory enabled="false"/>
-          <controllersDirectory>
-            <controllerFile controllerName="Generate">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="container"/>
-            </controllerFile>
-          </controllersDirectory>
-          <formsDirectory enabled="false"/>
-          <layoutsDirectory enabled="false">
-            <layoutScriptsDirectory enabled="false"/>
-          </layoutsDirectory>
-          <modelsDirectory/>
-          <viewsDirectory>
-            <viewScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Generate">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Generate">
-                <viewScriptFile forActionName="container"/>
-              </viewControllerScriptsDirectory>
-            </viewScriptsDirectory>
-            <viewHelpersDirectory/>
-            <viewFiltersDirectory/>
-          </viewsDirectory>
-        </moduleDirectory>
-        <moduleDirectory moduleName="erdcLegacyList">
-          <apisDirectory enabled="false"/>
-          <configsDirectory enabled="false"/>
-          <controllersDirectory>
-            <controllerFile controllerName="Generate">
-              <actionMethod actionName="index"/>
-              <actionMethod actionName="container"/>
-            </controllerFile>
-          </controllersDirectory>
-          <formsDirectory enabled="false"/>
-          <layoutsDirectory enabled="false">
-            <layoutScriptsDirectory enabled="false"/>
-          </layoutsDirectory>
-          <modelsDirectory/>
-          <viewsDirectory>
-            <viewScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Generate">
-                <viewScriptFile forActionName="index"/>
-              </viewControllerScriptsDirectory>
-              <viewControllerScriptsDirectory forControllerName="Generate">
-                <viewScriptFile forActionName="container"/>
-              </viewControllerScriptsDirectory>
-            </viewScriptsDirectory>
-            <viewHelpersDirectory/>
-            <viewFiltersDirectory/>
-          </viewsDirectory>
-        </moduleDirectory>
-        <moduleDirectory moduleName="siteDirectory">
+        <moduleDirectory moduleName="externalUrlList">
           <apisDirectory enabled="false"/>
           <configsDirectory enabled="false"/>
           <controllersDirectory>
@@ -386,31 +305,7 @@
               </testApplicationControllerFile>
             </testApplicationControllerDirectory>
           </testApplicationModuleDirectory>
-          <testApplicationModuleDirectory forModuleName="scrapeUrl">
-            <testApplicationControllerDirectory>
-              <testApplicationControllerFile forControllerName="Generate">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="container"/>
-              </testApplicationControllerFile>
-            </testApplicationControllerDirectory>
-          </testApplicationModuleDirectory>
-          <testApplicationModuleDirectory forModuleName="erdcLegacy">
-            <testApplicationControllerDirectory>
-              <testApplicationControllerFile forControllerName="Generate">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="container"/>
-              </testApplicationControllerFile>
-            </testApplicationControllerDirectory>
-          </testApplicationModuleDirectory>
-          <testApplicationModuleDirectory forModuleName="erdcLegacyList">
-            <testApplicationControllerDirectory>
-              <testApplicationControllerFile forControllerName="Generate">
-                <testApplicationActionMethod forActionName="index"/>
-                <testApplicationActionMethod forActionName="container"/>
-              </testApplicationControllerFile>
-            </testApplicationControllerDirectory>
-          </testApplicationModuleDirectory>
-          <testApplicationModuleDirectory forModuleName="siteDirectory">
+          <testApplicationModuleDirectory forModuleName="externalUrlList">
             <testApplicationControllerDirectory>
               <testApplicationControllerFile forControllerName="Generate">
                 <testApplicationActionMethod forActionName="index"/>

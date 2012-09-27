@@ -160,7 +160,7 @@ static function validateProperties($args){
 		$assertNotEmptyFlag=(isset($property['assertNotEmptyFlag']))?$property['assertNotEmptyFlag']:'';
 
 		if ($entityType=='array'){
-			$validatedProperty=$validatedEntity[$propertyName];
+			$validatedProperty=(isset($validatedEntity[$propertyName]))?$validatedEntity[$propertyName]:null;
 		}
 		else{
 			$validatedProperty=$validatedEntity->$propertyName;

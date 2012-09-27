@@ -3,6 +3,8 @@
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 
+private $initFlag;
+
 public function _initExposeStructures(){
 
 //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
@@ -15,20 +17,22 @@ public function _initExposeStructures(){
 }
 
 public function _initSiteDirectory(){
-    $initFlag=($_GET['initIfNeeded']=='true' || $_POST['initIfNeeded']=='true');
+    $initFlag=((isset($_GET['initIfNeeded']) && $_GET['initIfNeeded']=='true') || (isset($_POST['initIfNeeded']) && $_POST['initIfNeeded']=='true'));
 	Zend_Registry::set('initIfNeeded', $initFlag);
 
-    if ($initFlag){
+    if ($initFlag){ $this->initFlag=true;}
 
 		$multiSite=Zend_Registry::get('multiSite');
 
 		$testFileName=$multiSite['content']['path'].'/tmp';
 
+if ($this->initFlag){
 		file_put_contents($testFileName, 'tmp');
 		if (!is_readable($testFileName)){
 			die("bootstrap says, {$multiSite['content']['path']} is not writeable, hit the chmod or init yourself");
 		}
 		shell_exec("rm $testFileName");
+}
 
 $defaultRoute=<<<defaultRoute
 routes._default.route = ''
@@ -53,8 +57,9 @@ defaultRoute;
 		$multiSite['content']['path'].'/'.SITE_VARIATION.'/_GLOBAL'=>'',
 		$multiSite['content']['path'].'/'.SITE_VARIATION.'/_GLOBAL/CSS'=>'',
 		$multiSite['content']['path'].'/'.SITE_VARIATION.'/_GLOBAL/LAYOUTS'=>'',
-		$multiSite['content']['path'].'/'.SITE_VARIATION.'/sitemap'=>'',
-		$multiSite['content']['path'].'/'.SITE_VARIATION.'/sitemap/noFilesRequired'=>'',
+		$multiSite['content']['path'].'/'.SITE_VARIATION.'/sitemap'=>array(
+			'noFilesRequired'=>'This is a placeholder to let you know that you no user files are needed for this page type.'
+		)
 	);
 
 		foreach ($directories as $directory=>$data){
@@ -66,10 +71,6 @@ defaultRoute;
 				}
 			}
 		}
-
-		echo "base site init complete<BR>";
-    }
-
 }
 
 public function _initSession(){
@@ -99,23 +100,37 @@ protected function _initRoutes() {
 
 private function makeDir($directory){
 	if (!is_dir($directory)){
-		$cmdString="mkdir $directory";
-		echo "<div style='color:green;'>DIRECTORY: creating $directory, result=".shell_exec($cmdString)."</div>";
+		if ($this->initFlag){
+			$cmdString="mkdir $directory";
+			echo "<div style='color:green;'>DIRECTORY: creating $directory, result=".shell_exec($cmdString)."</div>";
+		}
+		else{
+			echo "<div style='color:red;'>MISSING DIRECTORY: $directory</div>";
+		}
 	}
 	else{
 
-		echo "<div style='color:gray;'>DIRECTORY: $directory <u>already exists</u></div>";
+		if ($this->initFlag){
+			echo "<div style='color:gray;'>DIRECTORY: $directory <u>already exists</u></div>";
+		}
 	}
 }
 
 
 private function makeFile($filePath, $contents){
 		if (!is_readable($filePath)){
+		if ($this->initFlag){
 			echo "<div style='color:green;'>FILE: creating $filePath</siv>";
-			file_put_contents($filePath, $contents);
+			file_put_contents($filePath, $contents);}
+		else{
+			echo "<div style='color:red;'>MISSING FILE: $directory</div>";
+		}
+
 		}
 	else{
-		echo "<div style='color:gray;'>FILE: $filePath <u>already exists</u></div>";
+		if ($this->initFlag){
+			echo "<div style='color:gray;'>FILE: $filePath <u>already exists</u></div>";
+		}
 	}
 }
 

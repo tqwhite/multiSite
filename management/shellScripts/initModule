@@ -1,8 +1,8 @@
 No, this isn't a real script. It's a reminder of the commands to do things
 
-zf create module siteDirectory
-zf create controller Generate 1 siteDirectory
-zf create action Container Generate 1 siteDirectory
+zf create module externalUrlList
+zf create controller Generate 1 externalUrlList
+zf create action Container Generate 1 externalUrlList
 
 Don't forget to change this controller segment:
 
