@@ -30,7 +30,7 @@ Pinpoint.Controller.Base.extend('Pinpoint.Controller.App.Annotation.Panel',
 			right=$('#hello').css('right').replace('px', '')*1+50;
 
 		$('#demoSpace')
-			.append("<div class='simpleInputPanel' style='position:absolute;top:"+top+"px;right:"+right+"px;height:1px;width:1px;border:3pt solid green;padding:20px;'></div>")
+			.append("<div class='simpleInputPanel' style='background:white;position:absolute;top:"+top+"px;right:"+right+"px;height:1px;width:1px;border:3pt solid green;padding:20px;'></div>")
 		$('.simpleInputPanel').animate(
 			{
 				width:'+=200',
@@ -38,7 +38,7 @@ Pinpoint.Controller.Base.extend('Pinpoint.Controller.App.Annotation.Panel',
 			},
 			1000,
 			function(){
-				$('.simpleInput').html("<textarea style='height:50px;width:150px;'></textarea><br/>submit");
+				$('.simpleInputPanel').html("<textarea style='height:95px;width:205px;'></textarea><br/>submit");
 			}
 			);
 
