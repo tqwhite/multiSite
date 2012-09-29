@@ -4,21 +4,23 @@
 	'source'=>__file__,
 	'propertyList'=>array(
 		array('name'=>'codeNav'),
-		array('name'=>'contentObj')
+		array('name'=>'contentArray')
 	)));
 
 $request = Zend_Controller_Front::getInstance()->getRequest();
 $this->headTitle($request->getActionName().'/')
      ->headTitle($request->getControllerName());
 
-$this->contentArray=$this->contentObj->contentArray;
+$contentArray=$this->contentArray;
 
 
-$outString=$this->contentArray['index.html'];
-$elementList=$this->contentArray['elements'];
+$outString=$contentArray['index.html'];
+$elementList=$contentArray['elements'];
 
-foreach ($elementList as $label=>$data){
-	$outString=str_replace("elements/$label", $data, $outString);
+if (is_array($elementList)){
+	foreach ($elementList as $label=>$data){
+		$outString=str_replace("elements/$label", $data, $outString);
+	}
 }
 
 ?>
