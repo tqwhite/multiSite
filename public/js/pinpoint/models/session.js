@@ -1,4 +1,4 @@
-steal('jquery/model', function(){
+steal('jquery/model', './base.js', function(){
 
 /**
  * @class Pinpoint.Models.Session
@@ -98,7 +98,7 @@ Pinpoint.Models.Base.extend('Pinpoint.Models.Session',
 			delete (window.serverDomain); //un-pollute the global name space
 		}
 		else{
-			GLOBALS.serverDomain="work.pinpoint.com";
+			GLOBALS.serverDomain="work.pinpointatomic.com";
 		}
 
 	}

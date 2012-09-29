@@ -3,7 +3,7 @@
    'http://www.w3.org/TR/html4/strict.dtd'>
 <html>
 <head>
-<title>Template Page Title</title>
+<title>Ping</title>
 
 <script type='text/javascript' src='http://code.jquery.com/jquery-1.6.1.min.js'></script>
 <!--link rel='stylesheet' type='text/css' href='css/main.css' /-->
