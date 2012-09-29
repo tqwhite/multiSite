@@ -1,4 +1,6 @@
-steal('./demo.js',
+steal(
+'../jquery-1.6.4.js',
+'./demo.js',
 
 function(){
 
