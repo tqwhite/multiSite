@@ -1,14 +1,86 @@
 No, this isn't a real script. It's a reminder of the commands to do things
 
-zf create module externalUrlList
-zf create controller Generate 1 externalUrlList
-zf create action Container Generate 1 externalUrlList
+zf create module categoryFront1
+zf create controller Generate 1 categoryFront1
+zf create action Container Generate 1 categoryFront1
 
 Don't forget to change this controller segment:
 
+//CONTROLLER =======================================================================
 extends Q_Controller_Base
 {
     public function init() //this is called by the Zend __construct() method
     {
         parent::init(array('controllerType'=>'cms'));
     }
+
+    public function indexAction()
+    {
+        // action body
+    }
+
+    public function containerAction()
+    {
+       $this->setVariationLayout('minimal');
+
+		$this->view->contentArray=$this->contentObj->contentArray;
+		$this->view->codeNav=$this->getCodeNav(__method__);
+    }
+
+	public function validateContentStructure($contentArray){
+		//this is passed to QHelpersFileContent ($this->FileContainer) by Q_Controller_Base::init()
+		if (!$contentArray){$contentArray=$this->contentArray;}
+		\Q\Utils::validateProperties(array(
+			'validatedEntity'=>$contentArray,
+			'source'=>__file__,
+			'propertyList'=>array(
+				array('name'=>'mainContent.html')
+			)));
+
+	}
+
+	public function initializeContentDirectory(){
+$mainContent=<<<mainContent
+Hello from a new page type
+mainContent;
+
+
+		$directories=array(
+			'ROOTFILES'=>array(  //ROOTFILES is the keyword for files that are peered at the base level of the route.
+				'mainContent.html'=>$mainContent
+
+			)
+		);
+
+		$this->_helper->InitPageTypeDirectory($directories);
+	}
+
+} //end of class
+
+
+
+
+
+
+
+
+//TEMPLATE=====================================================================
+<?php
+\Q\Utils::validateProperties(array(
+	'validatedEntity'=>$this,
+	'source'=>__file__,
+	'propertyList'=>array(
+		array('name'=>'codeNav'),
+		array('name'=>'contentArray')
+	)));
+
+$contentArray=$this->contentArray;
+
+$outString="<div style='color:red;margin:20px;font-size:18pt;'>Hello from the container.phtml</div>";
+
+echo $outString;
+
+
+
+\Q\Utils::dumpWeb($contentArray);
+\Q\Utils::dumpWeb($this->codeNav);

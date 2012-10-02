@@ -1,6 +1,6 @@
 <?php
 
-class MultiPanel_GenerateController extends Q_Controller_Base
+class CategoryFront1_GenerateController extends Q_Controller_Base
 {
     public function init() //this is called by the Zend __construct() method
     {
@@ -9,43 +9,30 @@ class MultiPanel_GenerateController extends Q_Controller_Base
 
     public function indexAction()
     {
-        $this->containerAction();
+        // action body
     }
 
     public function containerAction()
     {
-    	//operates with default layout 'layout'
+       $this->setVariationLayout('layout');
 
-		$serverComm[]=array("fieldName"=>"message", "value"=>'hello from the server via javascript');
-
-				$jsControllerList[]=array(
-				"domSelector"=>"#anythingslider",
-				"controllerName"=>'widgets_display_anythingslider',
-				"parameters"=>json_encode(array('background'=>'gray', 'color'=>'red'))
-			);
-
-     	$serverComm=$this->_helper->ArrayToServerCommList('controller_startup_list', $jsControllerList);
-
-		$this->view->contentObj=$this->contentObj;
 		$this->view->contentArray=$this->contentObj->contentArray;
 		$this->view->codeNav=$this->getCodeNav(__method__);
-		$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
-
     }
-
-
 
 	public function validateContentStructure($contentArray){
 		//this is passed to QHelpersFileContent ($this->FileContainer) by Q_Controller_Base::init()
 		if (!$contentArray){$contentArray=$this->contentArray;}
-
 		\Q\Utils::validateProperties(array(
 			'validatedEntity'=>$contentArray,
 			'source'=>__file__,
 			'propertyList'=>array(
 				array('name'=>'headNav.ini'),
 				array('name'=>'headBanner.html'),
-				array('name'=>'slideshow', 'assertNotEmptyFlag'=>true)
+				array('name'=>'panelItems', 'assertNotEmptyFlag'=>true),
+
+				array('name'=>'featureHeadline.html'),
+				array('name'=>'featureBodyText.html'),
 			)));
 
 	}
@@ -88,26 +75,38 @@ a.0.links.1.selector='.contentzone'	;this is a jQuery selector for the content t
 SITEDIR;
 
 $demoSlideShowA=<<<demoSlideShowA
-<div style='height:500px;width:800px;'>
-SLIDESHOW ELEMENT: edit slideShow/a_demoSlide.html to customize<br/>
+<div>
+TABBED DISPLAY ELEMENT: edit panelItems/a_Demo_Slide_1.html to customize<br/>
 <br/>
 remember:<br/>
 <br/>
 1) You can put images in the images directory. Show them in the normal way:<br/>&lt;img src='images/imageFileName.png'&gt;<p/>
 2) You can add additional .html files into the slideShow directory if you need more slides.<p/>
-3) Slides are shown in the same order they appear in the file system, ie, alphabetically.<br/>Hence, the prefix 'a_'.
+3) Slides are shown in the same order they appear in the file system, ie, alphabetically.<br/>Hence, the prefix 'a_'.<p/><p/>
+<b>4) Unlike the slideshow in multiPanel, the file names for this component are structured to also support naming the tabs.
+
+Using underscore as a delimiter, the first element is the file system sequence. After that, the rest is used for the tab label.<br/>
+After stripping the first part ("a_") the system will convert underscore to space.
+
+Eg, b_Tab_Label appears on the tab as 'Tab Label' (without apostrophes, of course).
 </div>
 demoSlideShowA;
 
 $demoSlideShowB=<<<demoSlideShowA
-<div style='height:500px;width:800px;'>
-SLIDESHOW ELEMENT: edit slideShow/b_demoSlide to customize<br/>
+<div style='height:500px;'>
+TABBED DISPLAY ELEMENT: edit panelItems/b_DemoSlide_2.html to customize<br/>
 <br/>
 remember:<br/>
 <br/>
 1) You can put images in the images directory. Show them in the normal way:<br/>&lt;img src='images/imageFileName.png'&gt;<p/>
 2) You can add additional .html files into the slideShow directory if you need more slides.<p/>
-3) Slides are shown in the same order they appear in the file system, ie, alphabetically.<br/>Hence, the prefix 'b_'.
+3) Slides are shown in the same order they appear in the file system, ie, alphabetically.<br/>Hence, the prefix 'b_'.<p/><p/>
+<b>4) Unlike the slideshow in multiPanel, the file names for this component are structured to also support naming the tabs.
+
+Using underscore as a delimiter, the first element is the file system sequence. After that, the rest is used for the tab label.<br/>
+After stripping the first part ("a_") the system will convert underscore to space.
+
+Eg, b_Tab_Label appears on the tab as 'Tab Label' (without apostrophes, of course).
 </div>
 demoSlideShowA;
 
@@ -119,13 +118,16 @@ demoSlideShowA;
 				'pageTitle.txt'=>"TITLE: edit pageTitle.txt to customize",
 				'siteDirectoryUrlList.ini'=>$siteDirectoryUrlList,
 
+				'featureHeadline.html'=>'Edit featureHeadline.html to customize',
+				'featureBodyText.html'=>'Edit featureBodyText.html to customize',
+
 			),
 			'images'=>array(
 				'README'=>'this is a placeholder so git will initialize this directory. put images in here'
 			),
-			'slideshow'=>array( //a directory can only contain files, not subdirectories
-				'a_demoSlide.html'=>$demoSlideShowA,
-				'b_demoSlide.html'=>$demoSlideShowB
+			'panelItems'=>array( //a directory can only contain files, not subdirectories
+				'a_Demo_Slide_1.html'=>$demoSlideShowA,
+				'b_DemoSlide_2.html'=>$demoSlideShowB
 			)
 
 		);
