@@ -1,10 +1,15 @@
 steal(
-	'./models/models.js',		// steals all your models
-	'./fixtures/fixtures.js'	// sets up fixtures for your models
+	'./models/models.js'
 )
 .then(
 	'./stylesheets/base.css', 			// application CSS file
 	'./controller/base/base.js'
+)
+.then(
+
+	'./controller/session/dispatch/dispatch.js',
+	'./controller/session/register/register.js',
+	'./controller/session/login/login.js'
 )
 .then(
 	'./resources/jqueryPlugins/jquery.rc4.js',
@@ -13,10 +18,6 @@ steal(
 	'./resources/jqueryPlugins/jquery.qprompt.js',
 	'./resources/jqueryPlugins/spin.js',
 	'./resources/jqueryPlugins/jquery-ui-1.8.23.custom.min.js', //this file only contains draggable/dropable
-
-	'./controller/session/register/register.js',
-	'./controller/session/dispatch/dispatch.js',
-	'./controller/session/login/login.js',
 
 
 	'./controller/app/annotation/panel/panel.js',

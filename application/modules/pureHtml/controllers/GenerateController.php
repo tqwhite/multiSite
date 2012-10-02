@@ -16,7 +16,7 @@ class PureHtml_GenerateController extends Q_Controller_Base
     {
 		$this->setVariationLayout('minimal');
 
-		$this->view->contentObj=$this->contentObj;
+		$this->view->contentArray=$this->contentObj->contentArray;
 		$this->view->codeNav=$this->getCodeNav(__method__);
 
     }

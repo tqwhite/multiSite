@@ -1,4 +1,4 @@
-steal('jquery/model', function(){
+steal('jquery/model', './base.js', function(){
 
 /**
  * @class Pinpoint.Models.LocalStorage
