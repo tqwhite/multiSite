@@ -27,6 +27,16 @@ if (!defined('SITE_VARIATION')){
     define('SITE_VARIATION', $variationName);
 }
 
+if (!defined('ROOT_DOMAIN_SEGMENT')){
+	if (getenv('ROOT_DOMAIN_SEGMENT')){
+		$rootDomainSegment=getenv('ROOT_DOMAIN_SEGMENT'); //just in case it somehow gets set by (non-existent) previous code
+	}
+	else{
+		$rootDomainSegment='ERROR: MISSING ROOT_DOMAIN_SEGMENT IN APACHE HOST FILE';
+	}
+    define('ROOT_DOMAIN_SEGMENT', $rootDomainSegment);
+}
+
 // Ensure library/ is on include_path
 set_include_path(
 	implode(
