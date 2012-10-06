@@ -1,0 +1,70 @@
+curl  -H 'X-DNSimple-Token: tq@justkidding.com:PASSWORD' \
+      -H 'Accept: application/json' \
+      https://dnsimple.com/domains/qschooltech.com/records/tqwhite
+
+
+curl  -u "tq@justkidding.com:PASSWORD" \
+-H 'Accept: application/json' \
+https://dnsimple.com/users/tqwhite
+
+
+
+curl  -u "tq@justkidding.com:PASSWORD" \
+-H 'Accept: application/json' \
+https://dnsimple.com/domains/qschooltech.com/records
+
+
+curl  -u "tq@justkidding.com:PASSWORD"  -H 'Accept: application/json'  -H 'Content-Type: application/json'  -X POST  -d '{  "record": {    "name": "viewpoint.demo.technology",    "record_type": "A",    "content": "64.8.188.60",    "ttl": 60,    "prio": 10  }}'  https://dnsimple.com/domains/qschooltech.com/records
+
+
+{  "record": {    "name": "viewpoint.technology",    "record_type": "A",    "content": "64.8.188.60",    "ttl": 60,    "prio": 10  }}
+
+
+curl  -u "tq@justkidding.com:PASSWORD"  -H 'Accept: application/json'  -H 'Content-Type: application/json'  -X POST  -d '{  "record": {    "name": "viewpoint.technology.demo",    "record_type": "A",    "content": "64.8.188.60",    "ttl": 60,    "prio": 10  }}'  https://dnsimple.com/domains/qschooltech.com/records
+curl  -u "tq@justkidding.com:PASSWORD"  -H 'Accept: application/json'  -H 'Content-Type: application/json'  -X POST  -d '{  "record": {    "name": "video.technology.demo",    "record_type": "A",    "content": "64.8.188.60",    "ttl": 60,    "prio": 10  }}'  https://dnsimple.com/domains/qschooltech.com/records
+curl  -u "tq@justkidding.com:PASSWORD"  -H 'Accept: application/json'  -H 'Content-Type: application/json'  -X POST  -d '{  "record": {    "name": "programming.technology.demo",    "record_type": "A",    "content": "64.8.188.60",    "ttl": 60,    "prio": 10  }}'  https://dnsimple.com/domains/qschooltech.com/records
+curl  -u "tq@justkidding.com:PASSWORD"  -H 'Accept: application/json'  -H 'Content-Type: application/json'  -X POST  -d '{  "record": {    "name": "plans.technology.demo",    "record_type": "A",    "content": "64.8.188.60",    "ttl": 60,    "prio": 10  }}'  https://dnsimple.com/domains/qschooltech.com/records
+curl  -u "tq@justkidding.com:PASSWORD"  -H 'Accept: application/json'  -H 'Content-Type: application/json'  -X POST  -d '{  "record": {    "name": "expressbook.technology.demo",    "record_type": "A",    "content": "64.8.188.60",    "ttl": 60,    "prio": 10  }}'  https://dnsimple.com/domains/qschooltech.com/records
+curl  -u "tq@justkidding.com:PASSWORD"  -H 'Accept: application/json'  -H 'Content-Type: application/json'  -X POST  -d '{  "record": {    "name": "elearning.technology.demo",    "record_type": "A",    "content": "64.8.188.60",    "ttl": 60,    "prio": 10  }}'  https://dnsimple.com/domains/qschooltech.com/records
+
+curl  -u "tq@justkidding.com:PASSWORD"  -H 'Accept: application/json'  -H 'Content-Type: application/json'  -X POST  -d '{  "record": {    "name": "viewpoint.technology",    "record_type": "A",    "content": "64.8.188.60",    "ttl": 60,    "prio": 10  }}'  https://dnsimple.com/domains/qschooltech.com/records
+curl  -u "tq@justkidding.com:PASSWORD"  -H 'Accept: application/json'  -H 'Content-Type: application/json'  -X POST  -d '{  "record": {    "name": "video.technology",    "record_type": "A",    "content": "64.8.188.60",    "ttl": 60,    "prio": 10  }}'  https://dnsimple.com/domains/qschooltech.com/records
+curl  -u "tq@justkidding.com:PASSWORD"  -H 'Accept: application/json'  -H 'Content-Type: application/json'  -X POST  -d '{  "record": {    "name": "programming.technology",    "record_type": "A",    "content": "64.8.188.60",    "ttl": 60,    "prio": 10  }}'  https://dnsimple.com/domains/qschooltech.com/records
+curl  -u "tq@justkidding.com:PASSWORD"  -H 'Accept: application/json'  -H 'Content-Type: application/json'  -X POST  -d '{  "record": {    "name": "plans.technology",    "record_type": "A",    "content": "64.8.188.60",    "ttl": 60,    "prio": 10  }}'  https://dnsimple.com/domains/qschooltech.com/records
+curl  -u "tq@justkidding.com:PASSWORD"  -H 'Accept: application/json'  -H 'Content-Type: application/json'  -X POST  -d '{  "record": {    "name": "expressbook.technology",    "record_type": "A",    "content": "64.8.188.60",    "ttl": 60,    "prio": 10  }}'  https://dnsimple.com/domains/qschooltech.com/records
+curl  -u "tq@justkidding.com:PASSWORD"  -H 'Accept: application/json'  -H 'Content-Type: application/json'  -X POST  -d '{  "record": {    "name": "elearning.technology",    "record_type": "A",    "content": "64.8.188.60",    "ttl": 60,    "prio": 10  }}'  https://dnsimple.com/domains/qschooltech.com/records
+
+
+
+
+127.0.0.1	demo.qschooltech.com
+127.0.0.1	admin.demo.qschooltech.com
+127.0.0.1	imaging.demo.qschooltech.com
+127.0.0.1	parent.demo.qschooltech.com
+127.0.0.1	supplies.demo.qschooltech.com
+127.0.0.1	technology.demo.qschooltech.com
+127.0.0.1	data.technology.demo.qschooltech.com
+127.0.0.1	elearning.technology.demo.qschooltech.com
+127.0.0.1	expressbook.technology.demo.qschooltech.com
+127.0.0.1	plans.technology.demo.qschooltech.com
+127.0.0.1	programming.technology.demo.qschooltech.com
+127.0.0.1	video.technology.demo.qschooltech.com
+127.0.0.1	viewpoint.technology.demo.qschooltech.com
+
+127.0.0.1	dev.demo.qschooltech.com
+
+
+
+127.0.0.1	qschooltech.com
+127.0.0.1	admin.qschooltech.com
+127.0.0.1	imaging.qschooltech.com
+127.0.0.1	parent.qschooltech.com
+127.0.0.1	supplies.qschooltech.com
+127.0.0.1	technology.qschooltech.com
+127.0.0.1	data.technology.qschooltech.com
+127.0.0.1	elearning.technology.qschooltech.com
+127.0.0.1	expressbook.technology.qschooltech.com
+127.0.0.1	plans.technology.qschooltech.com
+127.0.0.1	programming.technology.qschooltech.com
+127.0.0.1	video.technology.qschooltech.com
+127.0.0.1	viewpoint.technology.qschooltech.com

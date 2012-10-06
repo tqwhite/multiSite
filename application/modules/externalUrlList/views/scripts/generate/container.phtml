@@ -30,8 +30,6 @@ $this->headStyle()->appendStyle("
 	#contentList ul li  {width:500px;border-bottom:1pt solid gray;padding:10px 0px 10px 0px;}
 ");
 
-$headBanner=$this->contentArray['headBanner.html'];
-
 $request = Zend_Controller_Front::getInstance()->getRequest();
 $this->headTitle($request->getActionName().'/')
      ->headTitle($request->getControllerName());
@@ -50,7 +48,6 @@ foreach($scrapeDataList as $data){
 $contentListString=preg_replace('/<img.*?>/', '', $contentListString);
 
 ?>
-<div ><?php echo $headBanner; ?></div>
 <div id='containerContent'>
 	<div id='containerLinkSection'>
 		<?php echo $linkSectionString;?>

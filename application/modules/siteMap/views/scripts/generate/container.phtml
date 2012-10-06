@@ -46,7 +46,6 @@ function makeArray($sub, $url, &$outArray){
 				if (isset($data['noList']) && $data['noList']==true){continue;}
 				if (isset($this->section) && !preg_match('/'.str_replace('/', '\\/', $this->section).'/', $data['route'])){continue;}
 
-				$url=$_SERVER['HTTP_HOST'].$data['route'];
 
 				if (isset($data['defaults']['title'])){
 					$title=$data['defaults']['title'];
@@ -55,22 +54,29 @@ function makeArray($sub, $url, &$outArray){
 					$title=$url;
 				}
 
+			if (preg_match('/http:/', $data['route'])){
+				$outString.="<li><a href='{$data['route']}'>$title</a></li>";
+			}
+			else{
+				$url=$_SERVER['HTTP_HOST'].$data['route'];
+
 				$pathComponents=explode('/', $data['route']?$data['route']:'/parent/');
 				$pathComponents=removeEmpty($pathComponents);
 
-// NOTE: I got makeArray() to create a nicely nested assoc array
-// representing the route.ini. I decided to defer the next step of
-// turning it into a working outline-oriented navigation because
-// it was taking too long. For now, simply listing all (qualified) the URLs in a route
-// is good enough. tqii
+				// NOTE: I got makeArray() to create a nicely nested assoc array
+				// representing the route.ini. I decided to defer the next step of
+				// turning it into a working outline-oriented navigation because
+				// it was taking too long. For now, simply listing all (qualified) the URLs in a route
+				// is good enough. tqii
 
-// 				$outArray[]=makeArray($pathComponents, $url, $outArray);
-// 				$outArray=removeEmpty($outArray);
+				// 				$outArray[]=makeArray($pathComponents, $url, $outArray);
+				// 				$outArray=removeEmpty($outArray);
 
-//=======================simple works
-				$outString.="<li><a href='http://$url'>$title</a></li>";
-				$items[$data['route']]="<a href='http://$url'>$title</a>";
-//======================
+				//=======================simple works
+			$outString.="<li><a href='http://$url'>$title</a></li>";
+				//				$items[$data['route']]="<a href='http://$url'>$title</a>";
+				//======================
+			}
 		}
 
 

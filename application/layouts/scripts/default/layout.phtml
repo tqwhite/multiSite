@@ -9,6 +9,14 @@ $viewContent=$this->layout()->content;
 
 $javascript=$this->headScript(); //note: call for steal.js is literal so it always executes first, others can count on it
 
+$elementList=$this->contentArray['images']?$this->contentArray['images']:array();
+$headBanner=$this->contentArray['headBanner.html'];
+	foreach ($elementList as $label=>$data){
+		$headBanner=str_replace("images/$label", $data, $headBanner);
+	}
+$headBanner="<a href='http://<!baseDomain!>'>$headBanner</a>";
+$headBanner=$this->translateUrls($headBanner);
+
 $siteDirectory=$this->render('default/siteDirectory.phtml');
 $contactFooter=$this->render('default/contactFooter.phtml');
 
@@ -50,6 +58,8 @@ echo "
 
 	<body >
 	$serverComm
+
+$headBanner
 
 	$viewContent
 

@@ -118,18 +118,18 @@ $panelContentString='';
 		}
 $panelContentString="<ul id='slideshow'>$panelContentString</ul>";
 
-$headBanner=$contentArray['headBanner.html'];
 
 $elementList=$contentArray['images'];
 
 foreach ($elementList as $label=>$data){
 	$panelContentString=str_replace("../images/$label", $data, $panelContentString);
-	$headBanner=str_replace("images/$label", $data, $headBanner);
 }
 
 $panelString="
-	<div id='anythingslider' style='width:800px;height:500px;margin-left:90px;margin-top:20px;overflow:visible;'>
-		$panelContentString
+	<div style='width:800px;height:500px;'>
+		<div id='anythingslider' style='width:800px;height:500px;margin-left:90px;margin-top:20px;overflow:hidden;'>
+			$panelContentString
+		</div>
 	</div>
 ";
 

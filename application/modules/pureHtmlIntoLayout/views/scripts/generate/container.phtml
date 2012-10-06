@@ -110,51 +110,21 @@ function applyStyle($cssString){
 //$this->headStyle()->appendStyle($contentArray['globalItems']['CSS']['main.css']);
 array_map('applyStyle', $contentArray['globalItems']['CSS']);
 
-//MAIN CONTENT SECTION =========================================================================
 
-$tabString='';
-$panelContentString='';
-		$list=$contentArray['panelItems'];
-		foreach ($list as $label=>$element){
-			$panelContentString.="<li id='$label'>$element</li>";
-			$tabString.="<li class='panelTab'><a href='#$label'>$label</a></li>";
-		}
-$panelContentString="<ul id='panelItems'>$panelContentString</ul>";
 
-$headBanner=$contentArray['headBanner.html'];
 
-$elementList=$contentArray['images'];
 
-foreach ($elementList as $label=>$data){
-	$panelContentString=str_replace("../images/$label", $data, $panelContentString);
-	$headBanner=str_replace("images/$label", $data, $headBanner);
+$outString=$contentArray['contentPanel.html'];
+$elementList=$contentArray['elements'];
+
+if (is_array($elementList)){
+	foreach ($elementList as $label=>$data){
+		$outString=str_replace("elements/$label", $data, $outString);
+	}
 }
 
-$panelString="
-<div>
-	<div id='feature'>
-		<div id='featureHeadline'>{$contentArray['featureHeadline.html']}</div>
-		<div id='featureBodyText'>{$contentArray['featureBodyText.html']}</div>
-	</div>
-	<div id='panelContainer'>
-		<div id='tabContainer' style=''>$tabString</div>
-		<div id='panelList' style='clear:both;'>
-			$panelContentString
-		</div>
-	</div>
-</div>
-";
-
-$this->headStyle()->appendStyle("
-#tabContainer{clear:both;border-bottom:2pt solid gray;height:20px;}
-.panelTab{float:left;margin-right:5px;list-style-type: none;}
-#feature{float:left;width:250px;margin-left:60px;margin-top:20px;}
-#featureHeadline{font-weight:bold;font-size:150%;margin-bottom:20px;}
-#panelContainer{float:left;width:560px;margin-left:50px;margin-top:20px;overflow:hidden;border:1pt solid gray;}
-#panelList li {margin-bottom:10px;}
-");
-
 //OUTPUT SECTION =========================================================================
+?>
 
-echo $controlsString;
-echo $panelString;
+<?php  echo $controlsString;?>
+<?php  echo $outString;?>
