@@ -9,7 +9,7 @@ $viewContent=$this->layout()->content;
 
 $javascript=$this->headScript(); //note: call for steal.js is literal so it always executes first, others can count on it
 
-$elementList=$this->contentArray['images']?$this->contentArray['images']:array();
+$elementList=(isset($this->contentArray['images']))?$this->contentArray['images']:array();
 $headBanner=$this->contentArray['headBanner.html'];
 	foreach ($elementList as $label=>$data){
 		$headBanner=str_replace("images/$label", $data, $headBanner);
