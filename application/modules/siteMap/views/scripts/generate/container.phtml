@@ -79,7 +79,7 @@ function makeArray($sub, $url, &$outArray){
 			}
 		}
 
-
+$outString=$this->translateUrls($outString);
 $outString="<ul class='contentzone'>$outString</UL>";
 //$outString=$this->htmlList($outArray, false, array('id'=>'siteList'), false);
 echo $outString;

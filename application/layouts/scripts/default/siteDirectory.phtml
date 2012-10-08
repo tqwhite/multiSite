@@ -1,7 +1,19 @@
 <?
 
 if (isset($this->contentArray['siteDirectoryUrlList.ini'])){
-	$siteDirectory=$this->generateSiteDirectory($this->contentArray['siteDirectoryUrlList.ini']);
+		$translatedUrlList=$this->contentArray['siteDirectoryUrlList.ini'];
+
+		foreach ($this->contentArray['siteDirectoryUrlList.ini'] as $label=>$data){
+
+			foreach ($data as $label2=>$data2){
+				foreach ($data2['links'] as $label3=>$data3){
+					$translatedUrlList[$label][$label2]['links'][$label3]['url']=$this->translateUrls($data3['url']);
+				}
+			}
+		}
+
+
+	$siteDirectory=$this->generateSiteDirectory($translatedUrlList);
 
 	$siteDirectoryString='';
 			foreach ($siteDirectory as $label=>$data){

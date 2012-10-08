@@ -18,7 +18,6 @@
 		foreach ($substitutionList as $data){
 			$outString=str_replace($data['pattern'], $data['replace'], $outString);
 		}
-
 	return $outString;
 
 	 }
