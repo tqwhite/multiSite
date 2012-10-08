@@ -16,6 +16,22 @@ class CategoryFront1_GenerateController extends Q_Controller_Base
     {
        $this->setVariationLayout('layout');
 
+
+		$serverComm[]=array("fieldName"=>"message", "value"=>'hello from the server via javascript');
+
+		$jsControllerList[]=array(
+				"domSelector"=>"#contentList",
+				"controllerName"=>'widgets_display_link_switch',
+				"parameters"=>json_encode(
+					array(
+						'controlButtonIdClassName'=>'contentListActivator',
+						'switchablePanelClassName'=>'switchablePanel'
+					)
+				)
+			);
+     	$serverComm=$this->_helper->ArrayToServerCommList('controller_startup_list', $jsControllerList);
+
+		$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
 		$this->view->contentArray=$this->contentObj->contentArray;
 		$this->view->codeNav=$this->getCodeNav(__method__);
     }

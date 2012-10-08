@@ -116,10 +116,12 @@ $tabString='';
 $panelContentString='';
 		$list=$contentArray['panelItems'];
 		foreach ($list as $label=>$element){
-			$panelContentString.="<li id='$label'>$element</li>";
-			$tabString.="<li class='panelTab'><a href='#$label'>$label</a></li>";
+			$id=md5($label);
+			$tabLabel=$this->filenameToLabel($label);
+			$panelContentString.="<li class='switchablePanel' id='$id'>$element</li>";
+			$tabString.="<li class='panelTab'><a class='contentListActivator' href='#$id'>$tabLabel</a></li>";
 		}
-$panelContentString="<ul id='panelItems'>$panelContentString</ul>";
+$panelContentString="<ul id='contentList'>$panelContentString</ul>";
 
 $headBanner=$contentArray['headBanner.html'];
 
@@ -146,8 +148,10 @@ $panelString="
 ";
 
 $this->headStyle()->appendStyle("
+.contentListActivator{color:#ddeeff;background:#588599;}
+.contentListActivator:hover{color:blue;background:#ddeeff;}
 #tabContainer{clear:both;border-bottom:2pt solid gray;height:20px;}
-.panelTab{float:left;margin-right:5px;list-style-type: none;}
+.panelTab{float:left;margin-right:5px;list-style-type: none; padding-left:5px;padding-right:5px;}
 #feature{float:left;width:250px;margin-left:60px;margin-top:20px;}
 #featureHeadline{font-weight:bold;font-size:150%;margin-bottom:20px;}
 #panelContainer{float:left;width:560px;margin-left:50px;margin-top:20px;overflow:hidden;border:1pt solid gray;}
