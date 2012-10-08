@@ -94,7 +94,7 @@ class Q_Controller_Base extends Zend_Controller_Action
 		$codeNav['controller']=$method;
 		$codeNav['layoutShortPath']=$this->_helper->layout()->getLayout();
 		$codeNav['actualLayoutFullPath']=$this->actualLayoutFullPath;
-		$codeNav['contentDirPath']=$this->contentObj->contentDirPath;
+		$codeNav['contentDirPath']=$this->contentDirectoryPath;
 		$codeNav['routeName']=$this->routeName;
 		$codeNav['moduleDirectoryPath']=$this->moduleDirectoryPath;
 		$codeNav['contentDirectoryPath']=$this->contentDirectoryPath;
