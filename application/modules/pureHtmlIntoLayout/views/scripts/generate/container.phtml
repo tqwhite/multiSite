@@ -14,15 +14,6 @@
 
 $contentArray=$this->contentArray;
 
-if (isset($contentArray['pageTitle.txt'])){
-	$this->headTitle($contentArray['pageTitle.txt']);
-}
-else{
-	$request = Zend_Controller_Front::getInstance()->getRequest();
-	$this->headTitle($request->getActionName().'/')
-		 ->headTitle($request->getControllerName());
-}
-
 //DROPDOWN MENU =========================================================================
 
 $dropdownStyles="

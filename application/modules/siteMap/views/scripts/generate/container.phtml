@@ -55,7 +55,7 @@ function makeArray($sub, $url, &$outArray){
 				}
 
 			if (preg_match('/http:/', $data['route'])){
-				$outString.="<li><a href='{$data['route']}'>$title</a></li>";
+				$outString.="<li class='sitemapItem'><a href='{$data['route']}'>$title</a></li>";
 			}
 			else{
 				$url=$_SERVER['HTTP_HOST'].$data['route'];
@@ -73,7 +73,7 @@ function makeArray($sub, $url, &$outArray){
 				// 				$outArray=removeEmpty($outArray);
 
 				//=======================simple works
-			$outString.="<li><a href='http://$url'>$title</a></li>";
+			$outString.="<li class='sitemapItem'><a href='http://$url'>$title</a></li>";
 				//				$items[$data['route']]="<a href='http://$url'>$title</a>";
 				//======================
 			}
