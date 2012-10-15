@@ -1,3 +1,12 @@
+
+/*micro clearfix, container with class='blah cf' will contain floating things inside
+thanks: http://themergency.com/css-clearfix-demystified/*/
+
+.cf:before, .cf:after { content: "X"; display: table; }
+.cf:after { clear: both; }
+.cf { zoom: 1; }
+
+
 body {
     font-family: 'Quicksand', sans-serif;
     font-weight:300;
