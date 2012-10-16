@@ -129,7 +129,11 @@ $footer="
 $codeNavHtml=$this->showCodeNav($this->codeNav);
 
 //MAIN CONTENT SECTION =========================================================================
-
+/*
+font-family: 'Satisfy', cursive;
+font-family: 'Open Sans', sans-serif;
+font-family: 'Open Sans Condensed', sans-serif;
+*/
 echo "
 	<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
 	   'http://www.w3.org/TR/html4/strict.dtd'>
@@ -137,6 +141,7 @@ echo "
 
 	<head>
 	<META HTTP-EQUIV='Content-Type' CONTENT='text/html; charset=UTF-8'>
+	<link href='http://fonts.googleapis.com/css?family=Satisfy|Open+Sans:400italic,400,700|Open+Sans+Condensed:700' rel='stylesheet' type='text/css'>
 	<link rel='stylesheet' type='text/css' href='http://yui.yahooapis.com/3.6.0/build/cssreset/cssreset-min.css'>
 	<link rel='stylesheet' type='text/css' href='/css/baseCss/foundation.css'>
 
@@ -152,8 +157,7 @@ echo "
 	</head>
 
 	<body >
-	<div style='width:900px;'>
-	<div style='width:0 auto;'>
+	<table width=100%><tr><td align=center>
 	$serverComm
 
 	$headBanner
@@ -162,13 +166,12 @@ echo "
 
 	$footer
 
-	<script type='text/javascript' src='/js/steal/steal.js?widgets'></script>
 	</body>
 
 	$javascript
 
 	$codeNavHtml
-	</div>
-	</div>
+	</table>
+	<script type='text/javascript' src='/js/steal/steal.js?widgets'></script>
 	</html>
 ";
