@@ -205,6 +205,7 @@ public function __get($property){
 
 			$this->contentArray=$this->startFileExamination($this->contentDirPath);
 			$this->contentArray['globalItems']=$this->startFileExamination($this->globalItemsDirectoryPath);
+			$this->promoteGlobals();
 
 			$employer=$this->employer;
 			$validatorName=$this->validatorName;
@@ -220,6 +221,15 @@ public function __get($property){
 
 public function __set($property, $value){
 	$this->$property=$value;
+}
+
+public function promoteGlobals(){
+		$list=$this->contentArray['globalItems']['COMPONENTS'];
+		foreach ($list as $label=>$data){
+			if (!isset($this->contentArray[$label])){
+					$this->contentArray[$label]=$data;
+			}
+		}
 }
 
 }//end of class

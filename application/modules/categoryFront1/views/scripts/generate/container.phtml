@@ -35,9 +35,9 @@ $panelContentString='';
 			$id=md5($label);
 			$tabLabel=$this->filenameToLabel($label);
 			$panelContentString.="<li class='switchablePanel' id='$id'>$element</li>";
-			$tabString.="<li class='panelTab'><a class='contentListActivator' href='#$id'>$tabLabel</a></li>";
+			$tabString.="<li class='panelTab'><div class='tabControlGuts'><a class='contentListActivator' href='#$id'>$tabLabel</a></div></li>";
 		}
-$panelContentString="<ul id='contentList'>$panelContentString</ul>";
+$panelContentString="<ul id='contentList' style='height:500px;'>$panelContentString</ul>";
 
 $headBanner=$contentArray['headBanner.html'];
 
@@ -49,13 +49,14 @@ foreach ($elementList as $label=>$data){
 }
 
 $panelString="
-<div>
+<div class='mainContentContainer'>
 	<div id='feature'>
 		<div id='featureHeadline'>{$contentArray['featureHeadline.html']}</div>
 		<div id='featureBodyText'>{$contentArray['featureBodyText.html']}</div>
 	</div>
 	<div id='panelContainer'>
-		<div id='tabContainer' style=''>$tabString</div>
+		<div id='tabList' style='display:none;'>$tabString</div>
+		<div id='tabDisplayContainer' class='sliderTopControls'></div>
 		<div id='panelList' style='clear:both;'>
 			$panelContentString
 		</div>
@@ -70,7 +71,7 @@ $this->headStyle()->appendStyle("
 .panelTab{float:left;margin-right:5px;list-style-type: none; padding-left:5px;padding-right:5px;}
 #feature{float:left;width:250px;margin-left:60px;margin-top:20px;}
 #featureHeadline{font-weight:bold;font-size:150%;margin-bottom:20px;}
-#panelContainer{float:left;width:560px;margin-left:50px;margin-top:20px;overflow:hidden;border:1pt solid gray;}
+#panelContainer{float:left;width:560px;margin-left:50px;margin-top:20px;overflow:hidden;}
 #panelList li {margin-bottom:10px;}
 ");
 

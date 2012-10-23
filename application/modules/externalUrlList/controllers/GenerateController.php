@@ -17,6 +17,8 @@ class ExternalUrlList_GenerateController extends Q_Controller_Base
 
     //eg, http://cmerdc.local/erdcLegacy?url=http://www.erdc.k12.mn.us/distweb/index.php
 
+		$this->setVariationLayout('layout');
+
 		$contentArray=$this->contentObj->contentArray;
 
     	$contentArray['scrapeDataList']=$this->scrapeList($contentArray['urlList.ini']);
@@ -34,8 +36,6 @@ class ExternalUrlList_GenerateController extends Q_Controller_Base
 				)
 			);
      	$serverComm=$this->_helper->ArrayToServerCommList('controller_startup_list', $jsControllerList);
-
-		$this->setVariationLayout('layout');
 
 		$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
 		$this->view->contentArray=$contentArray;
