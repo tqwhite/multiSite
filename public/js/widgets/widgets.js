@@ -20,6 +20,7 @@ steal(
 
 	'./controller/display/anythingslider/anythingslider.js',
 	'./controller/display/link_switch/link_switch.js',
+	'./controller/display/tab_panel/tab_panel.js',
 
 	'./resources/other/json2.js',
 	'./resources/other/mousetrap.js',
