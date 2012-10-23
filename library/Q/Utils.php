@@ -114,21 +114,31 @@ static function flattenToList($inArray){
 
 static function callStack($stringFlag){
 	$stackArray=debug_backtrace();
-
 	$colorA='#ddf';
 	$colorB='#dfd';
 
 	$list=$stackArray;
 	$outString='';
 	$currColor=$colorA;
+	$prevLine='-inside callstack-';
+	$prevFile=__FILE__;
 	for ($i=0, $len=count($list); $i<$len; $i++){
 		$element=$list[$i];
 		$class=isset($element['class'])?$element['class']:'';
 		$line=isset($element['line'])?$element['line']:'';
-		$outString.="<tr style='background:$currColor;'><td>$i</td><td>{$class}::{$class} (line {$line})</td></tr>";
-		$outString.="<tr style='background:$currColor;'><td>&nbsp;</td><td>{$element['file']}</td></tr>";
+		$function=isset($element['function'])?$element['function']:'';
+		$file=$element['file'];
+		
+		$outString.="<tr style='background:$currColor;'><td>$i</td><td>{$class}::{$function}</td></tr>";
+
+
+		$outString.="<tr style='background:$currColor;'><td>&nbsp;</td><td>{$prevFile} (line $prevLine)</td></tr>";
 		$outString.="<tr style='background:transparent;'><td colspan='2'>&nbsp;</td></tr>";
+		
+		
 		$currColor=($currColor==$colorA)?$colorB:$colorA;
+		$prevLine=$line;
+		$prevFile=$file;
 	}
 
 	$outString="<table style='font-family:sans-serif;'>$outString</table>";
