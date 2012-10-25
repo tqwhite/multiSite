@@ -62,6 +62,9 @@ defaultRoute;
 		$multiSite['content']['path'].'/'.SITE_VARIATION.'/_GLOBAL/LAYOUTS'=>array(
 			'README'=>'Site specific variations of the files in application/layout override the distribution versions'
 		),
+		$multiSite['content']['path'].'/'.SITE_VARIATION.'/_GLOBAL/COMPONENTS'=>array(
+			'README'=>'Site specific variations of the files in COMPONENTS are used when a page-specific version is no present'
+		),
 		$multiSite['content']['path'].'/'.SITE_VARIATION.'/sitemap'=>array(
 			'noFilesRequired'=>'This is a placeholder to let you know that you no user files are needed for this page type.'
 		)
