@@ -23,7 +23,7 @@
 
 			if ($data){
 				foreach ($data as $label2=>$data2){
-					if (isset($this->alreadyExistsList[$directory]) && $directory!=$this->routeDirectory){echo "continuing $directory";continue;}
+					if (isset($this->alreadyExistsList[$directory]) && $directory!=$this->routeDirectory){echo "DIRECTORY: $directory already exists<BR/>";continue;}
 					$filePath=$directory.'/'.$label2;
 					$this->makeFile($filePath, $data2);
 				}

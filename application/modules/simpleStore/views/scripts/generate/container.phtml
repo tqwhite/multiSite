@@ -1,0 +1,19 @@
+<?php
+\Q\Utils::validateProperties(array(
+	'validatedEntity'=>$this,
+	'source'=>__file__,
+	'propertyList'=>array(
+		array('name'=>'codeNav'),
+		array('name'=>'contentArray')
+	)));
+
+$contentArray=$this->contentArray;
+
+$outString="<div style='color:red;margin:20px;font-size:18pt;'>Hello from the container.phtml</div>";
+
+echo $outString;
+
+
+
+\Q\Utils::dumpWeb($contentArray);
+\Q\Utils::dumpWeb($this->codeNav);
