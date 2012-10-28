@@ -1,0 +1,195 @@
+.productListContainer{
+width:350px;
+min-height:500px;
+border:1pt solid gray;
+float:left;
+margin-bottom:10px;
+}
+
+.paymentFormContainer{
+width:400px;
+min-height:500px;
+border:1pt solid gray;
+text-align:left;
+float:left;
+}
+
+.prodListTitle{
+font-size:125%;
+font-weight:bold;
+text-align:left;
+margin:10px 0px;
+padding:0px 0px 10px 5px;
+border-bottom:1pt solid gray;
+}
+
+.prodSelectionContainer{
+text-align:left;
+margin-left:10px;
+overflow:scroll;
+height:350px;
+}
+
+.numberEntry{
+width:24px;
+margin:3px 10px 5px 0px;
+}
+
+.priceDisplayContainer{
+height:78px;
+padding:10px;
+border-top:1pt solid gray;
+}
+
+.nonZeroProdLine{
+	font-weight:bold;
+}
+
+.priceDisplayContainerTitle{
+font-size:12pt;
+color:black;
+font-weight:bold;
+text-align:left;
+}
+
+.priceListing{
+	font-size:10pt;
+}
+
+.priceListing td{
+	padding-left:45px;
+	padding-right:30px;
+}
+
+.grandTotal{
+	color:green;
+	border-top:1pt solid gray;
+	font-size:110%;
+	font-weight:bold;
+}
+
+.grandTotal td{
+	padding-top:8px;
+}
+
+.cardEntryForm{
+	font-size:10pt;
+}
+
+
+.submitButton{
+float:right;
+  	font-weight:bold;
+	border-top:1pt solid gray;
+	cursor:pointer;
+	border-left:1pt solid gray;
+	border-right:1pt solid black;
+	border-bottom:1pt solid black;
+	text-align:center;
+	padding-left:2px;
+	padding-right:2px;
+	width:80px;
+	height:30px;
+	margin-right:10px;
+	margin-top:10px;
+  -moz-border-radius: 4px; /* Firefox */
+  -webkit-border-radius: 4px; /* Safari, Chrome */
+  border-radius: 4px; /* CSS3 */
+	-webkit-box-shadow:2px 3px 5px rgba(0, 0, 0, .5);
+	   -moz-box-shadow:2px 3px 5px rgba(0, 0, 0, .5);
+	        box-shadow:2px 3px 5px rgba(0, 0, 0, .5);
+}
+
+.submitButtonReady{
+	background:#D2E6D2;
+	color:black;
+  -moz-border-radius: 4px; /* Firefox */
+  -webkit-border-radius: 4px; /* Safari, Chrome */
+  border-radius: 4px; /* CSS3 */
+}
+
+.submitButtonHover{
+	background:none;
+	color:red;
+  -moz-border-radius: 4px; /* Firefox */
+  -webkit-border-radius: 4px; /* Safari, Chrome */
+  border-radius: 4px; /* CSS3 */
+}
+
+.submitButtonActive{ /*clicked*/
+	background:#ddd;
+	color:red;
+  -moz-border-radius: 4px; /* Firefox */
+  -webkit-border-radius: 4px; /* Safari, Chrome */
+  border-radius: 4px; /* CSS3 */
+}
+
+.submitButtonUnavailable{
+cursor:default;
+	background:#aaa;
+	color:#ddd;
+  -moz-border-radius: 0px; /* Firefox */
+  -webkit-border-radius: 0px; /* Safari, Chrome */
+  border-radius: 0px; /* CSS3 */
+}
+
+.longInput{
+width:200px;
+}
+
+.idSection{
+position:relative;
+padding:0px 0px 20px 0px;
+}
+
+.idSection table{
+width:100%;
+}
+
+.idSection td{
+padding:3px 20px 3px 10px;
+}
+
+.cardSection{
+background:#ccc;
+position:relative;
+padding:20px 0px 20px 0px;
+}
+
+.cardSection table{
+width:100%;
+}
+
+.cardSection td{
+padding:3px 20px 3px 10px;
+}
+
+
+.annotationSection{
+position:relative;
+padding:20px 0px 20px 0px;
+}
+
+.annotationSection table{
+width:100%;
+}
+
+.annotationSection td{
+padding:3px 20px 3px 10px;
+}
+
+.actionSection{
+height:50px;
+border-top:1pt solid gray;
+position:relative;
+}
+
+.purchaseInstruction{
+margin:20px 0px 0px 20px;
+font-weight:bold;
+float:left;
+}
+
+.chargePrice{
+color:green;
+}

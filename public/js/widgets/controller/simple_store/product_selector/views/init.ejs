@@ -1,0 +1,41 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'displayParameters'},
+		{name:'viewHelper'},
+		{name:'formData'}
+	],
+ source:'simple_store.product_selector.init.ejs' });
+//
+qtools.validateProperties({
+	targetObject:formData,
+	propList:[
+		{name:'productInfo'}
+	],
+ source:'simple_store.product_selector.init.ejs' });
+//
+qtools.validateProperties({
+	targetObject:displayParameters,
+	propList:[
+		{name:'priceDisplayContainer'}
+	],
+ source:'simple_store.product_selector.init.ejs' });
+
+
+	var list=this.formData.productInfo,
+		prodString='';
+	for (var i=0, len=list.length; i<len; i++){
+		var element=list[i];
+		prodString+="<div><input type='text' name='product["+element.details.prodCode+"]' class='numberEntry'>"+element.errata+"</div>";
+	}
+
+%>
+<div class='prodListTitle'>
+How Many Do You Want?
+</div>
+<div class='prodSelectionContainer'>
+<%==prodString%>
+</div>
+<div class='priceDisplayContainer' id='<%=this.displayParameters.priceDisplayContainer.divId%>'>
+</div>

@@ -8,12 +8,49 @@
 	)));
 
 $contentArray=$this->contentArray;
+$outString='';
 
-$outString="<div style='color:red;margin:20px;font-size:18pt;'>Hello from the container.phtml</div>";
+//GLOBAL OVERRIDES (from content dir) =========================================================================
+global $thiss;
+$thiss=$this;
+function applyStyle($cssString){
+	global $thiss;
+	$thiss->headStyle()->appendStyle($cssString);
+}
+
+//$this->headStyle()->appendStyle($contentArray['globalItems']['CSS']['main.css']);
+array_map('applyStyle', $contentArray['globalItems']['CSS']);
+
+$list=$contentArray['products.ini'];
+
+
+
+	$outString="<ul class='serverData' id='productInfo' style='float:left;border:2pt solid #ccc;margin-left:20px;margin-bottom:40px;padding:20px;text-align:left;'>";
+
+		foreach ($list as $label=>$data){
+			$outString.="<li class='datum'>
+					<div class='errata'>{$data['name']} (\${$data['price']})</div>";
+
+			$outString.="<ul class='details'>";
+			foreach ($data as $label2=>$data2){
+				$outString.="<li class='$label2' style='margin-left:20px;'>$data2</li>";
+			}
+			$outString.="</ul></li>";
+		}
+
+	$outString.="</ul>";
+	$outstringTmp=str_replace('productInfo', 'testSecondElement', $outString);
+
+$outString="
+
+<div class='mainContentContainer' style='overflow:hidden;'>
+	$outString
+	$outstringTmp
+</div>
+";
+
 
 echo $outString;
 
 
 
-\Q\Utils::dumpWeb($contentArray);
-\Q\Utils::dumpWeb($this->codeNav);

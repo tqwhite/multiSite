@@ -7,7 +7,7 @@
 
 			$dataString.="<input type=hidden name='{$datum['fieldName']}' value='{$datum['value']}'>";
 		}
-		return	"<div id='serverData' style='display:none;'>$dataString</div>";
+		return	"<div id='serverControl' style='display:none;'>$dataString</div>";
 
 	 }
 

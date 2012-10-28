@@ -1,0 +1,91 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'displayParameters'},
+		{name:'viewHelper'},
+		{name:'formData'}
+	],
+ source:'simple_store.payment_form.init.ejs' });
+//
+qtools.validateProperties({
+	targetObject:formData,
+	propList:[
+		{name:'subTotal'}
+	],
+ source:'simple_store.payment_form.init.ejs' });
+
+qtools.validateProperties({
+	targetObject:displayParameters,
+	propList:[
+		{name:'chargePrice'}
+	],
+ source:'simple_store.payment_form.init.ejs' });
+
+var total=111;
+if (window.location.host.match(/local/)){
+		var cardName='TQ School District',
+			street='5004 Three Points Blvd',
+			city='Mound',
+			state='MN',
+			zip='55364',
+			phoneNumber='708-763-0100',
+			cardNumber='0000 0000 0000 0000',
+			expMonth='12',
+			expYear='13',
+			emailAdr='tq@justkidding.com',
+			emailConfirm='tq@justkidding.com',
+			name='TQ White II',
+			poNumber='A0-995-628-8295';
+	}
+	else{
+		var cardName='',
+			street='',
+			city='',
+			state='',
+			zip='',
+			phoneNumber='',
+			cardNumber='',
+			expMonth='',
+			expYear='',
+			emailAdr='',
+			emailConfirm='',
+			name='',
+			poNumber='';
+
+	}
+
+
+%>
+<div class='idSection'>
+<div class='prodListTitle'>Payment Information</div>
+<table class='idEntryForm'>
+	<tr><td>Name</td><td><input class='longInput' type='text' name='cardName' value='<%=name%>'></td>
+	<tr><td style='width:35%;'>Email Address</td><td style='width:60%;'><input class='longInput' type='text' name='emailAdr' value='<%=emailAdr%>'></td>
+	<tr><td>Email Confirm</td><td><input class='longInput' type='text' name='emailConfirm' value='<%=emailConfirm%>'></td>
+</table>
+</div>
+<div class='cardSection'>
+<table class='cardEntryForm'>
+	<tr><td style='width:35%;'>Name on Card</td><td style='width:60%;'><input class='longInput' type='text' name='cardName' value='<%=cardName%>'></td>
+	<tr><td>Billing Street</td><td><input class='longInput' type='text' name='street' value='<%=street%>'></td>
+	<tr><td>City, State</td><td><input type='text' style='width:30%;' name='city' value='<%=city%>'>, <input type='text' style='width:20%;' name='state' value='<%=state%>'></td>
+
+	<tr><td>Zip</td><td><input type='text' style='width:30%;' name='zip' value='<%=zip%>' prompt='00000'></td>
+
+	<tr><td>Phone</td><td><input name='phoneNumber' value='<%=phoneNumber%>' prompt='000-000-0000'></td>
+
+	<tr><td style='padding-top:5px;;'>Card Number</td><td><input class='longInput' type='text' name='cardNumber' value='<%=cardNumber%>' prompt='visa/mc/amex/discover/diners/jcb'></td>
+	<tr><td>Expiration Date</td><td><input type='text' style='width:20%;' name='expMonth' value='<%=expMonth%>'  prompt='MM'><input style='margin-left:5px;width:20%;' value='<%=expYear%>' name='expYear' value='' prompt='YY'></td>
+	<input type='hidden' name='chargeTotal' value='<%=total%>'>
+	</table>
+</div>
+<div class='annotationSection'>
+<table class='poEntryForm'>
+	<tr><td>PO Number/Memo</td><td><input class='longInput' type='text' name='poNumber' value='<%=poNumber%>'></td>
+</table>
+</div>
+<div class='actionSection'>
+	<div class='purchaseInstruction'>Click to 'Purchase' charge <span class='chargePrice' id='<%=displayParameters.chargePrice.divId%>'>$1234.00</span></div>
+	<div class='submitButton' style='float:right;margin-right:40px;' id='<%= displayParameters.submitButton.divId %>'></div>
+</div>

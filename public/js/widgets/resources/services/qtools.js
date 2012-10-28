@@ -551,7 +551,19 @@ indexObjFromPath:function(inObj, fieldName){
 	return outObj;
 },
 
-getDottedPath:function(baseObj, subPathString){
+lookupDottedPath:function(inArray, subPathString, matchValue){
+
+	var list=inArray;
+	for (var i=0, len=list.length; i<len; i++){
+		var element=list[i];
+		if (this.getDottedPath(element, subPathString)==matchValue){
+			return element;
+		}
+
+	}
+},
+
+getDottedPath:function(baseObj, subPathString, debug){
 	var target=baseObj,
 		elements;
 		this.getDottedPathLastProgressiveString='';
@@ -570,6 +582,7 @@ getDottedPath:function(baseObj, subPathString){
 
 				this.getDottedPathLastProgressiveString+=elements[i]+'.';
 				if (typeof(target)=='undefined'){
+					if (debug){ console.dir(elements[i]);}
 					qtools.consoleMessage('bad path='+this.getDottedPathLastProgressiveString);
 					return null;
 				}
@@ -1015,6 +1028,30 @@ byObjectProperty:function(fieldName, transformer){
 			if (aa<bb){ return -1;}
 			return 0;
 		}
+	},
+
+unpackServerData:function(serverDataDomObj){
+	//input to this is one <ul> with stuff in item
+
+	var list=$(serverDataDomObj).children();
+		outArray=[];
+
+	for (var i=0, len=list.length; i<len; i++){
+		var datum={
+			errata:$(list[i]).find('.errata').text(),
+			details:{}
+		};
+		var element=$(list[i]).find('.details li');
+		for (j=0, len2=element.length; j<len2; j++){
+			var detailName=$(element[j]).attr('class'),
+				detailData=$(element[j]).text();
+			datum.details[detailName]=detailData;
+		}
+
+		outArray.push(datum);
 	}
+
+	return outArray;
+}
 
 }

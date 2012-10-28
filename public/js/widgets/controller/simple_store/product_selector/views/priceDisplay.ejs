@@ -1,0 +1,64 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'displayParameters'},
+		{name:'viewHelper'},
+		{name:'formData'}
+	],
+ source:'simple_store.product_selector.priceDisplay.ejs' });
+//
+qtools.validateProperties({
+	targetObject:formData,
+	propList:[
+		{name:'totalPrice'}
+	],
+ source:'simple_store.product_selector.priceDisplay.ejs' });
+//
+qtools.validateProperties({
+	targetObject:displayParameters,
+	propList:[
+		{name:'priceDisplayContainer'}
+	],
+ source:'simple_store.product_selector.priceDisplay.ejs' });
+
+
+var totalPrice=this.formData.totalPrice?this.formData.totalPrice:0;
+totalPrice=totalPrice.toFixed(2);
+
+if (typeof(this.formData.totalPrice)!='undefined'){
+	var totalPrice=this.formData.totalPrice.toFixed(2);
+	var subtotalString="<tr><td>Subtotal:</td><td>$"+totalPrice+"</td></tr>";
+}
+else{
+	var subtotalString='';
+}
+this.formData.taxAmount=this.formData.totalPrice;
+this.formData.grandTotal=this.formData.totalPrice;
+
+if (typeof(this.formData.taxAmount)!='undefined'){
+	var taxAmount=this.formData.taxAmount.toFixed(2);
+	var taxString="<tr><td>Tax:</td><td>$"+taxAmount+"</td></tr>";
+}
+else{
+	var taxString='';
+}
+
+if (typeof(this.formData.grandTotal)!='undefined'){
+	var grandTotal=this.formData.grandTotal.toFixed(2);
+	var grandTotalString="<tr class='grandTotal'><td>Total:</td><td>$"+grandTotal+"</td></tr>";
+}
+else{
+	var grandTotalString='';
+}
+
+var outString="<table class='priceListing' style='margin-left:-20px;'>";
+outString+=subtotalString+taxString+grandTotalString;
+outString+="</table>";
+
+%>
+<div class='priceDisplayContainerTitle'>
+Price:
+</div>
+
+	<%==outString%>

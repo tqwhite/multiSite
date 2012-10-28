@@ -22,6 +22,10 @@ steal(
 	'./controller/display/link_switch/link_switch.js',
 	'./controller/display/tab_panel/tab_panel.js',
 
+	'./controller/simple_store/main/main.js',
+	'./controller/simple_store/product_selector/product_selector.js',
+	'./controller/simple_store/payment_form/payment_form.js',
+
 	'./resources/other/json2.js',
 	'./resources/other/mousetrap.js',
 

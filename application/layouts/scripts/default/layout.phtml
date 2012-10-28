@@ -112,7 +112,13 @@ $headBanner=$this->contentArray['headBanner.html'];
 $headBanner="<a href='http://<!baseDomain!>'>$headBanner</a>";
 $headBanner=$this->translateUrls($headBanner);
 
+if (isset($this->contentArray['siteDirectoryUrlList.ini'])){
 $siteDirectory=$this->render('default/siteDirectory.phtml');
+}
+else{
+	$siteDirectory='';
+}
+
 $contactFooter=$this->render('default/contactFooter.phtml');
 
 $footer="
@@ -148,7 +154,7 @@ echo "
 	$headTitle
 
 	<style type='text/css'><!--
-		html {background:#E3EAD9;}
+		html {background:tan;}
 		a {text-decoration:none;}
 	--></style>
 

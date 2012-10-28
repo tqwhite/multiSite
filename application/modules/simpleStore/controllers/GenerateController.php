@@ -14,7 +14,19 @@ class SimpleStore_GenerateController extends Q_Controller_Base
 
     public function containerAction()
     {
-       $this->setVariationLayout('minimal');
+       $this->setVariationLayout('layout');
+
+		$serverComm[]=array("fieldName"=>"message", "value"=>'hello from the server via javascript');
+
+				$jsControllerList[]=array(
+				"domSelector"=>".mainContentContainer",
+				"controllerName"=>'widgets_simple_store_main',
+				"parameters"=>json_encode(array('background'=>'gray', 'color'=>'red'))
+			);
+
+     	$serverComm=$this->_helper->ArrayToServerCommList('controller_startup_list', $jsControllerList);
+     	$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
+
 
 		$this->view->contentArray=$this->contentObj->contentArray;
 		$this->view->codeNav=$this->getCodeNav(__method__);
@@ -27,22 +39,78 @@ class SimpleStore_GenerateController extends Q_Controller_Base
 			'validatedEntity'=>$contentArray,
 			'source'=>__file__,
 			'propertyList'=>array(
-				array('name'=>'mainContent.html')
+				array('name'=>'headBanner.html'),
+				array('name'=>'products.ini')
 			)));
 
 	}
 
 	public function initializeContentDirectory(){
-$mainContent=<<<mainContent
-Hello from a new page type
-mainContent;
+	$headNav=<<<HEADNAV
 
+menu.0.title="About Us"
+
+menu.0.links.0.title='Our Story'
+menu.0.links.0.url='#ourStory'
+
+menu.0.links.1.title='Contact Info'
+menu.0.links.1.url='#contactInfo'
+
+
+menu.1.title="Our Partners"
+
+menu.1.links.0.title='The Cambridge Group'
+menu.1.links.0.url='http://www.cambridgestrategics.com/'
+
+menu.1.links.1.title='Anoka-Henepin School District'
+menu.1.links.1.url='http://www.---.com/'
+
+HEADNAV;
+
+$siteDirectoryUrlList=<<<SITEDIR
+
+;if you do not want a site directory, leave the rest of this file blank
+a.0.title="Company List"
+
+a.0.links.0.title='Administrative Solutions'
+a.0.links.0.url='http://admin.cmerdc.local/sitemap'
+a.0.links.0.selector='.contentzone'	;this is a jQuery selector for the content to extract from target page
+
+a.0.links.1.title='Document Imaging'
+a.0.links.1.url='http://imaging.cmerdc.local/sitemap'
+a.0.links.1.selector='.contentzone'	;this is a jQuery selector for the content to extract from target page
+
+SITEDIR;
+
+$productList=<<<PRODUCTS
+
+prodA.prodcCode="prodA";
+prodA.name="Product A";
+prodA.price=11.33;
+prodA.description="This is an excellent <b>Product A</b> thing."
+
+prodB.prodcCode="prodB";
+prodB.name="Product B";
+prodB.price=22.33;
+prodB.description="This is an excellent <b>Product B</b> thing."
+
+
+PRODUCTS;
 
 		$directories=array(
 			'ROOTFILES'=>array(  //ROOTFILES is the keyword for files that are peered at the base level of the route.
-				'mainContent.html'=>$mainContent
+				'contactFooter.html'=>"FOOTER: edit contactFooter.html to customize",
+				'headBanner.html'=>"HEAD BANNER: edit headBanner.html to customize",
+				'headNav.ini'=>$headNav,
+				'pageTitle.txt'=>"TITLE: edit pageTitle.txt to customize",
+				'siteDirectoryUrlList.ini'=>$siteDirectoryUrlList,
+				'products.ini'=>$productList
 
+			),
+			'images'=>array(
+				'README'=>'this is a placeholder so git will initialize this directory. put images in here'
 			)
+
 		);
 
 		$this->_helper->InitPageTypeDirectory($directories);

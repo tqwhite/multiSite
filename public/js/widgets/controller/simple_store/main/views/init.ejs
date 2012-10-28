@@ -1,0 +1,27 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'displayParameters'},
+		{name:'viewHelper'},
+		{name:'formData'}
+	],
+ source:'simple_store.main.init.ejs' });
+
+qtools.validateProperties({
+	targetObject:formData,
+	propList:[],
+ source:'simple_store.main.init.ejs' });
+
+qtools.validateProperties({
+	targetObject:displayParameters,
+	propList:[
+		{name:'productListContainer'},
+		{name:'paymentFormContainer'}
+	],
+ source:'simple_store.main.init.ejs' });
+
+%><div class='productListContainer' id='<%=this.displayParameters.productListContainer.divId%>'>
+</div>
+<div class='paymentFormContainer' id='<%=this.displayParameters.paymentFormContainer.divId%>'>
+</div>

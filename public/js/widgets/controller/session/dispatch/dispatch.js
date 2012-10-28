@@ -27,18 +27,32 @@ Widgets.Controller.Base.extend('Widgets.Controller.Session.Dispatch',
 	},
 
 	getServerData:function(){
-		var serverDataDomObj=$('#serverData'), //'#serverData' is defined in Q_Controller_Action_Helper_WriteServerCommDiv()
+		var serverControlDomObj=$('#serverControl'), //'#serverData' is defined in Q_Controller_Action_Helper_WriteServerCommDiv()
 			formParams;
 
-			if (serverDataDomObj.length>0){
-				formParams=serverDataDomObj.formParams();
-				this.serverDataDomObj=serverDataDomObj;
+			if (serverControlDomObj.length>0){
+				formParams=serverControlDomObj.formParams();
+				this.serverControlDomObj=serverControlDomObj;
 			}
 			else{
 				formParams={};
 			}
 
 			this.controllerStartupList=(typeof(formParams.controller_startup_list)!='undefined')?formParams.controller_startup_list:[];
+
+		var serverDataDomObj=$('.serverData'),
+			serverData={};
+
+
+	var list=serverDataDomObj;
+		this.serverData={};
+
+	for (var i=0, len=list.length; i<len; i++){
+		var element=$(list[i]);
+		serverData[element.attr('id')]=qtools.unpackServerData(element);
+	}
+		this.serverData=serverData;
+
 	},
 
 	receiveSessionStartup:function(inData){
@@ -55,11 +69,12 @@ Widgets.Controller.Base.extend('Widgets.Controller.Session.Dispatch',
 	startController:function(startupItem){
 		domSelector=startupItem.domSelector,
 		controllerName=startupItem.controllerName,
-		parameters=startupItem.parameters,
+		parameters=$.parseJSON(startupItem.parameters),
+		parameters.serverData=this.serverData,
 		domObj=$(domSelector);
 
 		if (typeof(domObj[controllerName])=='function'){
-			domObj[controllerName]($.parseJSON(parameters));
+			domObj[controllerName](parameters);
 		}
 		else{
 			alert('${'+domSelector+').'+controllerName+'() is not a function');
