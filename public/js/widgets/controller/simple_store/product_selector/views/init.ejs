@@ -27,7 +27,7 @@ qtools.validateProperties({
 		prodString='';
 	for (var i=0, len=list.length; i<len; i++){
 		var element=list[i];
-		prodString+="<div><input type='text' name='product["+element.details.prodCode+"]' class='numberEntry'>"+element.errata+"</div>";
+		prodString+="<div><input type='text' name='product["+element.details.prodCode+"]' class='numberEntry' prompt='0'>"+element.errata+"</div>";
 	}
 
 %>

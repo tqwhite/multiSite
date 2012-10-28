@@ -18,7 +18,7 @@ init: function(el, options) {
 		targetObject:options,
 		targetScope: this, //will add listed items to targetScope
 		propList:[
-			{name:'productInfo'},
+			{name:'paymentServerUrl'},
 			{name:'purchaseData'},
 			{name:'infoDispatchHandler'}
 		],
@@ -39,8 +39,13 @@ update:function(control, parameter){
 	var componentName='infoDispatch';
 	switch(control){
 		case 'changePurchaseData':
-			console.dir(this.purchaseData);
 			$('#'+this.displayParameters.chargePrice.divId).html('$'+this.purchaseData.subtotal);
+			if(this.purchaseData.subtotal>0){
+				this.submitButton.accessFunction('setToReady');
+			}
+			else{
+				this.submitButton.accessFunction('setUnavailable');
+			}
 		break;
 		case 'setAccessFunction':
 			if (!this[componentName]){this[componentName]={};}
@@ -59,6 +64,7 @@ initDisplayProperties:function(){
 	nameArray=[];
 
 	name='chargePrice'; nameArray.push({name:name});
+	name='status'; nameArray.push({name:name});
 
 	name='submitButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 
@@ -92,9 +98,9 @@ initDomElements:function(){
 		ready:{classs:'submitButtonReady'},
 		hover:{classs:'submitButtonHover'},
 		clicked:{classs:'submitButtonActive'},
-		unavailable:{classs:'bsubmitButtonUnavailable'},
+		unavailable:{classs:'submitButtonUnavailable'},
 		accessFunction:displayItem.handler,
-		initialControl:'setToReady', //initialControl:'setUnavailable'
+		initialControl:'setUnavailable', //initialControl:'setUnavailable'
 		label:"<div style='margin-top:8px;'>Purchase</div>"
 	});
 
@@ -112,15 +118,16 @@ submitButtonHandler:function(control, parameter){
 			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
 			else{return;}
 
-			console.log('got submit click');
-/*
-			GoodEarthStore.Models.Purchase.process({
-					cardData:this.element.formParams(),
-					purchase:this.purchases,
-					account:this.account
+			var formParams=this.element.formParams();
+			this.purchaseData.cardData=formParams;
+
+			Widgets.Models.Purchase.process({
+					paymentServerUrl:this.paymentServerUrl,
+					cardData:formParams,
+					purchaseData:this.purchaseData
 				},
 				this.callback('catchProcessResult'));
-*/
+
 		break;
 		case 'setAccessFunction':
 			if (!this[componentName]){this[componentName]={};}
@@ -132,6 +139,7 @@ submitButtonHandler:function(control, parameter){
 },
 
 catchProcessResult:function(inData){
+
 		var statusDomObj=$('#'+this.displayParameters.status.divId);
 	if (inData.status<0){
 		statusDomObj.html('');
@@ -139,32 +147,22 @@ catchProcessResult:function(inData){
 		for (var i=0, len=list.length; i<len; i++){
 			var element=list[i];
 			$message=element[1]?element[1]:'Unknown processor error, contact tech support'; //element[0] is fieldname or category, element[1] is message
-			statusDomObj.append("<div style=color:red;margin-left:4px;'>"+$message+"</div>");
+			statusDomObj.append("<span style='margin-left:4px;'>&bull; "+$message+"</span>");
 		}
+		statusDomObj.addClass('badStatus');
 	}
 	else{
 		if (true){ //this can go away as soon as debugging is well into the past. 'false' makes it so that the payment process can run repeatedly.
 
+			var cardNo=this.purchaseData.cardData.cardNumber,
+				len=cardNo.length;
+
+			cardNo=cardNo.substring(len-4, len);
+			this.purchaseData.cardData.cardNumber=cardNo;
+
 			switch(inData.status.toString()){
 				case '1':
-					$('#'+this.displayParameters.submitButton.divId).remove();
-					$('#'+this.displayParameters.cancelButton.divId).remove();
-					$('#'+this.displayParameters.entryContainer.divId).html($.View('//good_earth_store/controller/customer/checkout/views/approved.ejs'));
-					break;
-				case '2':
-					$('#'+this.displayParameters.submitButton.divId).remove();
-					$('#'+this.displayParameters.cancelButton.divId).remove();
-					$('#'+this.displayParameters.entryContainer.divId).html($.View('//good_earth_store/controller/customer/checkout/views/deferred.ejs'));
-					break;
-				case '3':
-					statusDomObj.append("<div style=color:red;margin-left:4px;'>Repeat</div>");
-					break;
-				case '4':
-					$('#'+this.displayParameters.submitButton.divId).remove();
-					$('#'+this.displayParameters.cancelButton.divId).remove();
-					$('#'+this.displayParameters.entryContainer.divId).html($.View('//good_earth_store/controller/customer/checkout/views/fr.ejs'));
-					break;
-
+					this.infoDispatchHandler('displayCompletion');
 					break;
 			}
 

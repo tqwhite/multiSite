@@ -11,7 +11,7 @@ qtools.validateProperties({
 qtools.validateProperties({
 	targetObject:formData,
 	propList:[
-		{name:'totalPrice'}
+		{name:'purchaseData'}
 	],
  source:'simple_store.product_selector.priceDisplay.ejs' });
 //
@@ -22,31 +22,29 @@ qtools.validateProperties({
 	],
  source:'simple_store.product_selector.priceDisplay.ejs' });
 
-
+var purchaseData=this.formData.purchaseData;
 var totalPrice=this.formData.totalPrice?this.formData.totalPrice:0;
 totalPrice=totalPrice.toFixed(2);
 
-if (typeof(this.formData.totalPrice)!='undefined'){
-	var totalPrice=this.formData.totalPrice.toFixed(2);
-	var subtotalString="<tr><td>Subtotal:</td><td>$"+totalPrice+"</td></tr>";
+if (typeof(purchaseData.subtotal)!='undefined'){
+	var totalPrice=purchaseData.subtotal.toFixed(2);
+	var subtotalString="<tr><td>Subtotal:</td><td style='text-align:right;'>$"+totalPrice+"</td></tr>";
 }
 else{
 	var subtotalString='';
 }
-this.formData.taxAmount=this.formData.totalPrice;
-this.formData.grandTotal=this.formData.totalPrice;
 
-if (typeof(this.formData.taxAmount)!='undefined'){
-	var taxAmount=this.formData.taxAmount.toFixed(2);
-	var taxString="<tr><td>Tax:</td><td>$"+taxAmount+"</td></tr>";
+if (typeof(purchaseData.tax)!='undefined'){
+	var taxAmount=purchaseData.tax.toFixed(2);
+	var taxString="<tr><td>Tax:</td><td style='text-align:right;'>$"+taxAmount+"</td></tr>";
 }
 else{
 	var taxString='';
 }
 
-if (typeof(this.formData.grandTotal)!='undefined'){
-	var grandTotal=this.formData.grandTotal.toFixed(2);
-	var grandTotalString="<tr class='grandTotal'><td>Total:</td><td>$"+grandTotal+"</td></tr>";
+if (typeof(purchaseData.grandTotal)!='undefined'){
+	var grandTotal=purchaseData.grandTotal.toFixed(2);
+	var grandTotalString="<tr class='grandTotal'><td>Total:</td><td style='text-align:right;'>$"+grandTotal+"</td></tr>";
 }
 else{
 	var grandTotalString='';

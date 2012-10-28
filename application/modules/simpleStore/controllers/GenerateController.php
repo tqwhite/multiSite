@@ -21,14 +21,15 @@ class SimpleStore_GenerateController extends Q_Controller_Base
 				$jsControllerList[]=array(
 				"domSelector"=>".mainContentContainer",
 				"controllerName"=>'widgets_simple_store_main',
-				"parameters"=>json_encode(array('background'=>'gray', 'color'=>'red'))
+				"parameters"=>json_encode(array('paymentServerUrl'=>'http://store.tensigma.local/simpleStore/generate/process'))
 			);
 
      	$serverComm=$this->_helper->ArrayToServerCommList('controller_startup_list', $jsControllerList);
      	$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
 
+		$contentArray=$this->contentObj->contentArray;
 
-		$this->view->contentArray=$this->contentObj->contentArray;
+		$this->view->contentArray=$contentArray;
 		$this->view->codeNav=$this->getCodeNav(__method__);
     }
 
@@ -115,5 +116,30 @@ PRODUCTS;
 
 		$this->_helper->InitPageTypeDirectory($directories);
 	}
+
+
+
+    public function processAction()
+    {
+        //HACKERY: This action is *not* mapped by the multiSite routing system. It uses the
+        //Zend default controller. Consequently, contentArray comes from
+        //a directory called 'default'.
+        //Also, I don't know why it's not being rejected by validateContentStructure() but
+        //I need to get this done. Maybe I'll come back to it later. tqii
+
+		$inData=$this->getRequest()->getPost('data');
+		$status=-1; //change it to good (1) when something good happens
+		$messages=array(array('test', "hello from server"));
+
+
+		$errorList=\Application_Model_Purchase::validate($inData);
+		if (count($errorList)==0){$status=1;}
+
+		$this->_helper->json(array(
+			status=>$status,
+			messages=>$errorList,
+			data=>array(tmp=>'test')
+		));
+    }
 
 } //end of class

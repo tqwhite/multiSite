@@ -1,0 +1,82 @@
+<%
+console.dir(this);
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'displayParameters'},
+		{name:'viewHelper'},
+		{name:'formData'}
+	],
+ source:'simple_store.main.displayCompletion.ejs' });
+//
+qtools.validateProperties({
+	targetObject:formData,
+	propList:[
+		{name:'purchaseData'},
+		{name:'serverData'}
+	],
+ source:'simple_store.main.displayCompletion.ejs' });
+
+var cardData=this.formData.purchaseData.cardData;
+var productDisplayList=this.formData.purchaseData.productDisplayList;
+
+	var prodString='';
+	var list=productDisplayList;
+	for (var i=0, len=list.length; i<len; i++){
+		var element=list[i];
+		var total=element.price*element.quantity;
+		prodString+="<tr><td style='text-align:right;'>"+element.quantity+'</td><td>'+element.name+'@$'+element.price+"</td><td style='text-align:right;'>"+total+'</td></tr>';
+
+	}
+		prodString+="<tr><td style='text-align:right;font-style:italic;border-top:1pt solid gray;'>Subtotal</td><td style='border-top:1pt solid gray;'>&nbsp;</td><td style='font-style:italic;text-align:right;border-top:1pt solid gray;'>$"+this.formData.purchaseData.subtotal+'</td></tr>';
+		prodString+="<tr><td style='text-align:right;'>Tax</td><td>&nbsp;</td><td style='text-align:right;'>$"+this.formData.purchaseData.tax+'</td></tr>';
+		prodString+="<tr><td style='text-align:right;font-weight:bold;border-top:1pt solid gray;'>Total</td><td style='border-top:1pt solid gray;'>&nbsp;</td><td style='font-weight:bold;text-align:right;border-top:1pt solid gray;'>$"+this.formData.purchaseData.grandTotal+'</td></tr>';
+
+
+%>
+<div class='completionContainer'>
+
+<div class='completionSummary'>
+<div class='completionSuccessMsg'>Your payment completed successfully!</div>
+<div class='completionInfo'>
+<table class='completionIdentityInfo'>
+<tr><td>Charged to:</td><td><%=cardData.name%></td></tr>
+<tr><td>Email:</td><td><%=cardData.emailAdr%></td></tr>
+<tr><td>Phone:</td><td><%=cardData.phoneNumber%></td></tr>
+<tr><td>Card Name:</td><td><%=cardData.cardName%></td></tr>
+<tr><td>Card Ending:</td><td>**** **** **** <%=cardData.cardNumber%></td></tr>
+<tr><td>PO/Memo:</td><td><%=cardData.poNumber%></td></tr>
+</table>
+
+<div class='completionDivider'></div>
+
+<table class='completionPurchaseInfo'>
+<%==prodString%>
+</table>
+
+
+</div>
+</div>
+<div class='completionClickInstruction'>
+Click this button to update your TRAX account with these new purchases.
+</div>
+
+<div class='completionButtonHolder'>
+<a href='asfsdfasdfsadf' class='updateButton updateButtonReady'>UPDATE</a>
+</div>
+
+
+<div class='completionInstructions'>
+You can also use a bookmark to go to your TRAX account page. There, you can choose 'Add Surveys' and Copy/Paste this purchase token into the field marked 'Purchase Token'.
+
+</div>
+
+<div class='completionTokenDisplay'>
+Your purchase token is: <input class='completionTokenCopy' type='text' value='3f27a1bd64e04aa0a78efbc60b7784bc'>
+</div>
+
+<div class='completionfinalNote'>
+This information, plus a receipt, is being emailed to you but it's a good idea to print this page.
+</div>
+
+</div>

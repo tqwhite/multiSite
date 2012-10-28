@@ -11,14 +11,14 @@ qtools.validateProperties({
 qtools.validateProperties({
 	targetObject:formData,
 	propList:[
-		{name:'subTotal'}
 	],
  source:'simple_store.payment_form.init.ejs' });
 
 qtools.validateProperties({
 	targetObject:displayParameters,
 	propList:[
-		{name:'chargePrice'}
+		{name:'chargePrice'},
+		{name:'status'}
 	],
  source:'simple_store.payment_form.init.ejs' });
 
@@ -30,11 +30,11 @@ if (window.location.host.match(/local/)){
 			state='MN',
 			zip='55364',
 			phoneNumber='708-763-0100',
-			cardNumber='0000 0000 0000 0000',
+			cardNumber='0000 0000 0000 3124',
 			expMonth='12',
 			expYear='13',
 			emailAdr='tq@justkidding.com',
-			emailConfirm='tq@justkidding.com',
+			confirmEmail='tq@justkidding.com',
 			name='TQ White II',
 			poNumber='A0-995-628-8295';
 	}
@@ -49,7 +49,7 @@ if (window.location.host.match(/local/)){
 			expMonth='',
 			expYear='',
 			emailAdr='',
-			emailConfirm='',
+			confirmEmail='',
 			name='',
 			poNumber='';
 
@@ -58,11 +58,11 @@ if (window.location.host.match(/local/)){
 
 %>
 <div class='idSection'>
-<div class='prodListTitle'>Payment Information</div>
+<div class='prodListTitle' id='<%= displayParameters.status.divId %>'>Payment Information</div>
 <table class='idEntryForm'>
-	<tr><td>Name</td><td><input class='longInput' type='text' name='cardName' value='<%=name%>'></td>
+	<tr><td>Name</td><td><input class='longInput' type='text' name='name' value='<%=name%>'></td>
 	<tr><td style='width:35%;'>Email Address</td><td style='width:60%;'><input class='longInput' type='text' name='emailAdr' value='<%=emailAdr%>'></td>
-	<tr><td>Email Confirm</td><td><input class='longInput' type='text' name='emailConfirm' value='<%=emailConfirm%>'></td>
+	<tr><td>Email Confirm</td><td><input class='longInput' type='text' name='confirmEmail' value='<%=confirmEmail%>'></td>
 </table>
 </div>
 <div class='cardSection'>
@@ -86,6 +86,6 @@ if (window.location.host.match(/local/)){
 </table>
 </div>
 <div class='actionSection'>
-	<div class='purchaseInstruction'>Click to 'Purchase' charge <span class='chargePrice' id='<%=displayParameters.chargePrice.divId%>'>$1234.00</span></div>
+	<div class='purchaseInstruction'>Click to 'Purchase' charge <span class='chargePrice' id='<%=displayParameters.chargePrice.divId%>'></span></div>
 	<div class='submitButton' style='float:right;margin-right:40px;' id='<%= displayParameters.submitButton.divId %>'></div>
 </div>

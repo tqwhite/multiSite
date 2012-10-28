@@ -1,8 +1,8 @@
 No, this isn't a real script. It's a reminder of the commands to do things
 
-zf create module pureHtmlIntoLayout
-zf create controller Generate 1 pureHtmlIntoLayout
-zf create action Container Generate 1 pureHtmlIntoLayout
+zf create module simpleStore
+zf create controller Generate 1 simpleStore
+zf create action Container Generate 1 simpleStore
 
 Don't forget to change this controller segment:
 

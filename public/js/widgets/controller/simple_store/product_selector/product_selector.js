@@ -100,7 +100,7 @@ initDomElements:function(){
 // 	});
 
 
-//	this.element.find('input').qprompt();
+	this.element.find('input').qprompt();
 
 },
 
@@ -137,24 +137,43 @@ inputHandler:function(control, parameter){
 updatePurchase:function(){
 	var list=this.element.formParams(true).product,
 		totalPrice=0;
+
 	this.purchaseData.productList=[];
+	this.purchaseData.productDisplayList=[];
 
 	for (var prodCode in list){
 		var quantity=1.0*(1.0*list[prodCode]).toFixed(2);
 		if (quantity>0){
 
-			this.purchaseData.productList.push({prodCode:prodCode, quantity:quantity});
-
 			var productObj=qtools.lookupDottedPath(this.productInfo, 'details.prodCode', prodCode),
 				price=1.0*(1.0*productObj.details.price).toFixed(2),
 				extendedPrice=1.0*(price*quantity).toFixed(2),
 				totalPrice=totalPrice+extendedPrice;
+
+			this.purchaseData.productList.push({prodCode:prodCode, quantity:quantity});
+			this.purchaseData.productDisplayList.push({
+				prodCode:prodCode,
+				quantity:quantity,
+				name:productObj.details.name,
+				price:price
+			});
 		}
 	}
 	this.totalPrice=1.0*totalPrice.toFixed(2);
 	this.purchaseData.subtotal=this.totalPrice;
+	this.purchaseData.tax=this.calcTax();
+	this.purchaseData.grandTotal=this.purchaseData.subtotal+this.purchaseData.tax;
+
+
 	this.writePriceDisplay();
 	this.infoDispatchHandler('changePurchaseData');
+},
+
+calcTax:function(){
+//	this.infoDispatchHandler('getStateCode');
+//	if (stateCode has tax value) calc tax
+//else
+	return 1.25;
 },
 
 writePriceDisplay:function(){
@@ -163,7 +182,7 @@ writePriceDisplay:function(){
 			displayParameters:this.displayParameters,
 			viewHelper:this.viewHelper,
 			formData:{
-				totalPrice:this.totalPrice
+				purchaseData:this.purchaseData
 			}
 		})
 		);
