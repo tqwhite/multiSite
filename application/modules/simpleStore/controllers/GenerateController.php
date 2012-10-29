@@ -21,7 +21,7 @@ class SimpleStore_GenerateController extends Q_Controller_Base
 				$jsControllerList[]=array(
 				"domSelector"=>".mainContentContainer",
 				"controllerName"=>'widgets_simple_store_main',
-				"parameters"=>json_encode(array('paymentServerUrl'=>'http://store.tensigma.local/simpleStore/generate/process'))
+				"parameters"=>json_encode(array('paymentServerUrl'=>'http://'.$_SERVER['HTTP_HOST'].'/simpleStore/generate/process'))
 			);
 
      	$serverComm=$this->_helper->ArrayToServerCommList('controller_startup_list', $jsControllerList);
