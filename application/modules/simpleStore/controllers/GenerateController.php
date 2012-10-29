@@ -136,7 +136,7 @@ PRODUCTS;
 		if (count($errorList)==0){$status=1;}
 
 		$this->_helper->json(array(
-			'status=>$status,
+			'status'=>$status,
 			'messages'=>$errorList,
 			'data'=>array(tmp=>'test')
 		));
