@@ -138,7 +138,7 @@ PRODUCTS;
 		$this->_helper->json(array(
 			'status'=>$status,
 			'messages'=>$errorList,
-			'data'=>array(tmp=>'test')
+			'data'=>array('tmp'=>'test')
 		));
     }
 
