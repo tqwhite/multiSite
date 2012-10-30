@@ -37,7 +37,7 @@ else{
 
 $outString="
 <form action='{$_SERVER['PHP_SELF']}' method='POST'>
-<input type='text' name='url' value='http://store.tensigma.local/test/index.php' style='width:500px;'>
+<input type='text' name='url' value='http://store.demo.qschooltech.com/test/index.php' style='width:500px;'>
 <input type='submit' name='post'>
 </form>
 
