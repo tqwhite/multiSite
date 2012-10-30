@@ -30,6 +30,10 @@ echo "<div style='color:red;'>Data posted to: {$_POST['url']}</div>";
 	$postResult=json_decode($result, true);
 \Q\Utils::dumpWeb($postResult, "Returned Data");
 }
+else{
+	echo "<div style='font-size:10pt;margin:20px 20px 20px 0px;'>The default URL (index.php) hits TQ's test post receiver. The data it returns
+	is valid for the store application.</div>";
+}
 
 $outString="
 <form action='{$_SERVER['PHP_SELF']}' method='POST'>
