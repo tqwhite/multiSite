@@ -2,12 +2,26 @@
 require_once(dirname(__FILE__) . '/../../../library/Q/Utils.php');
 
 
-$transactionJson="{'purchaserName':'TQ White II','purchaserPhone':'708-763-0100','purchaserEmail':'tq@justkidding.com','totalPaid':'1029.09','taxPaid':'1.25'}";
-$prodListJson="[{'prodCode':'prodA','quantity':'4'},{'prodCode':'prodB','quantity':'44'}]";
+$transaction=array(
+	'purchaserName'=>'TQ White II',
+	'purchaserPhone'=>'708-763-0100',
+	'purchaserEmail'=>'tq@justkidding.com',
+	'totalPaid'=>'1029.09',
+	'taxPaid'=>'1.25'
+);
+
+$prodList=array(
+	array('prodCode'=>'prodA','quantity'=>'4'),
+	array('prodCode'=>'prodB','quantity'=>'44')
+);
+
+
+$transactionJson=json_encode($transaction);
+$prodListJson=json_encode($prodList);
 
 $data=array(
     'transactionInfo' => $transactionJson,
-    'productList' => $prodLIstJson,
+    'productList' => $prodListJson,
     'token' => '923c61c5c46c97442c15aa9527315b00'
 );
 
@@ -22,7 +36,7 @@ echo "<div style='color:red;'>Data posted to: {$_POST['url']}</div>";
 
 	$ch =curl_init($_POST['url']);
 	curl_setopt($ch, CURLOPT_POST, true);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, array('hello'=>'goodbye'));
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 	$result = curl_exec($ch);
 	curl_close($ch);
@@ -44,3 +58,5 @@ $outString="
 ";
 
 echo $outString;
+echo "<hr>raw return data<br/>";
+echo $result;
