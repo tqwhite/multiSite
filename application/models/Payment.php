@@ -4,24 +4,28 @@ class Application_Model_Payment extends Application_Model_Base
 {
 /*
 
-merchant number: 295 173 981 883
+	merchant number: 295 173 981 883
 
-tech support phone: 866-696-0488
-eselectplus@moneris.COM
+	tech support phone: 866-696-0488
+	eselectplus@moneris.COM
 
-mastercard 			5454545454545454
-visa 				4242424242424242 or 4005554444444403
-amex		 		373599005095005
-pinless debit		4496270000164824
+	mastercard 			5454545454545454
+	visa 				4242424242424242 or 4005554444444403
+	amex		 		373599005095005
+	pinless debit		4496270000164824
 
 
-ACH transactions you may use the following test bank account details.
-						routing #	account number					check number
-FEDERAL RESERVE BANK	011000015	Any number between 5-22 digits	Any number
+	ACH transactions you may use the following test bank account details.
+							routing #	account number					check number
+	FEDERAL RESERVE BANK	011000015	Any number between 5-22 digits	Any number
 
 */
 
+
+
 static function process($inData, $args="set array('debug'=>true) as second parameter in instantiation"){
+
+$holdErrorState=error_reporting(E_ALL); //error_reporting(E_ERROR | E_PARSE);
 
 if (gettype($args)=='array' && $args['debug']===true){
 	$production=false; //uses the moneris qa server
@@ -199,6 +203,8 @@ $outArray=array(
 'usingProdServer'=>$production
 
 );
+
+error_reporting($holdErrorState);
 return $outArray;
 }
 
