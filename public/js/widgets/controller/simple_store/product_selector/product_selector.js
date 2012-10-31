@@ -107,7 +107,7 @@ initDomElements:function(){
 keypressHandler:function(control, parameter){
 	switch(control.type){
 		case 'keypress':
-			if ((control.which<48 || control.which>52) && [8, 9, 0].indexOf(control.which)<0){ //only numbers in this form
+			if ((control.which<48 || control.which>57) && [8, 9, 0].indexOf(control.which)<0){ //only numbers in this form
 				control.preventDefault();
 				return false
 			}

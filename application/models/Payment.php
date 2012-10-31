@@ -1,74 +1,205 @@
 <?php
 
-class Application_Model_Payment
+class Application_Model_Payment extends Application_Model_Base
 {
+/*
+
+merchant number: 295 173 981 883
+
+tech support phone: 866-696-0488
+eselectplus@moneris.COM
+
+mastercard 			5454545454545454
+visa 				4242424242424242 or 4005554444444403
+amex		 		373599005095005
+pinless debit		4496270000164824
 
 
-static function process($inData){
+ACH transactions you may use the following test bank account details.
+						routing #	account number					check number
+FEDERAL RESERVE BANK	011000015	Any number between 5-22 digits	Any number
 
-	$cardNumber=$inData['cardData']['cardNumber']; //only approve for one dollar even, remember to void transaction
-	$expMonth=$inData['cardData']['expMonth'];
-	$expYear=$inData['cardData']['expYear'];
-	$chargeTotal=$inData['cardData']['chargeTotal'];
+*/
 
-	$cardNumber=preg_replace('/[^\S]/', '', $cardNumber);
+static function process($inData, $args="set array('debug'=>true) as second parameter in instantiation"){
 
-	$ch =curl_init("https://ws.firstdataglobalgateway.com/fdggwsapi/services/order.wsdl");
-	$dir = __DIR__;
-	$pemPath=$dir."/../../library/Credentials/FDGGWS_Certificate_WS1001178130._.1/WS1001178130._.1.pem";
-	$keyPath=$dir."/../../library/Credentials/FDGGWS_Certificate_WS1001178130._.1/WS1001178130._.1.key";
-	$sslPw="ckp_1343424713";
-	$acctPassword="WS1001178130._.1:Gh8daJgG";
-
-	$body = "
-		<SOAP-ENV:Envelope xmlns:SOAP-ENV=\"http://schemas.xmlsoap.org/soap/envelope/\">
-			<SOAP-ENV:Header />
-			<SOAP-ENV:Body>
-				<fdggwsapi:FDGGWSApiOrderRequest xmlns:fdggwsapi=\"http://secure.linkpt.net/fdggwsapi/schemas_us/fdggwsapi\">
-					<v1:Transaction xmlns:v1=\"http://secure.linkpt.net/fdggwsapi/schemas_us/v1\">
-						<v1:CreditCardTxType>
-							<v1:Type>sale</v1:Type>
-						</v1:CreditCardTxType>
-						<v1:CreditCardData>
-							<v1:CardNumber>$cardNumber</v1:CardNumber>
-							<v1:ExpMonth>$expMonth</v1:ExpMonth>
-							<v1:ExpYear>$expYear</v1:ExpYear>
-						</v1:CreditCardData>
-						<v1:Payment>
-							<v1:ChargeTotal>$chargeTotal</v1:ChargeTotal>
-						</v1:Payment>
-					</v1:Transaction>
-				</fdggwsapi:FDGGWSApiOrderRequest>
-			</SOAP-ENV:Body>
-		</SOAP-ENV:Envelope>
-	";
+if (gettype($args)=='array' && $args['debug']===true){
+	$production=false; //uses the moneris qa server
+}
+else{
+	$production=true; //uses the moneris production server
+}
 
 
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-	curl_setopt($ch, CURLOPT_SSLCERT, $pemPath);
-	curl_setopt($ch, CURLOPT_SSLKEY, $keyPath);
-	curl_setopt($ch, CURLOPT_SSLKEYPASSWD, $sslPw);
+$cardData=$inData['cardData'];
+$purchaseData=$inData['purchaseData'];
 
-	curl_setopt($ch, CURLOPT_POST, 1);
-	curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: text/xml"));
-	curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-	curl_setopt($ch, CURLOPT_USERPWD, $acctPassword);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	$result = curl_exec($ch);
-	curl_close($ch);
+new Q_Model_Payment_Moneris(); //initialize the class library
 
 
-	$xml=xml_parser_create('');
-	$values=array();
-	$index=array();
-	xml_parse_into_struct($xml, $result, &$values, &$index);
-	$outList=array();
-	for ($i=0, $len=count($values); $i<$len; $i++){
-		$outList[$values[$i]['tag']]=$values[$i]['value'];
-	}
+/************************ Request Variables **********************************/
+if ($production){
+	$parms=Zend_Registry::get('moneris');
+	$store_id=$parms['storeId'];
+	$api_token=$parms['apiToken'];
+}
+else{
+	$store_id='monusqa002';
+	$api_token='qatoken';
+}
 
-	return $outList;
+/************************ Transaction Variables ******************************/
+
+$orderid=$inData['orderId'];
+
+if ($production){
+	$amount=$purchaseData['grandTotal'];
+	$pan=$cardData['cardNumber'];
+	$expiry_date=$cardData['expYear'].$cardData['expMonth'];
+
+// 	$amount='1.00';
+// 	$pan=$parms['tqCardNo'];
+// 	$expiry_date=$parms['tqCardDate'];
+}
+else{
+if (gettype($args)=='array' && isset($args['forceDecline']) && $args['forceDecline']){
+	$amount='1.36'; //this value forces decline
+}
+else{
+	$amount='1.00';
+}
+	$pan='4242424242424242';
+	$expiry_date=1506;
+}
+
+
+
+/************************ CustInfo Object **********************************/
+
+$mpgCustInfo = new mpgCustInfo();
+
+
+/********************* Set E-mail and Instructions **************/
+
+$email =$cardData['emailAdr'];
+$mpgCustInfo->setEmail($email);
+
+$instructions ="PO#/Memo: ".$cardData['poNumber'];
+$mpgCustInfo->setInstructions($instructions);
+
+/********************* Create Billing Array and set it **********/
+
+$nameBits=explode(' ', $cardData['cardName']);
+
+$billing = array( first_name => $nameBits[0],
+                  last_name => $nameBits[1],
+//                   company_name => 'Widget Company Inc.',
+                  address => $cardData['street'],
+                  city => $cardData['city'],
+                  province => $cardData['state'],
+                  postal_code => $cardData['zip'],
+//                   country => 'Canada',
+                  phone_number => $cardData['phoneNumber']);
+//                   fax => '416-555-5555',
+//                   tax1 => '123.45',
+//                   tax2 => '12.34',
+//                   tax3 => '15.45',
+//                   shipping_cost => '456.23');
+
+
+$mpgCustInfo->setBilling($billing);
+
+/********************* Create Shipping Array and set it **********/
+
+// $shipping = array( first_name => 'Joe',
+//                   last_name => 'Thompson',
+//                   company_name => 'Widget Company Inc.',
+//                   address => '111 Bolts Ave.',
+//                   city => 'Toronto',
+//                   province => 'Ontario',
+//                   postal_code => 'M8T 1T8',
+//                   country => 'Canada',
+//                   phone_number => '416-555-5555',
+//                   fax => '416-555-5555',
+//                   tax1 => '123.45',
+//                   tax2 => '12.34',
+//                   tax3 => '15.45',
+//                   shipping_cost => '456.23');
+//
+// $mpgCustInfo->setShipping($shipping);
+
+
+/********************* Create Item Arraya and set them **********/
+
+// $item1 = array (name=>'item 1 name',
+//                 quantity=>'53',
+//                 product_code=>'item 1 product code',
+//                 extended_amount=>'1.00');
+//
+// $mpgCustInfo->setItems($item1);
+//
+//
+// $item2 = array(name=>'item 2 name',
+//                 quantity=>'53',
+//                 product_code=>'item 2 product code',
+//                 extended_amount=>'1.00');
+//
+// $mpgCustInfo->setItems($item2);
+
+
+/************************ Transaction Array **********************************/
+
+$txnArray=array(type=>'us_purchase',
+         order_id=>$orderid,
+         cust_id=>'cust',
+         amount=>$amount,
+         pan=>$pan,
+         expdate=>$expiry_date,
+         crypt_type=>'7',
+//        commcard_invoice=>'kjhgkjgk',
+//          commcard_tax_amount=>'0.15'
+           );
+
+
+/************************ Transaction Object *******************************/
+
+$mpgTxn = new mpgTransaction($txnArray);
+
+/************************ Set CustInfo Object *****************************/
+
+$mpgTxn->setCustInfo($mpgCustInfo);
+
+/************************ Request Object **********************************/
+
+$mpgRequest = new mpgRequest($mpgTxn);
+
+/************************ mpgHttpsPost Object ******************************/
+
+
+
+if ($production){
+	$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+}
+else{
+	$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest, array('host'=>'esplusqa.moneris.com'));
+
+}
+
+/************************ Response Object **********************************/
+
+$mpgResponse=$mpgHttpPost->getMpgResponse();
+
+
+if (false && !$production){ //when you want to see this, change false to true
+	\Q\Utils::dumpCli($mpgHttpPost->getDebug(), 'Moneris debug info');
+}
+
+$outArray=array(
+'responseData'=>$mpgResponse->getMpgResponseData(),
+'usingProdServer'=>$production
+
+);
+return $outArray;
 }
 
 }

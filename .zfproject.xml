@@ -47,6 +47,7 @@
         <modelFile modelName="Base"/>
         <modelFile modelName="Purchase"/>
         <modelFile modelName="Payment"/>
+        <modelFile modelName="Provision"/>
       </modelsDirectory>
       <modulesDirectory>
         <moduleDirectory moduleName="multiPanel">

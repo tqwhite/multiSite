@@ -39,7 +39,7 @@ update:function(control, parameter){
 	var componentName='infoDispatch';
 	switch(control){
 		case 'changePurchaseData':
-			$('#'+this.displayParameters.chargePrice.divId).html('$'+this.purchaseData.subtotal);
+			$('#'+this.displayParameters.chargePrice.divId).html('$'+this.purchaseData.grandTotal);
 			if(this.purchaseData.subtotal>0){
 				this.submitButton.accessFunction('setToReady');
 			}
@@ -139,9 +139,11 @@ submitButtonHandler:function(control, parameter){
 },
 
 catchProcessResult:function(inData){
+	var statusDomObj=$('#'+this.displayParameters.status.divId);
 
-		var statusDomObj=$('#'+this.displayParameters.status.divId);
-	if (inData.status<0){
+	this.purchaseData.processResult=inData;
+console.dir(inData, 'processResult');
+	if (inData.status<1){
 		statusDomObj.html('');
 		var list=inData.messages;
 		for (var i=0, len=list.length; i<len; i++){

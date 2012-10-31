@@ -127,18 +127,44 @@ PRODUCTS;
         //Also, I don't know why it's not being rejected by validateContentStructure() but
         //I need to get this done. Maybe I'll come back to it later. tqii
 
+		$errorList=array();
+
 		$inData=$this->getRequest()->getPost('data');
-		$status=-1; //change it to good (1) when something good happens
+		$status=-1; //change it to good (1) if something good happens
 		$messages=array(array('test', "hello from server"));
 
 
 		$errorList=\Application_Model_Purchase::validate($inData);
-		if (count($errorList)==0){$status=1;}
+		if (count($errorList)==0){
+
+			//incoming data is good, now work on processing
+			$inData['orderId']=$inData['token']=md5(json_encode($inData).time());
+
+			$paymentResult=Application_Model_Payment::process($inData, array('debug'=>true, 'forceDecline'=>false));
+
+			if ($paymentResult['responseData']['ResponseCode']==1){
+				$provisionResult=Application_Model_Provision::process($inData);
+					$status=$provisionResult['status'];
+				if ($provisionResult['status']!=1){
+					$errorList[]=array('provision', $provisionResult['message']);
+				}
+			}
+			else{
+				//less than 1 tells user interface to display error, not success
+				$status=-1*$paymentResult['responseData']['ResponseCode'];
+				$messages[]=$errorList[]=array('cardProcess', $paymentResult['responseData']['Message']);
+			}
+		}
+
 
 		$this->_helper->json(array(
 			'status'=>$status,
 			'messages'=>$errorList,
-			'data'=>array('tmp'=>'test')
+			'data'=>array(
+				'token'=>$inData['orderId'],
+				'provisionResult'=>$provisionResult,
+				'paymentResult'=>$paymentResult
+				)
 		));
     }
 

@@ -247,6 +247,8 @@ font-weight:bold;
 .completionTokenCopy{
 padding:5px;
 font-weight:normal;
+width:350px;
+color:#777
 }
 .completionfinalNote{
 font-size:10pt;

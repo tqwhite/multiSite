@@ -1,5 +1,4 @@
 <%
-console.dir(this);
 qtools.validateProperties({
 	targetObject:this,
 	propList:[
@@ -17,6 +16,9 @@ qtools.validateProperties({
 	],
  source:'simple_store.main.displayCompletion.ejs' });
 
+var tokenValue=this.formData.purchaseData.processResult.data.token;
+var usingProdServer=this.formData.purchaseData.processResult.data.paymentResult.usingProdServer;
+
 var cardData=this.formData.purchaseData.cardData;
 var productDisplayList=this.formData.purchaseData.productDisplayList;
 
@@ -32,10 +34,17 @@ var productDisplayList=this.formData.purchaseData.productDisplayList;
 		prodString+="<tr><td style='text-align:right;'>Tax</td><td>&nbsp;</td><td style='text-align:right;'>$"+this.formData.purchaseData.tax+'</td></tr>';
 		prodString+="<tr><td style='text-align:right;font-weight:bold;border-top:1pt solid gray;'>Total</td><td style='border-top:1pt solid gray;'>&nbsp;</td><td style='font-weight:bold;text-align:right;border-top:1pt solid gray;'>$"+this.formData.purchaseData.grandTotal+'</td></tr>';
 
+if (usingProdServer){
+	var prodServerMessage='';
+}
+else{
+	var prodServerMessage="<div style='font-weight:10pt;color:red;margin-bottom:10px;'>Not a real transaction. Using Test Processing Server</div>";
+}
 
 %>
 <div class='completionContainer'>
 
+<%==prodServerMessage%>
 <div class='completionSummary'>
 <div class='completionSuccessMsg'>Your payment completed successfully!</div>
 <div class='completionInfo'>
@@ -62,7 +71,7 @@ Click this button to update your TRAX account with these new purchases.
 </div>
 
 <div class='completionButtonHolder'>
-<a href='asfsdfasdfsadf' class='updateButton updateButtonReady'>UPDATE</a>
+<a href='assessment.tensigma.org?token=<%=tokenValue%>' class='updateButton updateButtonReady'>UPDATE</a>
 </div>
 
 
@@ -72,7 +81,7 @@ You can also use a bookmark to go to your TRAX account page. There, you can choo
 </div>
 
 <div class='completionTokenDisplay'>
-Your purchase token is: <input class='completionTokenCopy' type='text' value='3f27a1bd64e04aa0a78efbc60b7784bc'>
+Your purchase token is: <input class='completionTokenCopy' type='text' value='<%=tokenValue%>'>
 </div>
 
 <div class='completionfinalNote'>

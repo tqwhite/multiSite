@@ -14,6 +14,10 @@ public function _initExposeStructures(){
 	$config['multiSite']['rootDomainSegment']=ROOT_DOMAIN_SEGMENT; //this allows links among the multiSites to vary from dev to demo to production
 
 	Zend_Registry::set('multiSite', $config['multiSite']);
+
+	Zend_Registry::set('moneris', $config['moneris']);
+
+
 	//$multiSite=Zend_Registry::get('multiSite');
 }
 
