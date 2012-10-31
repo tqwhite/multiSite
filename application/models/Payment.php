@@ -25,7 +25,9 @@ class Application_Model_Payment extends Application_Model_Base
 
 static function process($inData, $args="set array('debug'=>true) as second parameter in instantiation"){
 
-$holdErrorState=error_reporting(E_ALL); //error_reporting(E_ERROR | E_PARSE);
+$holdErrorState=error_reporting(); //error_reporting(E_ERROR | E_PARSE);
+
+error_reporting(E_ERROR | E_PARSE); //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 
 if (gettype($args)=='array' && $args['debug']===true){
 	$production=false; //uses the moneris qa server
