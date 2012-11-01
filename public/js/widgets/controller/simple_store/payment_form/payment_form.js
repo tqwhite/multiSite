@@ -152,6 +152,7 @@ catchProcessResult:function(inData){
 			statusDomObj.append("<span style='margin-left:4px;'>&bull; "+$message+"</span>");
 		}
 		statusDomObj.addClass('badStatus');
+		this.clearModalScreen();
 	}
 	else{
 		if (true){ //this can go away as soon as debugging is well into the past. 'false' makes it so that the payment process can run repeatedly.

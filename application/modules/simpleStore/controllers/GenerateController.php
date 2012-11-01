@@ -141,7 +141,7 @@ PRODUCTS;
 			//incoming data is good, now work on processing
 			$inData['orderId']=$inData['token']=md5(json_encode($inData).time());
 
-			$paymentResult=Application_Model_Payment::process($inData, array('debug'=>true, 'forceDecline'=>false));
+			$paymentResult=Application_Model_Payment::process($inData, array('debug'=>true, 'forceDecline'=>true));
 
 			if ($paymentResult['responseData']['ResponseCode']==1){
 				$provisionResult=Application_Model_Provision::process($inData);
