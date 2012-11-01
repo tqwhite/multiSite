@@ -73,3 +73,25 @@ border:none;
   -webkit-border-radius: 0px; /* Safari, Chrome */
   border-radius: 0px; /* CSS3 */
 }
+
+
+
+.modal1{
+	display:none;
+	background:blue;
+	position:absolute;
+	top:0;
+	left:0;
+
+	filter:alpha(opacity=50);
+	-moz-opacity:0.5;
+	-khtml-opacity: 0.5;
+	opacity: 0.5;
+}
+
+.modalProgressMessage{
+	font-size:24pt;
+	color:white;
+	font-weight:bold;
+	text-align:center;
+}

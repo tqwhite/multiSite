@@ -120,7 +120,7 @@ submitButtonHandler:function(control, parameter){
 
 			var formParams=this.element.formParams();
 			this.purchaseData.cardData=formParams;
-
+			this.assertModalScreen($('.mainContentContainer'), 'processing');
 			Widgets.Models.Purchase.process({
 					paymentServerUrl:this.paymentServerUrl,
 					cardData:formParams,
@@ -142,7 +142,7 @@ catchProcessResult:function(inData){
 	var statusDomObj=$('#'+this.displayParameters.status.divId);
 
 	this.purchaseData.processResult=inData;
-console.dir(inData, 'processResult');
+
 	if (inData.status<1){
 		statusDomObj.html('');
 		var list=inData.messages;
@@ -171,6 +171,32 @@ console.dir(inData, 'processResult');
 
 					}
 	}
+},
+
+modalReceiver:function(control, parameter){
+	var componentName='modalSender';
+	switch(control){
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter; //eg, this.hScroll.accessFunction()
+		break;
+	}
+},
+
+assertModalScreen:function(targetObject, message){
+
+	targetObject.widgets_tools_ui_modal_screen({
+		employerSender:this.callback('modalReceiver'),
+		appearance:{}
+	});
+
+	this.modalSender.accessFunction('setMessage', message);
+},
+
+clearModalScreen:function(){
+	if (typeof(this.modalSender)=='undefined' || typeof(this.modalSender.accessFunction)=='undefined'){return;} //during debugging, I don't always turn on the modal screen
+	this.modalSender.accessFunction('clear');
+
 }
 
 

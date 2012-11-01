@@ -11,8 +11,8 @@ $transaction=array(
 );
 
 $prodList=array(
-	array('prodCode'=>'prodA','quantity'=>'4'),
-	array('prodCode'=>'prodB','quantity'=>'44')
+	array('prodCode'=>'eSurvey','quantity'=>'4'),
+	array('prodCode'=>'activities','quantity'=>'55')
 );
 
 

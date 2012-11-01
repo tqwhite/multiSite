@@ -16,6 +16,8 @@ class SimpleStore_GenerateController extends Q_Controller_Base
     {
        $this->setVariationLayout('layout');
 
+		$contentArray=$this->contentObj->contentArray;
+
 		$serverComm[]=array("fieldName"=>"message", "value"=>'hello from the server via javascript');
 
 				$jsControllerList[]=array(
@@ -27,7 +29,6 @@ class SimpleStore_GenerateController extends Q_Controller_Base
      	$serverComm=$this->_helper->ArrayToServerCommList('controller_startup_list', $jsControllerList);
      	$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
 
-		$contentArray=$this->contentObj->contentArray;
 
 		$this->view->contentArray=$contentArray;
 		$this->view->codeNav=$this->getCodeNav(__method__);

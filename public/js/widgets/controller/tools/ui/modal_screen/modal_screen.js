@@ -48,8 +48,7 @@ draw:function(){
 
 
 	var cleanUpObject=controllerHelper.newCleanUpObject(this.element, this);
-
-	html=$.View(viewName, {
+	html=$.View('//widgets/controller/tools/ui/modal_screen/views/modal_screen.ejs', {
 		scope:this,
 		appearance:this.appearance,
 		cleanUpObject:cleanUpObject,
