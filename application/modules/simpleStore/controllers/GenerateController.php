@@ -145,7 +145,7 @@ PRODUCTS;
 
 			if ($paymentResult['responseData']['ResponseCode']==1){
 				$provisionResult=Application_Model_Provision::process($inData);
-					$status=$provisionResult['status'];
+					$status=1;
 				if ($provisionResult['status']!=1){
 					$errorList[]=array('provision', $provisionResult['message']);
 				}
