@@ -155,7 +155,8 @@ updatePurchase:function(){
 				prodCode:prodCode,
 				quantity:quantity,
 				name:productObj.details.name,
-				price:price
+				price:price,
+				extendedPrice:extendedPrice
 			});
 		}
 	}

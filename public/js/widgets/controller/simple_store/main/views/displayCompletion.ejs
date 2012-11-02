@@ -18,7 +18,7 @@ qtools.validateProperties({
 
 var tokenValue=this.formData.purchaseData.processResult.data.token;
 var usingProdServer=this.formData.purchaseData.processResult.data.paymentResult.usingProdServer;
-
+var purchaseData=this.formData.purchaseData;
 var cardData=this.formData.purchaseData.cardData;
 var productDisplayList=this.formData.purchaseData.productDisplayList;
 
@@ -27,12 +27,10 @@ var productDisplayList=this.formData.purchaseData.productDisplayList;
 	for (var i=0, len=list.length; i<len; i++){
 		var element=list[i];
 		var total=element.price*element.quantity;
-		prodString+="<tr><td style='text-align:right;'>"+element.quantity+'</td><td>'+element.name+'@$'+element.price+"</td><td style='text-align:right;'>"+total+'</td></tr>';
+		prodString+="<tr><td style='text-align:right;'>"+element.quantity+'</td><td>'+element.name+'@$'+element.price+"</td><td style='text-align:right;'>"+element.extendedPrice+'</td></tr>';
 
 	}
-		prodString+="<tr><td style='text-align:right;font-style:italic;border-top:1pt solid gray;'>Subtotal</td><td style='border-top:1pt solid gray;'>&nbsp;</td><td style='font-style:italic;text-align:right;border-top:1pt solid gray;'>$"+this.formData.purchaseData.subtotal+'</td></tr>';
-		prodString+="<tr><td style='text-align:right;'>Tax</td><td>&nbsp;</td><td style='text-align:right;'>$"+this.formData.purchaseData.tax+'</td></tr>';
-		prodString+="<tr><td style='text-align:right;font-weight:bold;border-top:1pt solid gray;'>Total</td><td style='border-top:1pt solid gray;'>&nbsp;</td><td style='font-weight:bold;text-align:right;border-top:1pt solid gray;'>$"+this.formData.purchaseData.grandTotal+'</td></tr>';
+
 
 if (usingProdServer){
 	var prodServerMessage='';
@@ -61,6 +59,9 @@ else{
 
 <table class='completionPurchaseInfo'>
 <%==prodString%>
+	<tr><td style='text-align:right;font-style:italic;border-top:1pt solid gray;'>Subtotal</td><td style='border-top:1pt solid gray;'>&nbsp;</td><td style='font-style:italic;text-align:right;border-top:1pt solid gray;'>$<%=purchaseData.subtotal%></td></tr>
+	<tr><td style='text-align:right;'>Tax</td><td>&nbsp;</td><td style='text-align:right;'>$<%=purchaseData.tax%></td></tr>
+	<tr><td style='text-align:right;font-weight:bold;border-top:1pt solid gray;'>Total</td><td style='border-top:1pt solid gray;'>&nbsp;</td><td style='font-weight:bold;text-align:right;border-top:1pt solid gray;'>$<%=purchaseData.grandTotal%></td></tr>
 </table>
 
 
@@ -71,7 +72,7 @@ Click this button to update your TRAX account with these new purchases.
 </div>
 
 <div class='completionButtonHolder'>
-<a href='assessment.tensigma.org?token=<%=tokenValue%>' class='updateButton updateButtonReady'>UPDATE</a>
+<a href='http://assessment.tensigma.org?token=<%=tokenValue%>' class='updateButton updateButtonReady'>UPDATE</a>
 </div>
 
 

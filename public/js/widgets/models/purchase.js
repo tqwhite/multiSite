@@ -15,7 +15,7 @@ Widgets.Models.Base.extend('Widgets.Models.Purchase',
 		success=success?success:function(){alert('success');};
 		error=error?error:this.defaultError;
 
-console.dir({serverData:data});
+
 		var errors=this.validate(data.cardData);
 		if (errors.length>0){
 			success({status:-1, messages:errors, data:{}});

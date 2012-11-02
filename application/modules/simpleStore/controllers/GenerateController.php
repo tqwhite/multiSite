@@ -141,7 +141,33 @@ PRODUCTS;
 			//incoming data is good, now work on processing
 			$inData['orderId']=$inData['token']=md5(json_encode($inData).time());
 
+if (false){
 			$paymentResult=Application_Model_Payment::process($inData, array('debug'=>true, 'forceDecline'=>false));
+}
+else{
+			$paymentResult=array(
+				'responseData' => array(
+					'ReceiptId' => $inData['orderId'],
+					'ReferenceNum' => '640000030014779980',
+					'ResponseCode' => '001',
+					'ISO' => '00',
+					'AuthCode' => '749314',
+					'TransTime' => '09:54:11',
+					'TransDate' => '2012-11-02',
+					'TransType' => '00',
+					'Complete' => 'true',
+					'Message' => 'APPROVED*',
+					'TransAmount' => '1.00',
+					'CardType' => 'V',
+					'TransID' => '619800-0_10',
+					'TimedOut' => 'false',
+					'Ticket' => 'null'
+				),
+				'usingProdServer' => false
+			);
+}
+
+			$inData['cardData']['cardNumber']=substr($inData['cardData']['cardNumber'], strlen($inData['cardData']['cardNumber'])-4, 4);;
 
 			if ($paymentResult['responseData']['ResponseCode']==1){
 				$provisionResult=Application_Model_Provision::process($inData);
@@ -159,15 +185,108 @@ PRODUCTS;
 		}
 
 
+// $inData['orderId']=$inData['token']=md5(json_encode($inData).time());
+// $inData['cardData']['cardNumber']=substr($inData['cardData']['cardNumber'], strlen($inData['cardData']['cardNumber'])-4, 4);;
+
+		if ($status===1){
+			$contentArray=$this->contentObj->contentArray;
+			$mailSentStatus=$this->sendMail($contentArray, $inData);
+		}
+exit;
 		$this->_helper->json(array(
 			'status'=>$status,
 			'messages'=>$errorList,
 			'data'=>array(
 				'token'=>$inData['orderId'],
 				'provisionResult'=>$provisionResult,
-				'paymentResult'=>$paymentResult
+				'paymentResult'=>$paymentResult,
+				'mailSentStatus'=>$mailSentStatus
 				)
 		));
+    }
+
+    private function sendMail($contentArray, $inData){
+		$customerReceiptSetup=$contentArray['email.ini']['customerReceipt'];
+		$subForms=$customerReceiptSetup['subForms'];
+
+
+		foreach ($subForms as $label=>$data){
+			$inData[$label]='';
+			$subFormData=\Q\Utils::getDottedPath($inData, $data['pathToData']);
+
+			foreach ($subFormData as $label2=>$data2){
+				$inData[$label].=$this->processTemplate($data['template'], $data2);
+			}
+
+		}
+
+
+		$body=$this->processTemplate($customerReceiptSetup['body'], $inData);
+		$subject=$this->processTemplate($customerReceiptSetup['subject'], $inData);
+
+		$toAddress=\Q\Utils::getDottedPath($inData, $customerReceiptSetup['toAddressPath']);
+		$toName=\Q\Utils::getDottedPath($inData, $customerReceiptSetup['toNamePath']);
+
+    	$tr=new Zend_Mail_Transport_Sendmail();
+		Zend_Mail::setDefaultTransport($tr);
+		Zend_Mail::setDefaultFrom($customerReceiptSetup['fromAddress'], $customerReceiptSetup['fromName']);
+		Zend_Mail::setDefaultReplyTo($customerReceiptSetup['fromAddress'], $customerReceiptSetup['fromName']);
+
+		$mail = new Zend_Mail();
+		$mail->setSubject($subject);
+
+		$mail->setBodyHtml($body);
+
+		$mail->addTo('tq@justkidding.com', 'from cmerdc');
+
+		if (isset($customerReceiptSetup['ccEmailAddresses']) && gettype($customerReceiptSetup['ccEmailAddresses'])=='array'){
+			foreach ($customerReceiptSetup['ccEmailAddresses'] as $label=>$data){
+				$mail->addCc($data);
+			}
+		}
+
+		if (isset($customerReceiptSetup['bccEmailAddresses']) && gettype($customerReceiptSetup['bccEmailAddresses'])=='array'){
+			foreach ($customerReceiptSetup['bccEmailAddresses'] as $label=>$data){
+				$mail->addBcc($data);
+			}
+		}
+
+
+		$mail->send($tr);
+
+		Zend_Mail::clearDefaultFrom();
+		Zend_Mail::clearDefaultReplyTo();
+		return $mailStatus=1;
+    }
+
+    private function processTemplate($template, $inData, $debug=false){
+
+		if ($inData.processResult.data.paymentResult.usingProdServer){
+			$inData['prodServerMessage']='';
+		}
+		else{
+			$inData['prodServerMessage']="<div style='font-weight:10pt;color:red;margin-bottom:10px;'>Not a real transaction. Using Test Processing Server</div>";
+		}
+
+
+		foreach ($inData as $label=>$data){
+			if (gettype($data)=='array')
+				foreach ($data as $label2=>$data2){
+					if (gettype($data2)=='string'){
+						if ($debug){echo "$label $label2=$data\n\n";}
+						$template=preg_replace('/<%=+'.$label.'.'.$label2.'%>/', $data2, $template);
+					}
+					else{
+						$template=preg_replace('/<%=+'.$label.'.'.$label2.'%>/', 'arrayResult', $template);
+					}
+				}
+			elseif (gettype($data)=='string'){
+				if ($debug){echo "$label $label2=$data\n\n";}
+				$template=preg_replace('/<%=+'.$label.'%>/', $data, $template);
+			}
+		}
+		if ($debug){exit;}
+		return $template;
     }
 
 } //end of class

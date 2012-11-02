@@ -128,14 +128,14 @@ static function callStack($stringFlag){
 		$line=isset($element['line'])?$element['line']:'';
 		$function=isset($element['function'])?$element['function']:'';
 		$file=$element['file'];
-		
+
 		$outString.="<tr style='background:$currColor;'><td>$i</td><td>{$class}::{$function}</td></tr>";
 
 
 		$outString.="<tr style='background:$currColor;'><td>&nbsp;</td><td>{$prevFile} (line $prevLine)</td></tr>";
 		$outString.="<tr style='background:transparent;'><td colspan='2'>&nbsp;</td></tr>";
-		
-		
+
+
 		$currColor=($currColor==$colorA)?$colorB:$colorA;
 		$prevLine=$line;
 		$prevFile=$file;
@@ -214,6 +214,68 @@ static function getPathElements($path, $count){
 	}
 
 	return preg_replace('/\/$/', '', $outString);
+
+}
+
+/*
+
+
+
+getDottedPath:function(baseObj, subPathString, debug){
+	var target=baseObj,
+		elements;
+		this.getDottedPathLastProgressiveString='';
+
+	var elements=subPathString.split('.');
+
+	if (!subPathString){ return baseObj;}
+
+	if (elements.length<2){
+		return baseObj[subPathString];
+	}
+	else{
+		for (var i=0, len=elements.length; i<len; i++){
+			if (elements[i]){ //mainly eliminates trailing periods but would also eliminate double periods
+				target=target[elements[i]];
+
+				this.getDottedPathLastProgressiveString+=elements[i]+'.';
+				if (typeof(target)=='undefined'){
+					if (debug){ console.dir(elements[i]);}
+					qtools.consoleMessage('bad path='+this.getDottedPathLastProgressiveString);
+					return null;
+				}
+			}
+		}
+	}
+	return target;
+},
+*/
+
+static function getDottedPath($baseObj, $subPathString, $debug=true){
+	$target=$baseObj;
+	global $getDottedPathLastProgressiveString; //since this is static, I don't have a $this to hold it
+
+	$elements=explode('.', $subPathString);
+
+	if (!$subPathString){ return $baseObj; }
+
+	if (count($elements)<2){ echo "exiting\n"; return $baseObj[$subPathString]; }
+	else{
+		for ($i=0, $len=count($elements); $i<$len; $i++){
+			if ($elements[$i]){ //mainly eliminates trailing periods but would also eliminate double periods
+
+				$target=$target[$elements[$i]];
+
+				$getDottedPathLastProgressiveString.=$elements[$i].'.';
+				if (!isset($target)){
+					if ($debug){ echo $elements[$i]."<br/>\n";}
+					echo 'bad path='.$getDottedPathLastProgressiveString."<br/>\n";
+					return '';
+				}
+			}
+		}
+	}
+	return $target;
 
 }
 

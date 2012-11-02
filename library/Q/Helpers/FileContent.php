@@ -202,7 +202,6 @@ public function __get($property){
 	switch($property){
 		case 'contentArray':
 			if (isset($this->contentArray)){return $this->contentArray;}
-
 			$this->contentArray=$this->startFileExamination($this->contentDirPath);
 			$this->contentArray['globalItems']=$this->startFileExamination($this->globalItemsDirectoryPath);
 			$this->promoteGlobals();
