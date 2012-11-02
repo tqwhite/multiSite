@@ -192,7 +192,7 @@ else{
 			$contentArray=$this->contentObj->contentArray;
 			$mailSentStatus=$this->sendMail($contentArray, $inData);
 		}
-exit;
+
 		$this->_helper->json(array(
 			'status'=>$status,
 			'messages'=>$errorList,
