@@ -261,7 +261,7 @@ else{
 
     private function processTemplate($template, $inData, $debug=false){
 
-		if ($inData.processResult.data.paymentResult.usingProdServer){
+		if ( false /*$inData.processResult.data.paymentResult.usingProdServer*/){
 			$inData['prodServerMessage']='';
 		}
 		else{
