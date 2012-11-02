@@ -237,7 +237,7 @@ else{
 
 		$mail->setBodyHtml($body);
 
-		$mail->addTo('tq@justkidding.com', 'from cmerdc');
+		$mail->addTo($toAddress, $toName);
 
 		if (isset($customerReceiptSetup['ccEmailAddresses']) && gettype($customerReceiptSetup['ccEmailAddresses'])=='array'){
 			foreach ($customerReceiptSetup['ccEmailAddresses'] as $label=>$data){
@@ -256,7 +256,7 @@ else{
 
 		Zend_Mail::clearDefaultFrom();
 		Zend_Mail::clearDefaultReplyTo();
-		return $mailStatus=1;
+		return $mailStatus=array('status'=>1, 'toAddress'=>$toAddress, 'toName'=>$toName);
     }
 
     private function processTemplate($template, $inData, $debug=false){
