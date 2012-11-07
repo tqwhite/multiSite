@@ -14,6 +14,9 @@ steal(
 	'./resources/jqueryPlugins/jquery.qprompt.js',
 	'./resources/jqueryPlugins/spin.js',
 
+	'./resources/jqueryPlugins/qtip/jquery.qtip.min.css',
+	'./resources/jqueryPlugins/qtip/jquery.qtip.min.js',
+
 	'./controller/session/register/register.js',
 	'./controller/session/dispatch/dispatch.js',
 	'./controller/session/login/login.js',

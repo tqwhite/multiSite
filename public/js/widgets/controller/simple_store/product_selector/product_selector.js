@@ -41,9 +41,10 @@ update:function(options){
 
 initDisplayProperties:function(){
 
-	nameArray=[];
+	var nameArray=[], name;
 
 	name='priceDisplayContainer'; nameArray.push({name:name});
+	name='priceHoverIdClass'; nameArray.push({name:name});
 
 //	name='cancelButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 
@@ -101,6 +102,7 @@ initDomElements:function(){
 
 
 	this.element.find('input').qprompt();
+	$('[title]', this.element).qtip()
 
 },
 
@@ -120,13 +122,16 @@ keypressHandler:function(control, parameter){
 inputHandler:function(control, parameter){
 	switch(control.type){
 		case 'keyup':
-			this.updatePurchase();
-			var value=$(control.target).attr('value');
+			var targetObj=$(control.target),
+				value=targetObj.attr('value'),
+				parentObj=targetObj.parent();
+			this.updatePurchase(parentObj);
 			if (value>0){
-				$(control.target).parent().addClass('nonZeroProdLine');
+				parentObj.addClass('nonZeroProdLine');
 			}
 			else{
-				$(control.target).parent().removeClass('nonZeroProdLine');
+				parentObj.removeClass('nonZeroProdLine');
+				this.updateLinePrice(parentObj);
 			}
 		break;
 	}
@@ -134,7 +139,7 @@ inputHandler:function(control, parameter){
 	//focusin focusout keydown keyup keypress select
 },
 
-updatePurchase:function(){
+updatePurchase:function(parentObj){
 	var list=this.element.formParams(true).product,
 		totalPrice=0;
 
@@ -145,8 +150,9 @@ updatePurchase:function(){
 		var quantity=1.0*(1.0*list[prodCode]).toFixed(2);
 		if (quantity>0){
 
-			var productObj=qtools.lookupDottedPath(this.productInfo, 'details.prodCode', prodCode),
-				price=1.0*(1.0*productObj.details.price).toFixed(2),
+			var productObj=qtools.lookupDottedPath(this.productInfo, 'prodCode', prodCode),
+				price=this.calcDiscountPrice(productObj, quantity),
+
 				extendedPrice=1.0*(price*quantity).toFixed(2),
 				totalPrice=totalPrice+extendedPrice;
 
@@ -154,7 +160,7 @@ updatePurchase:function(){
 			this.purchaseData.productDisplayList.push({
 				prodCode:prodCode,
 				quantity:quantity,
-				name:productObj.details.name,
+				name:productObj.name,
 				price:price,
 				extendedPrice:extendedPrice
 			});
@@ -165,9 +171,41 @@ updatePurchase:function(){
 	this.purchaseData.tax=this.calcTax();
 	this.purchaseData.grandTotal=this.purchaseData.subtotal+this.purchaseData.tax;
 
-
+	this.updateLinePrice(parentObj, price);
 	this.writePriceDisplay();
 	this.infoDispatchHandler('changePurchaseData');
+},
+
+updateLinePrice:function(parentObj, price){
+	if (typeof(price)=='undefined' ||price===''){price='pricing';}
+	else{ price='$'+price;}
+	parentObj.find('.'+this.displayParameters.priceHoverIdClass.divId).text(price);
+},
+
+calcDiscountPrice:function(productObj, quantity){
+
+if (typeof(productObj.price)!='undefined'){
+	return productObj.price;
+}
+else if (typeof(productObj.discountSchedule)!='undefined'){
+
+	var list=productObj.discountSchedule,
+		previousElementPrice;
+
+	for (var i=0, len=list.length; i<len; i++){
+		var element=list[i];
+
+		if (quantity<element.minCount){
+			return previousElementPrice;
+		}
+		//else
+		previousElementPrice=element.price;
+
+	}
+
+	return previousElementPrice;
+}
+
 },
 
 calcTax:function(){

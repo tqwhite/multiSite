@@ -23,17 +23,35 @@ array_map('applyStyle', $contentArray['globalItems']['CSS']);
 
 $list=$contentArray['products.ini'];
 
-
-
-	$outString="<ul class='serverData' id='productInfo' style='float:left;border:2pt solid #ccc;margin-left:20px;margin-bottom:40px;padding:20px;text-align:left;'>";
+	$json=json_encode($list);
+	$outString="<div class='serverData' id='productInfo' style='display:none;'>$json</div>";
+	$outString.="<ul style='float:left;border:2pt solid #ccc;margin-left:20px;margin-bottom:40px;padding:20px;text-align:left;'>";
 
 		foreach ($list as $label=>$data){
-			$outString.="<li class='datum'>
-					<div class='errata'>{$data['name']} (\${$data['price']})</div>";
+			$outString.="<li class='datum' fieldName='product'>
+					<div fieldName='errata'>{$data['name']} (\${$data['price']})</div>";
 
-			$outString.="<ul class='details'>";
+			$outString.="<ul fieldName='details'>";
 			foreach ($data as $label2=>$data2){
-				$outString.="<li class='$label2' style='margin-left:20px;'>$data2</li>";
+				if (gettype($data2)!='array'){
+					$outString.="<li fieldName='$label2' style='margin-left:20px;'>$data2</li>";
+				}
+				else{
+					$outString.="<ul fieldName='$label2'>";
+					foreach ($data2 as $label3=>$data3){
+						if (gettype($data3)!='array'){
+							$outString.="<li fieldName='$label3' style='margin-left:20px;'>$data3</li>";
+						}
+						else{
+							$outString.="<ul fieldName='$label3'>";
+							foreach ($data3 as $label4=>$data4){
+							$outString.="<li fieldName='$label4' style='margin-left:20px;'>$data4</li>";
+							}
+							$outString.="</ul></li>";
+						}
+					}
+					$outString.="</ul></li>";
+				}
 			}
 			$outString.="</ul></li>";
 		}

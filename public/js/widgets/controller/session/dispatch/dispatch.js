@@ -40,16 +40,18 @@ Widgets.Controller.Base.extend('Widgets.Controller.Session.Dispatch',
 
 			this.controllerStartupList=(typeof(formParams.controller_startup_list)!='undefined')?formParams.controller_startup_list:[];
 
-		var serverDataDomObj=$('.serverData'),
-			serverData={};
 
+
+
+	var serverDataDomObj=$('.serverData'),
+		serverData={};
 
 	var list=serverDataDomObj;
 		this.serverData={};
 
 	for (var i=0, len=list.length; i<len; i++){
 		var element=$(list[i]);
-		serverData[element.attr('id')]=qtools.unpackServerData(element);
+		serverData[element.attr('id')]=JSON.parse(element.text());
 	}
 		this.serverData=serverData;
 

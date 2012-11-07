@@ -1030,7 +1030,7 @@ byObjectProperty:function(fieldName, transformer){
 		}
 	},
 
-unpackServerData:function(serverDataDomObj){
+unpackServerDataORIG:function(serverDataDomObj){
 	//input to this is one <ul> with stuff in item
 
 	var list=$(serverDataDomObj).children();
@@ -1052,6 +1052,69 @@ unpackServerData:function(serverDataDomObj){
 	}
 
 	return outArray;
+},
+
+unpackServerData:function(serverDataDomObj){
+
+var productList=$(serverDataDomObj).children(),
+	outObj={};
+
+for (var i=0, len=productList.length; i<len; i++){
+	var newItem={};
+	var productObj=$(productList[i])
+
+	var productContents=$(productObj).children(),
+		fieldName=productObj.attr('fieldName'),
+		fieldData=productObj.text();
+
+	if(productContents.length<1){
+		newItem[fieldName]=fieldData;
+	}
+	else{
+		newItem2={};
+		for (var j=0, len2=productContents.length; j<len2; j++){
+			var item2=$(productContents[j]),
+				fieldName2=item2.attr('fieldName'),
+				fieldContents2=item2.children(),
+				fieldData2=item2.text();
+
+			if (fieldContents2.length<1){
+				newItem2[fieldName2]=fieldData2;
+			}
+			else{
+				newItem3[fieldName2]={};
+				for (var k=0, len3=productContents[j].length; k<len3; k++){
+					var item3=$(productContents[j][k]),
+						fieldName3=item3.attr('fieldName'),
+						fieldContents3=item3.children(),
+						fieldData3=item3.text();
+
+					if (fieldContents3.length<1){
+						newItem2[fieldName3]=fieldData3;
+					}
+					else{
+
+
+
+
+					}
+
+					newItem2[fieldName3][k]=newItem3;
+				}
+
+
+		}
+		newItem[fieldName2][j]=newItem2;
+	}
+
+
+	outObj[fieldName]=newitem;
+}
+
+
+
+}
+
 }
 
 }
