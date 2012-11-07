@@ -28,8 +28,6 @@ $list=$contentArray['products.ini'];
 	$outString.="<ul style='float:left;border:2pt solid #ccc;margin-left:20px;margin-bottom:40px;padding:20px;text-align:left;'>";
 
 		foreach ($list as $label=>$data){
-			$outString.="<li class='datum' fieldName='product'>
-					<div fieldName='errata'>{$data['name']} (\${$data['price']})</div>";
 
 			$outString.="<ul fieldName='details'>";
 			foreach ($data as $label2=>$data2){
