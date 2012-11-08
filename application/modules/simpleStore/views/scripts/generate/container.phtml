@@ -29,21 +29,21 @@ $list=$contentArray['products.ini'];
 
 		foreach ($list as $label=>$data){
 
-			$outString.="<ul fieldName='details'>";
+			$outString.="<ul fieldName='details' style='margin-left:20px;margin-bottom:20px;'>";
 			foreach ($data as $label2=>$data2){
 				if (gettype($data2)!='array'){
 					$outString.="<li fieldName='$label2' style='margin-left:20px;'>$data2</li>";
 				}
 				else{
-					$outString.="<ul fieldName='$label2'>";
+					$outString.="<ul fieldName='$label2' style='margin-left:20px;'>";
 					foreach ($data2 as $label3=>$data3){
 						if (gettype($data3)!='array'){
-							$outString.="<li fieldName='$label3' style='margin-left:20px;'>$data3</li>";
+							$outString.="<li fieldName='$label3' style='padding-left:20px;'>$data3</li>";
 						}
 						else{
-							$outString.="<ul fieldName='$label3'>";
+							$outString.="<ul fieldName='$label3' style='margin-left:20px;'>";
 							foreach ($data3 as $label4=>$data4){
-							$outString.="<li fieldName='$label4' style='margin-left:20px;'>$data4</li>";
+							$outString.="<li fieldName='$label4' style='padding-left:20px;'>$label4: $data4</li>";
 							}
 							$outString.="</ul></li>";
 						}
@@ -55,13 +55,10 @@ $list=$contentArray['products.ini'];
 		}
 
 	$outString.="</ul>";
-	$outstringTmp=str_replace('productInfo', 'testSecondElement', $outString);
 
 $outString="
-
 <div class='mainContentContainer' style='overflow:hidden;position:relative;'>
 	$outString
-	$outstringTmp
 </div>
 ";
 

@@ -102,7 +102,7 @@ initDomElements:function(){
 
 
 	this.element.find('input').qprompt();
-	$('[title]', this.element).qtip()
+	$('[title]', this.element).qtip();
 
 },
 

@@ -18,11 +18,13 @@ Widgets.Controller.Base.extend('Widgets.Controller.Session.Dispatch',
 	init : function(){
 	//	this.session.saveReferenceLocation();
 		this.getServerData();
-		Widgets.Models.Session.start([], this.callback('receiveSessionStartup'));
+		Widgets.Models.Session.start([], this.callback('receiveSessionStartup')); //receiveSessionStartup initializes the app
 
 		if (window.location.hash){
 			this.startingHash=window.location.hash.replace('#', '');
 		}
+
+		this.initTooltips();
 
 	},
 
@@ -82,6 +84,23 @@ Widgets.Controller.Base.extend('Widgets.Controller.Session.Dispatch',
 			alert('${'+domSelector+').'+controllerName+'() is not a function');
 		}
 
+	},
+
+	initTooltips:function(){
+
+		$('.tooltipAboveCrossLeft[title]', this.element).qtip({
+			position: {
+				my: 'bottom left',
+				at: 'top left'
+			}
+		});
+
+		$('.tooltipAboveCrossRight[title]', this.element).qtip({
+			position: {
+				my: 'bottom right',
+				at: 'top right'
+			}
+		});
 	}
 
 })
