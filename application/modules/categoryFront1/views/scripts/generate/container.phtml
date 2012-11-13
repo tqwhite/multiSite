@@ -9,6 +9,119 @@
 
 
 
+
+//DEFAULT STYLES (for this page type) =========================================================================
+
+$styleString="
+
+.mainContentContainer{
+	width:900px;
+	height:500px;
+	font-size:14pt;
+	overflow:hidden;
+	text-align:left;
+}
+
+.panelItemContainer{
+	font-size:10pt;
+	position:relative;
+}
+
+.panelHeadline{
+	font-size:24pt;margin-bottom:20px;
+}
+.panelSimpleBodyText{
+	margin:0px 10px;
+}
+
+.panelBasicImage{
+}
+
+#panelItemContainer{
+	width:500px;
+}
+
+.contentListActivator{color:#ddeeff;background:#588599;}
+.contentListActivator:hover{color:blue;background:#ddeeff;}
+
+#tabContainer{clear:both;border-bottom:2pt solid gray;height:20px;}
+
+.panelTab{
+}
+
+#feature{
+	float:left;width:265px;
+	margin-top:20px;
+	overflow:hidden;
+	font-size:10pt;
+}
+#featureHeadline{font-weight:bold;font-size:120%;margin-bottom:20px;}
+
+#panelContainer{float:left;width:620px;
+margin-left:13px; /*the boundary between left column and panel*/
+margin-top:20px;overflow:hidden;}
+
+#contentList{
+}
+
+
+
+/*PANEL APPEARANCE =========================================*/
+
+.anythingSlider-default.activeSlider .anythingControls a{
+	color:#ccc !important;
+}
+.anythingSlider-default.activeSlider .anythingWindow {
+	border-color: transparent !important;
+	border-bottom:none !important;
+}
+
+/*TAB PANEL CONTROLS =========================================*/
+
+#panelList{
+	border:4pt solid #e6e3e3;
+	border-radius: 10px 10px 10px 10px;
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
+	width:610px;
+	height:448px;
+}
+
+#panelList ul {
+width:610px;
+height:448px;
+}
+
+.sliderTopControls{
+	padding-left:0px;
+}
+
+.sliderTopControls li{
+	display:inline;
+	margin:0px 3px 0px 3px;
+	padding:0px 20px 0px 20px;
+	background: #e6e3e3;
+	border-radius: 10px 10px 0 0;
+	-moz-border-radius: 10px 10px 0 0;
+	-webkit-border-radius: 10px 10px 0 0;
+}
+
+.tabControlGuts{
+}
+.sliderTopControls a {
+	/* top shadow */
+	color: #2a7fff;
+}
+
+";
+
+
+$this->headStyle()->appendStyle($styleString);
+
+
+
+
+
 //INIT =========================================================================
 
 
@@ -37,7 +150,7 @@ $panelContentString='';
 			$panelContentString.="<li class='switchablePanel' id='$id'>$element</li>";
 			$tabString.="<li class='panelTab'><div class='tabControlGuts'><a class='contentListActivator' href='#$id'>$tabLabel</a></div></li>";
 		}
-$panelContentString="<ul id='contentList' style='height:500px;'>$panelContentString</ul>";
+$panelContentString="<ul id='contentList'>$panelContentString</ul>";
 
 $headBanner=$contentArray['headBanner.html'];
 
@@ -51,8 +164,7 @@ foreach ($elementList as $label=>$data){
 $panelString="
 <div class='mainContentContainer'>
 	<div id='feature'>
-		<div id='featureHeadline'>{$contentArray['featureHeadline.html']}</div>
-		<div id='featureBodyText'>{$contentArray['featureBodyText.html']}</div>
+		{$contentArray['feature.html']}
 	</div>
 	<div id='panelContainer'>
 		<div id='tabList' style='display:none;'>$tabString</div>
@@ -63,17 +175,6 @@ $panelString="
 	</div>
 </div>
 ";
-
-$this->headStyle()->appendStyle("
-.contentListActivator{color:#ddeeff;background:#588599;}
-.contentListActivator:hover{color:blue;background:#ddeeff;}
-#tabContainer{clear:both;border-bottom:2pt solid gray;height:20px;}
-.panelTab{float:left;margin-right:5px;list-style-type: none; padding-left:5px;padding-right:5px;}
-#feature{float:left;width:250px;margin-left:60px;margin-top:20px;}
-#featureHeadline{font-weight:bold;font-size:150%;margin-bottom:20px;}
-#panelContainer{float:left;width:560px;margin-left:50px;margin-top:20px;overflow:hidden;}
-#panelList li {margin-bottom:10px;}
-");
 
 //OUTPUT SECTION =========================================================================
 

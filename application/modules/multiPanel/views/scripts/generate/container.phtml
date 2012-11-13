@@ -24,6 +24,27 @@ else{
 
 
 
+//DEFAULT STYLES (for this page type) =========================================================================
+
+$styleString="
+.panelContainer{
+	width:800px;
+	font-size:10pt;
+}
+.panelHeadline{
+font-size:24pt;margin-bottom:20px;
+}
+.panelSimpleBodyText{
+	margin:0px 10px;
+}
+.panelBasicImage{
+	width:750px;
+	margin:0px 25px;
+}
+";
+
+$this->headStyle()->appendStyle($styleString);
+
 //GLOBAL OVERRIDES (from content dir) =========================================================================
 global $thiss;
 $thiss=$this;

@@ -47,8 +47,7 @@ class CategoryFront1_GenerateController extends Q_Controller_Base
 				array('name'=>'headBanner.html'),
 				array('name'=>'panelItems', 'assertNotEmptyFlag'=>true),
 
-				array('name'=>'featureHeadline.html'),
-				array('name'=>'featureBodyText.html'),
+				array('name'=>'feature.html'),
 			)));
 
 	}
@@ -134,8 +133,7 @@ demoSlideShowA;
 				'pageTitle.txt'=>"TITLE: edit pageTitle.txt to customize",
 				'siteDirectoryUrlList.ini'=>$siteDirectoryUrlList,
 
-				'featureHeadline.html'=>'Edit featureHeadline.html to customize',
-				'featureBodyText.html'=>'Edit featureBodyText.html to customize',
+				'feature.html'=>'Edit feature.html to customize',
 
 			),
 			'images'=>array(

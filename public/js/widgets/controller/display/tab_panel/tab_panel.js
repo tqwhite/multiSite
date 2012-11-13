@@ -62,7 +62,7 @@ Widgets.Controller.Base.extend('Widgets.Controller.Display.TabPanel',
     easing: "swing",
 
     // If true, builds the forwards and backwards buttons
-    buildArrows: true,
+    buildArrows: false, //tqii
     // If true, builds a list of anchor links to link to each panel
     buildNavigation: true,
     // If true, builds the start/stop button
@@ -208,9 +208,11 @@ Widgets.Controller.Base.extend('Widgets.Controller.Display.TabPanel',
         return false;
     }
 
+
 });
 
 
+	$('.anythingSlider').css('padding', '0px');
 
 	}
 })

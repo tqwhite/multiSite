@@ -20,6 +20,9 @@ list-style-type: none;
 border:none;
 }
 
+p{
+margin:10px 0px;
+}
 
 .basicButton{
   	font-weight:bold;

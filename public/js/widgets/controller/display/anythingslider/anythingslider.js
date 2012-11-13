@@ -138,7 +138,7 @@ Widgets.Controller.Base.extend('Widgets.Controller.Display.Anythingslider',
 
     // *********** Times ***********
     // How long between slideshow transitions in AutoPlay mode (in milliseconds)
-    delay: 5000, //tqii, was 3000
+    delay: 7000, //tqii, was 3000
     // Resume slideshow after user interaction, only if autoplayLocked is true (in milliseconds).
     resumeDelay: 10000, //tqii, was 15000
     // How long the slideshow transition takes (in milliseconds)
