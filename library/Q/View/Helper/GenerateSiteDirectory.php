@@ -32,6 +32,7 @@
  		curl_close($handler);
 		$dom = new Zend_Dom_Query($rawPage);
 
+		if (!$rawPage){return "$targetUrl is empty or missing<br/>";}
 
 		if (isset($inData['selector'])){
 			$results = $dom->query($inData['selector']);
