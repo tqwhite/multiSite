@@ -146,7 +146,9 @@ array_map('applyStyle', $contentArray['globalItems']['CSS']);
 
 
 $contentPanel=$contentArray['contentPanel.html'];
+if (isset($contentArray['elements'])){
 $elementList=$contentArray['elements'];
+}
 
 if (is_array($elementList)){
 	foreach ($elementList as $label=>$data){
