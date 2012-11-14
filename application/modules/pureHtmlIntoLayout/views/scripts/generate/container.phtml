@@ -10,7 +10,59 @@
 
 
 //INIT =========================================================================
+$styleString="
 
+.mainContentContainer{
+	width:900px;
+	font-size:14pt;
+	overflow:hidden;
+	text-align:left;
+}
+
+.panelItemContainer{
+	font-size:10pt;
+	position:relative;
+}
+
+.panelHeadline{
+	font-size:24pt;margin-bottom:20px;
+}
+.panelSimpleBodyText{
+	margin:0px 10px;
+}
+
+.panelBasicImage{
+}
+
+#panelItemContainer{
+	width:500px;
+}
+
+.contentListActivator{color:#ddeeff;background:#588599;}
+.contentListActivator:hover{color:blue;background:#ddeeff;}
+
+#tabContainer{clear:both;border-bottom:2pt solid gray;height:20px;}
+
+.panelTab{
+}
+
+#feature{
+	float:left;width:265px;
+	margin-top:20px;
+	overflow:hidden;
+	font-size:10pt;
+}
+#featureHeadline{font-weight:bold;font-size:120%;margin-bottom:20px;}
+
+#panelContainer{float:left;width:620px;
+margin-left:13px; /*the boundary between left column and panel*/
+margin-top:20px;overflow:hidden;}
+
+#contentList{
+}
+";
+
+$this->headStyle()->appendStyle($styleString);
 
 $contentArray=$this->contentArray;
 
@@ -78,18 +130,6 @@ $this->headStyle()->appendStyle($ieStyle, array('conditional'=>"lte IE 7"));
 
 
 
-$controlsString=$this->unorderedListForSelect(
-	$contentArray['headNav.ini']['menu'],
-	array('mainClass'=>'dropdown')
-);
-
-$controlsString=$this->translateUrls($controlsString);
-
-$controlsString="
-<div style='width:1000px;background:#def;height:50px;margin:0px 0px 20px 0px;'>
-	<div style='width:860px;padding-top:20px;margin:0px 70px 20px 70px;'>$controlsString</div>
-</div>";
-
 //GLOBAL OVERRIDES (from content dir) =========================================================================
 global $thiss;
 $thiss=$this;
@@ -105,17 +145,22 @@ array_map('applyStyle', $contentArray['globalItems']['CSS']);
 
 
 
-$outString=$contentArray['contentPanel.html'];
+$contentPanel=$contentArray['contentPanel.html'];
 $elementList=$contentArray['elements'];
 
 if (is_array($elementList)){
 	foreach ($elementList as $label=>$data){
-		$outString=str_replace("elements/$label", $data, $outString);
+		$contentPanel=str_replace("elements/$label", $data, $contentPanel);
 	}
 }
 
 //OUTPUT SECTION =========================================================================
+
+$outString="
+<div class='mainContentContainer'>
+		$contentPanel
+</div>
+";
 ?>
 
-<?php  echo $controlsString;?>
 <?php  echo $outString;?>

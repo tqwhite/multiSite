@@ -20,7 +20,10 @@ $productJson=json_encode($outArray['productList']);
 $transactionJson=json_encode($outArray['transactionInfo']);
 
 //	$ch =curl_init("http://store.demo.tensigma.org/test/index.php");
-	$ch =curl_init("https://trax.tensigma.org/demoassessment/receivetoken.aspx");
+	$simpleStore=Zend_Registry::get('simpleStore');
+	$url=$simpleStore['provision']['url'];
+	echo "url=$url";
+	$ch =curl_init($url);
 
 //	$ch =curl_init("http://store.demo.qschooltech.com/test/index.php");
 	curl_setopt($ch, CURLOPT_POST, true);
