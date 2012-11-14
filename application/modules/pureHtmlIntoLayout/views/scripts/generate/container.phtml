@@ -150,7 +150,7 @@ if (isset($contentArray['elements'])){
 $elementList=$contentArray['elements'];
 }
 
-if (is_array($elementList)){
+if (isset($elementList) && is_array($elementList)){
 	foreach ($elementList as $label=>$data){
 		$contentPanel=str_replace("elements/$label", $data, $contentPanel);
 	}
