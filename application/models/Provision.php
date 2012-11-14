@@ -22,7 +22,6 @@ $transactionJson=json_encode($outArray['transactionInfo']);
 //	$ch =curl_init("http://store.demo.tensigma.org/test/index.php");
 	$simpleStore=Zend_Registry::get('simpleStore');
 	$url=$simpleStore['provision']['url'];
-	echo "url=$url";
 	$ch =curl_init($url);
 
 //	$ch =curl_init("http://store.demo.qschooltech.com/test/index.php");
