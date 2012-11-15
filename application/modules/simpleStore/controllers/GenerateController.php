@@ -139,7 +139,6 @@ PRODUCTS;
         //Also, I don't know why it's not being rejected by validateContentStructure() but
         //I need to get this done. Maybe I'll come back to it later. tqii
 
-
     	$simpleStoreParms=Zend_Registry::get('simpleStore');
     	if (isset($simpleStoreParms['useCardProdServer'])){
 	    	$this->useCardProdServer=$simpleStoreParms['useCardProdServer'];
