@@ -2,6 +2,9 @@
 
 class SimpleStore_GenerateController extends Q_Controller_Base
 {
+
+	private $useCardProdServer;
+
     public function init() //this is called by the Zend __construct() method
     {
         parent::init(array('controllerType'=>'cms'));
@@ -136,11 +139,20 @@ PRODUCTS;
         //Also, I don't know why it's not being rejected by validateContentStructure() but
         //I need to get this done. Maybe I'll come back to it later. tqii
 
+
+    	$simpleStoreParms=Zend_Registry::get('simpleStore');
+    	if (isset($simpleStoreParms['useCardProdServer'])){
+	    	$this->useCardProdServer=$simpleStoreParms['useCardProdServer'];
+		}
+		else{
+			$this->useCardProdServer=true;
+		}
+
 		$errorList=array();
 
 		$inData=$this->getRequest()->getPost('data');
 		$status=-1; //change it to good (1) if something good happens
-		$messages=array(array('test', "hello from server"));
+		$messages=array(array('default', "Nothing has gone wrong"));
 
 
 		$errorList=\Application_Model_Purchase::validate($inData);
@@ -149,7 +161,6 @@ PRODUCTS;
 			//incoming data is good, now work on processing
 			$inData['orderId']=$inData['token']=md5(json_encode($inData).time());
 
-		$this->useCardProdServer=true;
 
 		if (!$this->freeCardNo($inData['cardData']['cardNumber'])){
 					$paymentResult=Application_Model_Payment::process($inData, array('debug'=>!$this->useCardProdServer, 'forceDecline'=>false));
@@ -179,6 +190,7 @@ PRODUCTS;
 				'usingProdServer' => $this->useCardProdServer,
 				'isFreeCard'=> $firstFour
 			);
+			$messages=array(array('cardProcess', "No charge has been made to a credit card"));
 }
 
 			$inData['cardData']['cardNumber']=substr($inData['cardData']['cardNumber'], strlen($inData['cardData']['cardNumber'])-4, 4);;
