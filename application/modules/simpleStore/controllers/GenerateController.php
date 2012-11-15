@@ -14,6 +14,9 @@ class SimpleStore_GenerateController extends Q_Controller_Base
 
     public function containerAction()
     {
+    	$simpleStoreParms=Zend_Registry::get('simpleStore');
+    	$redemptionUrl=$simpleStoreParms['redemption']['url'];
+
        $this->setVariationLayout('layout');
 
 		$contentArray=$this->contentObj->contentArray;
@@ -23,7 +26,12 @@ class SimpleStore_GenerateController extends Q_Controller_Base
 				$jsControllerList[]=array(
 				"domSelector"=>".mainContentContainer",
 				"controllerName"=>'widgets_simple_store_main',
-				"parameters"=>json_encode(array('paymentServerUrl'=>'http://'.$_SERVER['HTTP_HOST'].'/simpleStore/generate/process'))
+				"parameters"=>json_encode(
+					array(
+						'paymentServerUrl'=>'http://'.$_SERVER['HTTP_HOST'].'/simpleStore/generate/process',
+						'redemptionUrl'=>$redemptionUrl
+					)
+				)
 			);
 
      	$serverComm=$this->_helper->ArrayToServerCommList('controller_startup_list', $jsControllerList);
@@ -141,10 +149,15 @@ PRODUCTS;
 			//incoming data is good, now work on processing
 			$inData['orderId']=$inData['token']=md5(json_encode($inData).time());
 
-if (false){
-			$paymentResult=Application_Model_Payment::process($inData, array('debug'=>true, 'forceDecline'=>false));
-}
-else{
+		$this->useCardProdServer=true;
+
+		if (!$this->freeCardNo($inData['cardData']['cardNumber'])){
+					$paymentResult=Application_Model_Payment::process($inData, array('debug'=>!$this->useCardProdServer, 'forceDecline'=>false));
+					$paymentResult['isFreeCard']=false;
+					$paymentResult['usingProdServer']=$this->useCardProdServer;
+		}
+		else{
+			$firstFour=substr($inData['cardData']['cardNumber'], 0, 4);
 			$paymentResult=array(
 				'responseData' => array(
 					'ReceiptId' => $inData['orderId'],
@@ -163,7 +176,8 @@ else{
 					'TimedOut' => 'false',
 					'Ticket' => 'null'
 				),
-				'usingProdServer' => false
+				'usingProdServer' => $this->useCardProdServer,
+				'isFreeCard'=> $firstFour
 			);
 }
 
@@ -261,7 +275,7 @@ else{
 
     private function processTemplate($template, $inData, $debug=false){
 
-		if ( false /*$inData.processResult.data.paymentResult.usingProdServer*/){
+		if ( $this->useCardProdServer){
 			$inData['prodServerMessage']='';
 		}
 		else{
@@ -287,6 +301,19 @@ else{
 		}
 		if ($debug){exit;}
 		return $template;
+    }
+
+    private function freeCardNo($cardNo){
+    	$prefix=substr($cardNo, 0, 4);
+    	switch ($prefix){
+    		case '8888':
+    			$status=true;
+    		break;
+    		default:
+    			$status=false;
+    		break;
+    	}
+    	return $status;
     }
 
 } //end of class

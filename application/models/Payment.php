@@ -63,19 +63,18 @@ if ($production){
 	$pan=$cardData['cardNumber'];
 	$expiry_date=$cardData['expYear'].$cardData['expMonth'];
 
-// 	$amount='1.00';
-// 	$pan=$parms['tqCardNo'];
-// 	$expiry_date=$parms['tqCardDate'];
+//  	$amount='1.00';
+
 }
 else{
-if (gettype($args)=='array' && isset($args['forceDecline']) && $args['forceDecline']){
-	$amount='1.36'; //this value forces decline
-}
-else{
-	$amount='1.00';
-}
-	$pan='4242424242424242';
-	$expiry_date=1506;
+	if (gettype($args)=='array' && isset($args['forceDecline']) && $args['forceDecline']){
+		$amount='1.36'; //this value forces decline
+	}
+	else{
+		$amount='1.00'; //this is only valid success value on qa server
+	}
+		$pan='4242424242424242';
+		$expiry_date=1506;
 }
 
 

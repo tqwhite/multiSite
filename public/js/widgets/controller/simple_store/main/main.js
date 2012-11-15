@@ -23,6 +23,7 @@ init: function(el, options) {
 		targetScope: this, //will add listed items to targetScope
 		propList:[
 			{name:'paymentServerUrl'},
+			{name:'redemptionUrl'},
 			{name:'serverData'}
 		],
 		source:this.constructor._fullName
@@ -135,100 +136,13 @@ displayCompletion:function(){
 			viewHelper:this.viewHelper,
 			formData:{
 				serverData:this.serverData,
-				purchaseData:this.purchaseData
+				purchaseData:this.purchaseData,
+				redemptionUrl:this.redemptionUrl
 			}
 		})
 		);
 	this.element.html(html);
 }
-
-/*
-submitButtonHandler:function(control, parameter){
-	var componentName='submitButton';
-	switch(control){
-		case 'click':
-
-			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
-			else{return;}
-
-			GoodEarthStore.Models.Purchase.process({
-					cardData:this.element.formParams(),
-					purchase:this.purchases,
-					account:this.account
-				},
-				this.callback('catchProcessResult'));
-		break;
-		case 'setAccessFunction':
-			if (!this[componentName]){this[componentName]={};}
-			this[componentName].accessFunction=parameter;
-		break;
-	}
-	//change dblclick mousedown mouseover mouseout dblclick
-	//focusin focusout keydown keyup keypress select
-},
-
-
-cancelButtonHandler:function(control, parameter){
-	var componentName='cancelButton';
-	switch(control){
-		case 'click':
-
-			if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
-			else{return;}
-
-			this.dashboardContainer[this.returnClassName](this.returnClassOptions);
-		break;
-		case 'setAccessFunction':
-			if (!this[componentName]){this[componentName]={};}
-			this[componentName].accessFunction=parameter;
-		break;
-	}
-	//change dblclick mousedown mouseover mouseout dblclick
-	//focusin focusout keydown keyup keypress select
-},
-
-catchProcessResult:function(inData){
-		var statusDomObj=$('#'+this.displayParameters.status.divId);
-	if (inData.status<0){
-		statusDomObj.html('');
-		var list=inData.messages;
-		for (var i=0, len=list.length; i<len; i++){
-			var element=list[i];
-			$message=element[1]?element[1]:'Unknown processor error, contact tech support'; //element[0] is fieldname or category, element[1] is message
-			statusDomObj.append("<div style=color:red;margin-left:4px;'>"+$message+"</div>");
-		}
-	}
-	else{
-		if (true){ //this can go away as soon as debugging is well into the past. 'false' makes it so that the payment process can run repeatedly.
-
-			switch(inData.status.toString()){
-				case '1':
-					$('#'+this.displayParameters.submitButton.divId).remove();
-					$('#'+this.displayParameters.cancelButton.divId).remove();
-					$('#'+this.displayParameters.entryContainer.divId).html($.View('//good_earth_store/controller/customer/checkout/views/approved.ejs'));
-					break;
-				case '2':
-					$('#'+this.displayParameters.submitButton.divId).remove();
-					$('#'+this.displayParameters.cancelButton.divId).remove();
-					$('#'+this.displayParameters.entryContainer.divId).html($.View('//good_earth_store/controller/customer/checkout/views/deferred.ejs'));
-					break;
-				case '3':
-					statusDomObj.append("<div style=color:red;margin-left:4px;'>Repeat</div>");
-					break;
-				case '4':
-					$('#'+this.displayParameters.submitButton.divId).remove();
-					$('#'+this.displayParameters.cancelButton.divId).remove();
-					$('#'+this.displayParameters.entryContainer.divId).html($.View('//good_earth_store/controller/customer/checkout/views/fr.ejs'));
-					break;
-
-					break;
-			}
-
-
-					}
-	}
-},
-*/
 
 })
 
