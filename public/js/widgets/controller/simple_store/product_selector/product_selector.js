@@ -125,6 +125,10 @@ inputHandler:function(control, parameter){
 			var targetObj=$(control.target),
 				value=targetObj.attr('value'),
 				parentObj=targetObj.parent();
+
+			$('input', this.element).attr('value', '0').each(function(){$(this).parent().removeClass('nonZeroProdLine')});
+			targetObj.attr('value', value);
+
 			this.updatePurchase(parentObj);
 			if (value>0){
 				parentObj.addClass('nonZeroProdLine');
@@ -166,6 +170,7 @@ updatePurchase:function(parentObj){
 			});
 		}
 	}
+
 	this.totalPrice=1.0*totalPrice.toFixed(2);
 	this.purchaseData.subtotal=this.totalPrice;
 	this.purchaseData.tax=this.calcTax();
@@ -184,10 +189,10 @@ updateLinePrice:function(parentObj, price){
 
 calcDiscountPrice:function(productObj, quantity){
 
-if (typeof(productObj.price)!='undefined'){
-	return productObj.price;
-}
-else if (typeof(productObj.discountSchedule)!='undefined'){
+	if (typeof(productObj.price)!='undefined'){
+		return productObj.price;
+	}
+	else if (typeof(productObj.discountSchedule)!='undefined'){
 
 	var list=productObj.discountSchedule,
 		previousElementPrice;
