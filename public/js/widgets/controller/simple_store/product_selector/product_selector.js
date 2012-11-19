@@ -109,7 +109,7 @@ initDomElements:function(){
 keypressHandler:function(control, parameter){
 	switch(control.type){
 		case 'keypress':
-			if ((control.which<48 || control.which>57) && [8, 9, 0].indexOf(control.which)<0){ //only numbers in this form
+			if ((control.which<48 || control.which>57) && qtools.indexOf([8, 9, 0], control.which)<0){ //only numbers in this form
 				control.preventDefault();
 				return false
 			}
@@ -122,7 +122,7 @@ keypressHandler:function(control, parameter){
 inputHandler:function(control, parameter){
 	switch(control.type){
 		case 'keyup':
-			if ((control.which<48 || control.which>57) || ([16, 9].indexOf(control.which)>-1)){return;}
+			if ((control.which<48 || control.which>57) || (qtools.indexOf([16, 9], control.which)>-1)){return;}
 			var targetObj=$(control.target),
 				value=targetObj.attr('value'),
 				parentObj=targetObj.parent();

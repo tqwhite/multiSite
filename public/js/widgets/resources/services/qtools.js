@@ -1115,6 +1115,29 @@ for (var i=0, len=productList.length; i<len; i++){
 
 }
 
+},
+
+indexOf:function(haystack, needle){
+
+	if (typeof(haystack.indexOf)=='function'){
+		return haystack.indexOf(needle);
+	}
+	else if (qtools.toType(haystack)=='array'){
+
+		var list=haystack;
+		for (var i=0, len=list.length; i<len; i++){
+
+			if (list[i]==needle){return i;}
+
+		}
+
+		return -1;
+
+	}
+	else{
+		throw "qtools.indexOf() says, Haystack is not a supported type ("+typeof(haystack)+")";
+	}
+
 }
 
 }
