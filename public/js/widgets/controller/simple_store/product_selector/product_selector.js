@@ -212,7 +212,7 @@ calcTax:function(){
 //	this.infoDispatchHandler('getStateCode');
 //	if (stateCode has tax value) calc tax
 //else
-	return 1.25;
+	return 0; //pending someone deciding they want to collect tax after all
 },
 
 writePriceDisplay:function(){

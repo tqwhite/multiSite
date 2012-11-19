@@ -2,7 +2,7 @@
 /*micro clearfix, container with class='blah cf' will contain floating things inside
 thanks: http://themergency.com/css-clearfix-demystified/*/
 
-.cf:before, .cf:after { content: "X"; display: table; }
+.cf:before, .cf:after { display: table; }
 .cf:after { clear: both; }
 .cf { zoom: 1; }
 
@@ -16,12 +16,12 @@ body {
 
 ul
 {
-list-style-type: none;
-border:none;
+	list-style-type: none;
+	border:none;
 }
 
 p{
-margin:10px 0px;
+	margin:10px 0px;
 }
 
 .basicButton{

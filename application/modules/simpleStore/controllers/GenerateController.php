@@ -138,6 +138,7 @@ PRODUCTS;
         //a directory called 'default'.
         //Also, I don't know why it's not being rejected by validateContentStructure() but
         //I need to get this done. Maybe I'll come back to it later. tqii
+        //arrgggh!!
 
     	$simpleStoreParms=Zend_Registry::get('simpleStore');
     	if (isset($simpleStoreParms['useCardProdServer'])){
@@ -153,6 +154,7 @@ PRODUCTS;
 		$status=-1; //change it to good (1) if something good happens
 		$messages=array(array('default', "Nothing has gone wrong"));
 
+		$firstFour=substr($inData['cardData']['cardNumber'], 0, 4);
 
 		$errorList=\Application_Model_Purchase::validate($inData);
 		if (count($errorList)==0){
@@ -167,7 +169,6 @@ PRODUCTS;
 					$paymentResult['usingProdServer']=$this->useCardProdServer;
 		}
 		else{
-			$firstFour=substr($inData['cardData']['cardNumber'], 0, 4);
 			$paymentResult=array(
 				'responseData' => array(
 					'ReceiptId' => $inData['orderId'],
@@ -195,10 +196,16 @@ PRODUCTS;
 			$inData['cardData']['cardNumber']=substr($inData['cardData']['cardNumber'], strlen($inData['cardData']['cardNumber'])-4, 4);;
 
 			if ($paymentResult['responseData']['ResponseCode']==1){
-				$provisionResult=Application_Model_Provision::process($inData);
+				if ($firstFour!='8881'){
+					$provisionResult=Application_Model_Provision::process($inData);
+						$status=1;
+					if ($provisionResult['status']!=1){
+						$errorList[]=array('provision', $provisionResult['message']);
+					}
+				}
+				else{
 					$status=1;
-				if ($provisionResult['status']!=1){
-					$errorList[]=array('provision', $provisionResult['message']);
+					$inData['orderId']='Testing. Not Token Created';
 				}
 			}
 			else{
@@ -317,6 +324,7 @@ PRODUCTS;
     private function freeCardNo($cardNo){
     	$prefix=substr($cardNo, 0, 4);
     	switch ($prefix){
+    		case '8881':
     		case '8888':
     			$status=true;
     		break;

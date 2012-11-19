@@ -36,7 +36,7 @@ else{
 
 if (typeof(purchaseData.tax)!='undefined'){
 	var taxAmount=purchaseData.tax.toFixed(2);
-	var taxString="<tr><td>Tax:</td><td style='text-align:right;'>$"+taxAmount+"</td></tr>";
+	var taxString="<tr style=display:none;'><td>Tax:</td><td style='text-align:right;'>$"+taxAmount+"</td></tr>";
 }
 else{
 	var taxString='';

@@ -64,6 +64,23 @@ wrapDataForReturn:function(args, passByReference){
 			outObj[fieldName]=args[fieldName];
 		}
 	return outObj;
+},
+
+cleanJson:function(inData){
+	var tmp=this.executeClean(inData),
+		data=JSON.parse(tmp);
+	return data.data;
+},
+
+executeClean:function(inData){
+
+				return $.ajax({
+				async:true,
+				url: 'test/utility',
+				type: 'post',
+				dataType: 'json',
+				data: {data:inData.toString()}
+			});
 }
 },
 /* @Prototype */

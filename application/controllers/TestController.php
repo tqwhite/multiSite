@@ -94,7 +94,9 @@ class TestController extends Zend_Controller_Action
 
     public function utilityAction()
     {
-		$this->view->message='hello from test/utility';
+
+		$inData=$this->getRequest()->getPost('data');
+		$this->_helper->json($inData);
     }
 
 
