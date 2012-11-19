@@ -206,6 +206,7 @@ PRODUCTS;
 				else{
 					$status=1;
 					$inData['orderId']='Testing. Not Token Created';
+					$provisionResult=array();
 				}
 			}
 			else{
