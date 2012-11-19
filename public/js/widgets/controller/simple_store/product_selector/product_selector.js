@@ -122,12 +122,14 @@ keypressHandler:function(control, parameter){
 inputHandler:function(control, parameter){
 	switch(control.type){
 		case 'keyup':
+			if ((control.which<48 || control.which>57) || ([16, 9].indexOf(control.which)>-1)){return;}
 			var targetObj=$(control.target),
 				value=targetObj.attr('value'),
 				parentObj=targetObj.parent();
 
-			$('input', this.element).attr('value', '0').each(function(){$(this).parent().removeClass('nonZeroProdLine')});
-			targetObj.attr('value', value);
+				$('input', this.element).attr('value', '0').each(function(){$(this).parent().removeClass('nonZeroProdLine')});
+				targetObj.attr('value', value);
+
 
 			this.updatePurchase(parentObj);
 			if (value>0){
