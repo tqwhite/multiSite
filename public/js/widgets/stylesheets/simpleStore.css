@@ -335,3 +335,44 @@ padding:1px 5px 1px 5px;
 .priceHover:hover{
 color:green;
 }
+
+.printButton{
+	font-size:7pt;
+	display:inline;
+  	font-weight:normal;
+	border-top:1pt solid gray;
+	cursor:pointer;
+	border-left:1pt solid gray;
+	border-right:1pt solid black;
+	border-bottom:1pt solid black;
+	text-align:center;
+	padding-left:2px;
+	padding-right:2px;
+	padding-top:2px;
+	width:28px;
+	height:14px;
+	margin-right:10px;
+	margin-top:10px;
+  -moz-border-radius: 4px; /* Firefox */
+  -webkit-border-radius: 4px; /* Safari, Chrome */
+  border-radius: 4px; /* CSS3 */
+	-webkit-box-shadow:2px 2px 5px rgba(0, 0, 0, .5);
+	   -moz-box-shadow:2px 2px 5px rgba(0, 0, 0, .5);
+	        box-shadow:2px 2px 5px rgba(0, 0, 0, .5);
+}
+
+.printButtonReady{
+	background:#D2E6D2;
+	color:black;
+  -moz-border-radius: 4px; /* Firefox */
+  -webkit-border-radius: 4px; /* Safari, Chrome */
+  border-radius: 4px; /* CSS3 */
+}
+
+.printButton:hover{
+	background:none;
+	color:red;
+  -moz-border-radius: 4px; /* Firefox */
+  -webkit-border-radius: 4px; /* Safari, Chrome */
+  border-radius: 4px; /* CSS3 */
+}

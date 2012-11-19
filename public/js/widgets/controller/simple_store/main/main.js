@@ -61,6 +61,7 @@ initDisplayProperties:function(){
 	name='paymentFormContainer'; nameArray.push({name:name});
 
 	name='infoDispatch'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+	name='printButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -135,6 +136,7 @@ displayCompletion:function(){
 			displayParameters:this.displayParameters,
 			viewHelper:this.viewHelper,
 			formData:{
+				displayParameters:this.displayParameters,
 				serverData:this.serverData,
 				purchaseData:this.purchaseData,
 				redemptionUrl:this.redemptionUrl
@@ -142,6 +144,11 @@ displayCompletion:function(){
 		})
 		);
 	this.element.html(html);
+	$('#'+this.displayParameters.printButton.divId).click(this.displayParameters.printButton.handler);
+},
+
+printButtonHandler:function(control, parameter){
+	window.print();
 }
 
 })

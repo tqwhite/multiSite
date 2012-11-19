@@ -39,7 +39,7 @@ update:function(control, parameter){
 	var componentName='infoDispatch';
 	switch(control){
 		case 'changePurchaseData':
-			$('#'+this.displayParameters.chargePrice.divId).html('$'+this.purchaseData.grandTotal);
+			$('#'+this.displayParameters.chargePrice.divId).html('$'+this.purchaseData.grandTotal.toFixed(2));
 			if(this.purchaseData.subtotal>0){
 				this.submitButton.accessFunction('setToReady');
 			}
@@ -105,7 +105,7 @@ initDomElements:function(){
 	});
 
 
-//	this.element.find('input').qprompt();
+	this.element.find('input').qprompt();
 
 },
 
@@ -119,6 +119,9 @@ submitButtonHandler:function(control, parameter){
 			else{return;}
 
 			var formParams=this.element.formParams();
+
+			if (formParams.poNumber=='optional'){formParams.poNumber='';}
+
 			this.purchaseData.cardData=formParams;
 			this.assertModalScreen($('.mainContentContainer'), 'processing');
 			Widgets.Models.Purchase.process({

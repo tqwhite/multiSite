@@ -11,6 +11,12 @@ qtools.validateProperties({
 qtools.validateProperties({
 	targetObject:formData,
 	propList:[
+		{name:'displayParameters'}
+	],
+ source:'simple_store.main.displayCompletion.ejs' });
+qtools.validateProperties({
+	targetObject:formData,
+	propList:[
 		{name:'purchaseData'},
 		{name:'serverData'}
 	],
@@ -27,7 +33,7 @@ var productDisplayList=this.formData.purchaseData.productDisplayList;
 	for (var i=0, len=list.length; i<len; i++){
 		var element=list[i];
 		var total=element.price*element.quantity;
-		prodString+="<tr><td style='text-align:right;'>"+element.quantity+'</td><td>'+element.name+'@$'+element.price+"</td><td style='text-align:right;'>"+element.extendedPrice+'</td></tr>';
+		prodString+="<tr><td style='text-align:right;'>"+element.quantity+'</td><td>'+element.name+'@$'+element.price+"</td><td style='text-align:right;'>"+element.extendedPrice.toFixed(2)+'</td></tr>';
 
 	}
 
@@ -39,6 +45,12 @@ else{
 	var prodServerMessage="<div style='font-weight:10pt;color:red;margin-bottom:10px;'>Not a real transaction. Using Test Processing Server</div>";
 }
 
+if (purchaseData.tax){
+	var taxString='$'+purchaseData.tax.toFixed(2);
+}
+else{
+	var taxString='-';
+}
 %>
 <div class='completionContainer'>
 
@@ -59,9 +71,9 @@ else{
 
 <table class='completionPurchaseInfo'>
 <%==prodString%>
-	<tr><td style='text-align:right;font-style:italic;border-top:1pt solid gray;'>Subtotal</td><td style='border-top:1pt solid gray;'>&nbsp;</td><td style='font-style:italic;text-align:right;border-top:1pt solid gray;'>$<%=purchaseData.subtotal%></td></tr>
-	<tr><td style='text-align:right;'>Tax</td><td>&nbsp;</td><td style='text-align:right;'>$<%=purchaseData.tax%></td></tr>
-	<tr><td style='text-align:right;font-weight:bold;border-top:1pt solid gray;'>Total</td><td style='border-top:1pt solid gray;'>&nbsp;</td><td style='font-weight:bold;text-align:right;border-top:1pt solid gray;'>$<%=purchaseData.grandTotal%></td></tr>
+	<tr><td style='text-align:right;font-style:italic;border-top:1pt solid gray;'>Subtotal</td><td style='border-top:1pt solid gray;'>&nbsp;</td><td style='font-style:italic;text-align:right;border-top:1pt solid gray;'>$<%=purchaseData.subtotal.toFixed(2)%></td></tr>
+	<tr><td style='text-align:right;'>Tax</td><td>&nbsp;</td><td style='text-align:right;'><%=taxString%></td></tr>
+	<tr><td style='text-align:right;font-weight:bold;border-top:1pt solid gray;'>Total</td><td style='border-top:1pt solid gray;'>&nbsp;</td><td style='font-weight:bold;text-align:right;border-top:1pt solid gray;'>$<%=purchaseData.grandTotal.toFixed(2)%></td></tr>
 </table>
 
 
@@ -86,7 +98,7 @@ Your purchase token is: <input class='completionTokenCopy' type='text' value='<%
 </div>
 
 <div class='completionfinalNote'>
-This information, plus a receipt, is being emailed to you but it's a good idea to print this page.
+This information, plus a receipt, is being emailed to you but it's a good idea to print this page. <div class='printButton printButtonReady' id='<%=this.displayParameters.printButton.divId%>'>PRINT</div>
 </div>
 
 </div>
