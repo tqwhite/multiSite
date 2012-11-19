@@ -37,7 +37,7 @@ qtools.validateProperties({
 			}
 			priceTable+="</table>";
 			var tooltip="<div style=margin-bottom:10px;>"+element.description+"</div>"+priceTable;
-			prodString+="<div><input type='text' name='product["+element.prodCode+"]' class='numberEntry' prompt='0'><span  title='"+tooltip+"'>"+element.name+" (<span class='priceHover "+displayParameters.priceHoverIdClass.divId+"'>pricing</span>)</div>";
+			prodString+="<div><input type='text' name='product["+element.prodCode+"]' class='numberEntry' prompt='0'><span  title='"+tooltip+"'>"+element.name+" (<span class='priceHover "+displayParameters.priceHoverIdClass.divId+"'>pricing</span>)</span></div>";
 		}
 		else if (typeof(element.price)!='undefined'){
 			prodString+="<div><input type='text' name='product["+element.prodCode+"]' class='numberEntry' prompt='0'><span  title='<div style=margin-bottom:10px;>"+element.description+"</div>'>"+element.name+" ($"+element.price+" each)</span></div>";
@@ -47,7 +47,7 @@ qtools.validateProperties({
 %>
 <div class='prodListTitle'>
 How Many Do You Want?
-<span style='font-size:50%;font-weight:normal;color:gray;'> (Only one survey type per purchase.)</span>
+<div style='font-size:50%;font-weight:normal;color:gray;'> (Only one survey type per purchase.)</div>
 </div>
 <div class='prodSelectionContainer'>
 <%==prodString%>
