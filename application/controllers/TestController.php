@@ -95,8 +95,8 @@ class TestController extends Zend_Controller_Action
     public function utilityAction()
     {
 
-		$inData=$this->getRequest()->getPost('data');
-		$this->_helper->json($inData);
+		\Q\Utils::dumpWeb($_SERVER);
+		exit;
     }
 
 

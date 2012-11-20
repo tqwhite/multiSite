@@ -14,7 +14,8 @@ class Application_Model_Purchase extends Application_Model_Base
 
 		$errorList=array();
 
-		$datum=$inData['purchaseData']['grandTotal'];
+		$name='grandTotal';
+		$datum=$inData['purchaseData'][$name];
 		if (!$datum){
 			$errorList[]=array($name, "The grand total must be greater than zero");
 		}

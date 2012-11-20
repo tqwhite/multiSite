@@ -19,6 +19,8 @@ class SimpleStore_GenerateController extends Q_Controller_Base
     {
     	$simpleStoreParms=Zend_Registry::get('simpleStore');
     	$redemptionUrl=$simpleStoreParms['redemption']['url'];
+    	if ($_SERVER['HTTPS']=='on'){ $scheme='https://';}
+    	else{ $scheme='http://';}
 
        $this->setVariationLayout('layout');
 
@@ -31,7 +33,7 @@ class SimpleStore_GenerateController extends Q_Controller_Base
 				"controllerName"=>'widgets_simple_store_main',
 				"parameters"=>json_encode(
 					array(
-						'paymentServerUrl'=>'http://'.$_SERVER['HTTP_HOST'].'/simpleStore/generate/process',
+						'paymentServerUrl'=>$scheme.$_SERVER['HTTP_HOST'].'/simpleStore/generate/process',
 						'redemptionUrl'=>$redemptionUrl
 					)
 				)
@@ -151,6 +153,10 @@ PRODUCTS;
 		$errorList=array();
 
 		$inData=$this->getRequest()->getPost('data');
+
+		$provisionResult=array();
+		$paymentResult=array();
+
 		$status=-1; //change it to good (1) if something good happens
 		$messages=array(array('default', "Nothing has gone wrong"));
 
@@ -205,7 +211,7 @@ PRODUCTS;
 				}
 				else{
 					$status=1;
-					$inData['orderId']='Testing. Not Token Created';
+					$inData['orderId']='Testing. No Token Created';
 					$provisionResult=array();
 				}
 			}
@@ -224,6 +230,9 @@ PRODUCTS;
 		if ($status===1){
 			$contentArray=$this->contentObj->contentArray;
 			$mailSentStatus=$this->sendMail($contentArray, $inData);
+		}
+		else{
+			$mailSentStatus=false;
 		}
 
 		$this->_helper->json(array(
