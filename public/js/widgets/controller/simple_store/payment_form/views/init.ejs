@@ -23,7 +23,7 @@ qtools.validateProperties({
  source:'simple_store.payment_form.init.ejs' });
 
 var total=111;
-if (window.location.host.match(/local/) || window.location.host.match(/demo/)){
+if (window.location.host.match(/local/) || window.location.host.match(/demo/) || window.location.hash=='#tq'){
 		var cardName='TQ School District',
 			street='5004 Three Points Blvd',
 			city='Mound',

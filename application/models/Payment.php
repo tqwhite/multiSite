@@ -21,192 +21,193 @@ class Application_Model_Payment extends Application_Model_Base
 
 */
 
-
-
-static function process($inData, $args="set array('debug'=>true) as second parameter in instantiation"){
-
-$holdErrorState=error_reporting(); //error_reporting(E_ERROR | E_PARSE);
-
-error_reporting(E_ERROR | E_PARSE); //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
-
-if (gettype($args)=='array' && $args['debug']===true){
-	$production=false; //uses the moneris qa server
-}
-else{
-	$production=true; //uses the moneris production server
+static function process($inData, $processorAuth, $args="set array('debug'=>true) as second parameter in instantiation"){
+	return self::moneris($inData, $processorAuth, $args);
 }
 
+static function moneris($inData, $parms, $args="set array('debug'=>true) as second parameter in instantiation"){
 
-$cardData=$inData['cardData'];
-$purchaseData=$inData['purchaseData'];
+	$holdErrorState=error_reporting(); //error_reporting(E_ERROR | E_PARSE);
 
-new Q_Model_Payment_Moneris(); //initialize the class library
+	error_reporting(E_ERROR | E_PARSE); //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 
-
-/************************ Request Variables **********************************/
-if ($production){
-	$parms=Zend_Registry::get('moneris');
-	$store_id=$parms['storeId'];
-	$api_token=$parms['apiToken'];
-}
-else{
-	$store_id='monusqa002';
-	$api_token='qatoken';
-}
-
-/************************ Transaction Variables ******************************/
-
-$orderid=$inData['orderId'];
-
-if ($production){
-	$amount=$purchaseData['grandTotal'];
-	$pan=$cardData['cardNumber'];
-	$expiry_date=$cardData['expYear'].$cardData['expMonth'];
-
-//  	$amount='1.00';
-
-}
-else{
-	if (gettype($args)=='array' && isset($args['forceDecline']) && $args['forceDecline']){
-		$amount='1.36'; //this value forces decline
+	if (gettype($args)=='array' && $args['debug']===true){
+		$production=false; //uses the moneris qa server
 	}
 	else{
-		$amount='1.00'; //this is only valid success value on qa server
+		$production=true; //uses the moneris production server
 	}
-		$pan='4242424242424242';
-		$expiry_date=1506;
-}
+
+
+	$cardData=$inData['cardData'];
+	$purchaseData=$inData['purchaseData'];
+
+	new Q_Model_Payment_Moneris(); //initialize the class library
+
+
+	/************************ Request Variables **********************************/
+	if ($production){
+		$store_id=$parms['storeId'];
+		$api_token=$parms['apiToken'];
+	}
+	else{
+		$store_id='monusqa002';
+		$api_token='qatoken';
+	}
+
+	/************************ Transaction Variables ******************************/
+
+	$orderid=$inData['orderId'];
+
+	if ($production){
+		$amount=$purchaseData['grandTotal'];
+		$pan=$cardData['cardNumber'];
+		$expiry_date=$cardData['expYear'].$cardData['expMonth'];
+
+	//  	$amount='1.00';
+
+	}
+	else{
+		if (gettype($args)=='array' && isset($args['forceDecline']) && $args['forceDecline']){
+			$amount='1.36'; //this value forces decline
+		}
+		else{
+			$amount='1.00'; //this is only valid success value on qa server
+		}
+			$pan='4242424242424242';
+			$expiry_date=1506;
+	}
 
 
 
-/************************ CustInfo Object **********************************/
+	/************************ CustInfo Object **********************************/
 
-$mpgCustInfo = new mpgCustInfo();
-
-
-/********************* Set E-mail and Instructions **************/
-
-$email =$cardData['emailAdr'];
-$mpgCustInfo->setEmail($email);
-
-$instructions ="PO#/Memo: ".$cardData['poNumber'];
-$mpgCustInfo->setInstructions($instructions);
-
-/********************* Create Billing Array and set it **********/
-
-$nameBits=explode(' ', $cardData['cardName']);
-
-$billing = array( first_name => $nameBits[0],
-                  last_name => $nameBits[1],
-//                   company_name => 'Widget Company Inc.',
-                  address => $cardData['street'],
-                  city => $cardData['city'],
-                  province => $cardData['state'],
-                  postal_code => $cardData['zip'],
-//                   country => 'Canada',
-                  phone_number => $cardData['phoneNumber']);
-//                   fax => '416-555-5555',
-//                   tax1 => '123.45',
-//                   tax2 => '12.34',
-//                   tax3 => '15.45',
-//                   shipping_cost => '456.23');
+	$mpgCustInfo = new mpgCustInfo();
 
 
-$mpgCustInfo->setBilling($billing);
+	/********************* Set E-mail and Instructions **************/
 
-/********************* Create Shipping Array and set it **********/
+	$email =$cardData['emailAdr'];
+	$mpgCustInfo->setEmail($email);
 
-// $shipping = array( first_name => 'Joe',
-//                   last_name => 'Thompson',
-//                   company_name => 'Widget Company Inc.',
-//                   address => '111 Bolts Ave.',
-//                   city => 'Toronto',
-//                   province => 'Ontario',
-//                   postal_code => 'M8T 1T8',
-//                   country => 'Canada',
-//                   phone_number => '416-555-5555',
-//                   fax => '416-555-5555',
-//                   tax1 => '123.45',
-//                   tax2 => '12.34',
-//                   tax3 => '15.45',
-//                   shipping_cost => '456.23');
-//
-// $mpgCustInfo->setShipping($shipping);
+	$instructions ="PO#/Memo: ".$cardData['poNumber'];
+	$mpgCustInfo->setInstructions($instructions);
 
+	/********************* Create Billing Array and set it **********/
 
-/********************* Create Item Arraya and set them **********/
+	$nameBits=explode(' ', $cardData['cardName']);
 
-// $item1 = array (name=>'item 1 name',
-//                 quantity=>'53',
-//                 product_code=>'item 1 product code',
-//                 extended_amount=>'1.00');
-//
-// $mpgCustInfo->setItems($item1);
-//
-//
-// $item2 = array(name=>'item 2 name',
-//                 quantity=>'53',
-//                 product_code=>'item 2 product code',
-//                 extended_amount=>'1.00');
-//
-// $mpgCustInfo->setItems($item2);
+	$billing = array( first_name => $nameBits[0],
+					  last_name => $nameBits[1],
+	//                   company_name => 'Widget Company Inc.',
+					  address => $cardData['street'],
+					  city => $cardData['city'],
+					  province => $cardData['state'],
+					  postal_code => $cardData['zip'],
+	//                   country => 'Canada',
+					  phone_number => $cardData['phoneNumber']);
+	//                   fax => '416-555-5555',
+	//                   tax1 => '123.45',
+	//                   tax2 => '12.34',
+	//                   tax3 => '15.45',
+	//                   shipping_cost => '456.23');
 
 
-/************************ Transaction Array **********************************/
+	$mpgCustInfo->setBilling($billing);
 
-$txnArray=array(type=>'us_purchase',
-         order_id=>$orderid,
-         cust_id=>'cust',
-         amount=>$amount,
-         pan=>$pan,
-         expdate=>$expiry_date,
-         crypt_type=>'7',
-//        commcard_invoice=>'kjhgkjgk',
-//          commcard_tax_amount=>'0.15'
-           );
+	/********************* Create Shipping Array and set it **********/
 
-
-/************************ Transaction Object *******************************/
-
-$mpgTxn = new mpgTransaction($txnArray);
-
-/************************ Set CustInfo Object *****************************/
-
-$mpgTxn->setCustInfo($mpgCustInfo);
-
-/************************ Request Object **********************************/
-
-$mpgRequest = new mpgRequest($mpgTxn);
-
-/************************ mpgHttpsPost Object ******************************/
+	// $shipping = array( first_name => 'Joe',
+	//                   last_name => 'Thompson',
+	//                   company_name => 'Widget Company Inc.',
+	//                   address => '111 Bolts Ave.',
+	//                   city => 'Toronto',
+	//                   province => 'Ontario',
+	//                   postal_code => 'M8T 1T8',
+	//                   country => 'Canada',
+	//                   phone_number => '416-555-5555',
+	//                   fax => '416-555-5555',
+	//                   tax1 => '123.45',
+	//                   tax2 => '12.34',
+	//                   tax3 => '15.45',
+	//                   shipping_cost => '456.23');
+	//
+	// $mpgCustInfo->setShipping($shipping);
 
 
+	/********************* Create Item Arraya and set them **********/
 
-if ($production){
-	$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
-}
-else{
-	$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest, array('host'=>'esplusqa.moneris.com'));
+	// $item1 = array (name=>'item 1 name',
+	//                 quantity=>'53',
+	//                 product_code=>'item 1 product code',
+	//                 extended_amount=>'1.00');
+	//
+	// $mpgCustInfo->setItems($item1);
+	//
+	//
+	// $item2 = array(name=>'item 2 name',
+	//                 quantity=>'53',
+	//                 product_code=>'item 2 product code',
+	//                 extended_amount=>'1.00');
+	//
+	// $mpgCustInfo->setItems($item2);
 
-}
 
-/************************ Response Object **********************************/
+	/************************ Transaction Array **********************************/
 
-$mpgResponse=$mpgHttpPost->getMpgResponse();
+	$txnArray=array(type=>'us_purchase',
+			 order_id=>$orderid,
+			 cust_id=>'cust',
+			 amount=>$amount,
+			 pan=>$pan,
+			 expdate=>$expiry_date,
+			 crypt_type=>'7',
+	//        commcard_invoice=>'kjhgkjgk',
+	//          commcard_tax_amount=>'0.15'
+			   );
 
 
-if (false && !$production){ //when you want to see this, change false to true
-	\Q\Utils::dumpCli($mpgHttpPost->getDebug(), 'Moneris debug info');
-}
+	/************************ Transaction Object *******************************/
 
-$outArray=array(
-'responseData'=>$mpgResponse->getMpgResponseData(),
-'usingProdServer'=>$production
+	$mpgTxn = new mpgTransaction($txnArray);
 
-);
+	/************************ Set CustInfo Object *****************************/
 
-error_reporting($holdErrorState);
-return $outArray;
+	$mpgTxn->setCustInfo($mpgCustInfo);
+
+	/************************ Request Object **********************************/
+
+	$mpgRequest = new mpgRequest($mpgTxn);
+
+	/************************ mpgHttpsPost Object ******************************/
+
+
+
+	if ($production){
+		$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest);
+	}
+	else{
+		$mpgHttpPost  =new mpgHttpsPost($store_id,$api_token,$mpgRequest, array('host'=>'esplusqa.moneris.com'));
+
+	}
+
+	/************************ Response Object **********************************/
+
+	$mpgResponse=$mpgHttpPost->getMpgResponse();
+
+
+	if (false && !$production){ //when you want to see this, change false to true
+		\Q\Utils::dumpCli($mpgHttpPost->getDebug(), 'Moneris debug info');
+	}
+
+	$outArray=array(
+	'responseData'=>$mpgResponse->getMpgResponseData(),
+	'usingProdServer'=>$production
+
+	);
+
+	error_reporting($holdErrorState);
+	return $outArray;
 }
 
 }

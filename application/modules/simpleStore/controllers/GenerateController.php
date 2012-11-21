@@ -4,6 +4,8 @@ class SimpleStore_GenerateController extends Q_Controller_Base
 {
 
 	private $useCardProdServer;
+	private $simpleStore;
+	private $cardProcessorAuth;
 
     public function init() //this is called by the Zend __construct() method
     {
@@ -15,17 +17,22 @@ class SimpleStore_GenerateController extends Q_Controller_Base
         // action body
     }
 
+    private function updateGlobals($config){
+    	$this->cardProcessorAuth=$config['simpleStore.ini']['moneris'];
+		$this->simpleStore=$config['simpleStore.ini']['simpleStore'];
+    }
+
     public function containerAction()
     {
-    	$simpleStoreParms=Zend_Registry::get('simpleStore');
-    	$redemptionUrl=$simpleStoreParms['redemption']['url'];
-    	if ($_SERVER['HTTPS']=='on'){ $scheme='https://';}
+		$contentArray=$this->contentObj->contentArray;
+		$this->updateGlobals($contentArray['globalItems']['CONFIG']);
+
+    	$redemptionUrl=$this->simpleStore['redemption']['url'];
+
+    	if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on'){ $scheme='https://';}
     	else{ $scheme='http://';}
 
        $this->setVariationLayout('layout');
-
-		$contentArray=$this->contentObj->contentArray;
-
 		$serverComm[]=array("fieldName"=>"message", "value"=>'hello from the server via javascript');
 
 				$jsControllerList[]=array(
@@ -138,13 +145,16 @@ PRODUCTS;
         //HACKERY: This action is *not* mapped by the multiSite routing system. It uses the
         //Zend default controller. Consequently, contentArray comes from
         //a directory called 'default'.
+        //That means that many of the parameters contained in _default need to be REPEATED in default
         //Also, I don't know why it's not being rejected by validateContentStructure() but
         //I need to get this done. Maybe I'll come back to it later. tqii
         //arrgggh!!
 
-    	$simpleStoreParms=Zend_Registry::get('simpleStore');
-    	if (isset($simpleStoreParms['useCardProdServer'])){
-	    	$this->useCardProdServer=$simpleStoreParms['useCardProdServer'];
+		$contentArray=$this->contentObj->contentArray;
+		$this->updateGlobals($contentArray['globalItems']['CONFIG']);
+
+    	if (isset($this->simpleStore['useCardProdServer'])){
+	    	$this->useCardProdServer=$this->simpleStore['useCardProdServer'];
 		}
 		else{
 			$this->useCardProdServer=true;
@@ -170,7 +180,7 @@ PRODUCTS;
 
 
 		if (!$this->freeCardNo($inData['cardData']['cardNumber'])){
-					$paymentResult=Application_Model_Payment::process($inData, array('debug'=>!$this->useCardProdServer, 'forceDecline'=>false));
+					$paymentResult=Application_Model_Payment::process($inData, $this->cardProcessorAuth, array('debug'=>!$this->useCardProdServer, 'forceDecline'=>false));
 					$paymentResult['isFreeCard']=false;
 					$paymentResult['usingProdServer']=$this->useCardProdServer;
 		}
@@ -203,7 +213,7 @@ PRODUCTS;
 
 			if ($paymentResult['responseData']['ResponseCode']==1){
 				if ($firstFour!='8881'){
-					$provisionResult=Application_Model_Provision::process($inData);
+					$provisionResult=Application_Model_Provision::process($inData, $simpleStore['provision']['url']);
 						$status=1;
 					if ($provisionResult['status']!=1){
 						$errorList[]=array('provision', $provisionResult['message']);

@@ -15,10 +15,6 @@ public function _initExposeStructures(){
 
 	Zend_Registry::set('multiSite', $config['multiSite']);
 
-	Zend_Registry::set('moneris', $config['moneris']);
-	Zend_Registry::set('simpleStore', $config['simpleStore']);
-
-
 	//$multiSite=Zend_Registry::get('multiSite');
 }
 
