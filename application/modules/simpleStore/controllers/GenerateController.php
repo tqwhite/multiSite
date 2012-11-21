@@ -213,7 +213,7 @@ PRODUCTS;
 
 			if ($paymentResult['responseData']['ResponseCode']==1){
 				if ($firstFour!='8881'){
-					$provisionResult=Application_Model_Provision::process($inData, $simpleStore['provision']['url']);
+					$provisionResult=Application_Model_Provision::process($inData, $this->simpleStore['provision']['url']);
 						$status=1;
 					if ($provisionResult['status']!=1){
 						$errorList[]=array('provision', $provisionResult['message']);
