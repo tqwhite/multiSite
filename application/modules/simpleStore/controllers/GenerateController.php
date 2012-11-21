@@ -21,7 +21,7 @@ class SimpleStore_GenerateController extends Q_Controller_Base
     	$this->cardProcessorAuth=$config['simpleStore.ini']['moneris'];
 		$this->simpleStore=$config['simpleStore.ini']['simpleStore'];
 
-		$this->simpleStore=['url']=$this->simpleStore['productionUrl'];
+		$this->simpleStore['url']=$this->simpleStore['productionUrl'];
     }
 
     public function containerAction()
