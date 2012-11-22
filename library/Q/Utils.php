@@ -279,6 +279,24 @@ static function getDottedPath($baseObj, $subPathString, $debug=true){
 
 }
 
+static function htmlEntities($inData){
+
+	if (gettype($inData)=='string'){
+		return htmlentities($inData);
+	}
+	elseif (gettype($inData)=='array'){
+
+		foreach ($inData as $label=>$data){
+			$outArray[$label]=self::htmlentities($data);
+		}
+	}
+	else{
+		throw(new \Exception('Qutils::htmlentities says, no support for type='.gettype($inData)));
+	}
+
+	return $outArray;
+}
+
 }//end of class
 
 

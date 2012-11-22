@@ -127,8 +127,8 @@ inputHandler:function(control, parameter){
 				value=targetObj.attr('value'),
 				parentObj=targetObj.parent();
 
-				$('input', this.element).attr('value', '0').each(function(){$(this).parent().removeClass('nonZeroProdLine')});
-				targetObj.attr('value', value);
+// 				$('input', this.element).attr('value', '0').each(function(){$(this).parent().removeClass('nonZeroProdLine')});
+// 				targetObj.attr('value', value);
 
 
 			this.updatePurchase(parentObj);
@@ -151,6 +151,7 @@ updatePurchase:function(parentObj){
 
 	this.purchaseData.productList=[];
 	this.purchaseData.productDisplayList=[];
+	this.purchaseData.totalsDisplayObject={};
 
 	for (var prodCode in list){
 		var quantity=1.0*(1.0*list[prodCode]).toFixed(2);
@@ -159,7 +160,7 @@ updatePurchase:function(parentObj){
 			var productObj=qtools.lookupDottedPath(this.productInfo, 'prodCode', prodCode),
 				price=this.calcDiscountPrice(productObj, quantity),
 
-				extendedPrice=1.0*(price*quantity).toFixed(2),
+				extendedPrice=1.0*(price*quantity),
 				totalPrice=totalPrice+extendedPrice;
 
 			this.purchaseData.productList.push({prodCode:prodCode, quantity:quantity});
@@ -168,15 +169,21 @@ updatePurchase:function(parentObj){
 				quantity:quantity,
 				name:productObj.name,
 				price:price,
-				extendedPrice:extendedPrice
+				extendedPrice:extendedPrice.toFixed(2).toString()
 			});
 		}
 	}
 
-	this.totalPrice=1.0*totalPrice.toFixed(2);
+	this.totalPrice=1.0*totalPrice;
 	this.purchaseData.subtotal=this.totalPrice;
 	this.purchaseData.tax=this.calcTax();
 	this.purchaseData.grandTotal=this.purchaseData.subtotal+this.purchaseData.tax;
+
+	this.purchaseData.totalsDisplayObject.subtotal=this.purchaseData.subtotal.toFixed(2).toString();
+	this.purchaseData.totalsDisplayObject.tax=this.purchaseData.tax.toFixed(2).toString();
+	this.purchaseData.totalsDisplayObject.grandTotal=this.purchaseData.grandTotal.toFixed(2).toString();
+
+
 
 	this.updateLinePrice(parentObj, price);
 	this.writePriceDisplay();

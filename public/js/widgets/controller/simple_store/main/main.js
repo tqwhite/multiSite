@@ -32,7 +32,8 @@ init: function(el, options) {
 		targetObject:this.serverData,
 		targetScope: this, //will add listed items to targetScope
 		propList:[
-			{name:'productInfo'}
+			{name:'productInfo'},
+			{name:'confirmationPageTemplate'}
 		],
 		source:this.constructor._fullName
  	});
@@ -139,7 +140,9 @@ displayCompletion:function(){
 				displayParameters:this.displayParameters,
 				serverData:this.serverData,
 				purchaseData:this.purchaseData,
-				redemptionUrl:this.redemptionUrl
+				redemptionUrl:this.redemptionUrl,
+
+				confirmationPageTemplate:this.confirmationPageTemplate
 			}
 		})
 		);

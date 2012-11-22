@@ -1138,6 +1138,24 @@ indexOf:function(haystack, needle){
 		throw "qtools.indexOf() says, Haystack is not a supported type ("+typeof(haystack)+")";
 	}
 
+},
+
+templateReplaceObject:function(template, inData, prefix){
+	var outString=template;
+	if (typeof(prefix)=='undefined'){prefix='';}
+
+	for (var i in inData){
+		var element=inData[i];
+		if (typeof(element)=='string' || typeof(element)=='number'){
+			outString=outString.replace(new RegExp("\<\%\=+"+prefix+i+"\%\>", 'g'), element);
+		}
+		else if (this.toType(element)=='object'){
+			outString=this.templateReplaceObject(outString, element, prefix+i+'.');
+		}
+
+	}
+	return outString;
+
 }
 
 }
