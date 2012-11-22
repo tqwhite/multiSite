@@ -306,7 +306,7 @@ PRODUCTS;
 		}
 
 
-//		$mail->send($tr);
+		$mail->send($tr);
 
 		Zend_Mail::clearDefaultFrom();
 		Zend_Mail::clearDefaultReplyTo();

@@ -127,8 +127,8 @@ inputHandler:function(control, parameter){
 				value=targetObj.attr('value'),
 				parentObj=targetObj.parent();
 
-// 				$('input', this.element).attr('value', '0').each(function(){$(this).parent().removeClass('nonZeroProdLine')});
-// 				targetObj.attr('value', value);
+				$('input', this.element).attr('value', '0').each(function(){$(this).parent().removeClass('nonZeroProdLine')});
+				targetObj.attr('value', value);
 
 
 			this.updatePurchase(parentObj);
