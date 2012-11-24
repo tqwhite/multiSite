@@ -9,11 +9,11 @@ steal( 'jquery/controller','jquery/view/ejs' )
 	'widgets/stylesheets/anythingslider/theme-minimalist-square.css',
 
 	'widgets/resources/jqueryPlugins/anythingslider/jquery.anythingslider.fx.js',
-	'widgets/resources/jqueryPlugins/anythingslider/jquery.anythingslider.fx.min.js',
+//	'widgets/resources/jqueryPlugins/anythingslider/jquery.anythingslider.fx.min.js',
 	'widgets/resources/jqueryPlugins/anythingslider/jquery.anythingslider.js',
-	'widgets/resources/jqueryPlugins/anythingslider/jquery.anythingslider.min.js',
-	'widgets/resources/jqueryPlugins/anythingslider/jquery.anythingslider.video.js',
-	'widgets/resources/jqueryPlugins/anythingslider/jquery.anythingslider.video.min.js',
+//	'widgets/resources/jqueryPlugins/anythingslider/jquery.anythingslider.min.js',
+//	'widgets/resources/jqueryPlugins/anythingslider/jquery.anythingslider.video.js',
+//	'widgets/resources/jqueryPlugins/anythingslider/jquery.anythingslider.video.min.js',
 	'widgets/resources/jqueryPlugins/anythingslider/jquery.easing.1.2.js',
 	'widgets/resources/jqueryPlugins/anythingslider/swfobject.js'
 )
