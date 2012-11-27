@@ -130,7 +130,6 @@ demoSlideShowA;
 				'contactFooter.html'=>"FOOTER: edit contactFooter.html to customize",
 				'headBanner.html'=>"HEAD BANNER: edit headBanner.html to customize",
 				'headNav.ini'=>$headNav,
-				'pageTitle.txt'=>"TITLE: edit pageTitle.txt to customize",
 				'siteDirectoryUrlList.ini'=>$siteDirectoryUrlList,
 
 				'feature.html'=>'Edit feature.html to customize',

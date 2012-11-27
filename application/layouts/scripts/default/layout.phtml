@@ -9,9 +9,9 @@ $viewContent=$this->layout()->content;
 
 $javascript=$this->headScript(); //note: call for steal.js is literal so it always executes first, others can count on it
 
-
-if (isset($this->contentArray['pageTitle.txt'])){
-	$this->headTitle($this->contentArray['pageTitle.txt']);
+$route=Zend_Controller_Front::getInstance()->getRouter()->getCurrentRoute()->getDefaults();
+if (isset($route['title'])){
+	$this->headTitle($route['title']);
 }
 else{
 	$request = Zend_Controller_Front::getInstance()->getRequest();

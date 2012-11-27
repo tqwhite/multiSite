@@ -190,9 +190,10 @@ private function putToMediaHash($filePath){
 	$hash=md5($filePath);
 	$hashPath=$this->hashDir.$hash;
 	$hashUrl=str_replace(DOCROOT_DIRECTORY_PATH, '',  $hashPath);
-
-	$linkCommand="ln -s $filePath $hashPath";
-	shell_exec($linkCommand);
+	if (!is_readable($hashPath)){
+		$linkCommand="ln -s $filePath $hashPath";
+		shell_exec($linkCommand);
+	}
 
 	return $hashUrl;
 }

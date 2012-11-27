@@ -1,4 +1,15 @@
-<?/*php require_once($_SERVER['DOCUMENT_ROOT'].'/tools/mailNotificationInclude.php');*/?>
+
+<?php
+$route=Zend_Controller_Front::getInstance()->getRouter()->getCurrentRoute()->getDefaults();
+if (isset($route['title'])){
+	$this->headTitle($route['title']);
+}
+else{
+	$request = Zend_Controller_Front::getInstance()->getRequest();
+	$this->headTitle($request->getActionName().'/')
+		 ->headTitle($request->getControllerName());
+}
+ ?>
 <!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
    'http://www.w3.org/TR/html4/strict.dtd'>
 <html>
@@ -7,7 +18,6 @@
 <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.6.0/build/cssreset/cssreset-min.css">
 <link rel='stylesheet' type='text/css' href='/css/baseCss/foundation.css'>
 
-<?php echo $this->headTitle(" ({$this->codeNav['layoutShortPath']})") ?>
 
 <style type='text/css'><!--
 	html {background:tan;}

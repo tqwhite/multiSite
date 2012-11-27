@@ -154,13 +154,6 @@ $panelContentString="<ul id='contentList'>$panelContentString</ul>";
 
 $headBanner=$contentArray['headBanner.html'];
 
-$elementList=$contentArray['images'];
-
-foreach ($elementList as $label=>$data){
-	$panelContentString=str_replace("../images/$label", $data, $panelContentString);
-	$headBanner=str_replace("images/$label", $data, $headBanner);
-}
-
 $panelString="
 <div class='mainContentContainer'>
 	<div id='feature'>
@@ -176,6 +169,11 @@ $panelString="
 </div>
 ";
 
+
+
+foreach ($contentArray['images'] as $label=>$data){
+	$panelString=str_replace("../images/$label", $data, $panelString);
+}
 //OUTPUT SECTION =========================================================================
 
 
