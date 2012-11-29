@@ -124,7 +124,7 @@ Widgets.Controller.Base.extend('Widgets.Controller.Display.Anythingslider',
 
     // *********** Slideshow options ***********
     // If true, the slideshow will start running; replaces "startStopped" option
-    autoPlay: true,
+    autoPlay: false,
     // If true, user changing slides will not stop the slideshow
     autoPlayLocked: false,
     // If true, starting a slideshow will delay advancing slides; if false, the slider will immediately advance to the next slide when slideshow starts
