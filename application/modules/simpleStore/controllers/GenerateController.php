@@ -29,8 +29,6 @@ class SimpleStore_GenerateController extends Q_Controller_Base
 		$contentArray=$this->contentObj->contentArray;
 		$this->updateGlobals($contentArray['globalItems']['CONFIG']);
 
-    	$redemptionUrl=$this->simpleStore['redemption']['url'];
-
     	if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on'){ $scheme='https://';}
     	else{ $scheme='http://';}
 
@@ -42,8 +40,7 @@ class SimpleStore_GenerateController extends Q_Controller_Base
 				"controllerName"=>'widgets_simple_store_main',
 				"parameters"=>json_encode(
 					array(
-						'paymentServerUrl'=>$scheme.$_SERVER['HTTP_HOST'].'/simpleStore/generate/process',
-						'redemptionUrl'=>$redemptionUrl
+						'paymentServerUrl'=>$scheme.$_SERVER['HTTP_HOST'].'/simpleStore/generate/process'
 					)
 				)
 			);

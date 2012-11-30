@@ -23,7 +23,6 @@ init: function(el, options) {
 		targetScope: this, //will add listed items to targetScope
 		propList:[
 			{name:'paymentServerUrl'},
-			{name:'redemptionUrl'},
 			{name:'serverData'}
 		],
 		source:this.constructor._fullName
@@ -140,7 +139,6 @@ displayCompletion:function(){
 				displayParameters:this.displayParameters,
 				serverData:this.serverData,
 				purchaseData:this.purchaseData,
-				redemptionUrl:this.redemptionUrl,
 
 				confirmationPageTemplate:this.confirmationPageTemplate
 			}
