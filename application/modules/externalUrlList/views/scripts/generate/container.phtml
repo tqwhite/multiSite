@@ -23,12 +23,143 @@ $this->headStyle()->appendStyle("
 	}
 
 	#containerLinkSection{width:175px;height:800px;float:left;padding-left:25px;}
-	#containerLinkSection a:hover{color:black;font-weight:bold;}
 
 	#contentList{float:left;}
 
 	#contentList ul li  {width:500px;border-bottom:1pt solid gray;padding:10px 0px 10px 0px;}
+
 ");
+
+
+//DEFAULT STYLES (for this page type) =========================================================================
+
+$styleString="
+
+.mainContentContainer{
+	width:900px;
+	height:500px;
+	font-size:14pt;
+	overflow:hidden;
+	text-align:left;
+}
+
+.panelItemContainer{
+	font-size:10pt;
+	position:relative;
+}
+
+.panelHeadline{
+	font-size:24pt;
+	margin-bottom:20px;
+}
+.panelSimpleBodyText{
+	margin:0px 10px;
+}
+
+.panelBasicImage{
+}
+
+#panelItemContainer{
+	width:500px;
+}
+
+.contentListActivator{color:#666;}
+.contentListActivator:hover{color:white;background:#666;}
+
+#tabContainer{clear:both;border-bottom:2pt solid gray;height:20px;}
+
+.panelTab{
+}
+
+#feature{
+	float:left;width:265px;
+	margin-top:20px;
+	overflow:hidden;
+	font-size:10pt;
+}
+#featureHeadline{font-weight:bold;font-size:120%;margin-bottom:20px;}
+
+#panelContainer{float:left;width:620px;
+margin-left:13px; /*the boundary between left column and panel*/
+margin-top:20px;overflow:hidden;}
+
+#contentList{
+overflow:visible;
+}
+
+
+
+/*PANEL APPEARANCE =========================================*/
+
+.anythingSlider-default.activeSlider .anythingControls a{
+	color:#ccc !important;
+}
+.anythingSlider-default.activeSlider .anythingWindow {
+	border-color: transparent !important;
+	border-bottom:none !important;
+}
+
+/*TAB PANEL CONTROLS =========================================*/
+
+#panelList{
+	border:4pt solid #e6e3e3;
+	border-radius: 10px 10px 10px 10px;
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
+	width:610px;
+	height:448px;
+}
+
+#panelList ul {
+width:610px;
+height:448px;
+}
+
+.sliderTopControls{
+	padding-left:0px;
+}
+
+.sliderTopControls li{
+	display:inline;
+	margin:0px 3px 0px 3px;
+	padding:0px 20px 0px 20px;
+	background: #e6e3e3;
+	border-radius: 10px 10px 0 0;
+	-moz-border-radius: 10px 10px 0 0;
+	-webkit-border-radius: 10px 10px 0 0;
+}
+
+.tabControlGuts{
+}
+.sliderTopControls a {
+	/* top shadow */
+	color: #2a7fff;
+}
+
+";
+
+
+$this->headStyle()->appendStyle($styleString);
+
+
+
+
+
+//INIT =========================================================================
+
+
+$contentArray=$this->contentArray;
+
+//GLOBAL OVERRIDES (from content dir) =========================================================================
+global $thiss;
+$thiss=$this;
+function applyStyle($cssString){
+	global $thiss;
+	$thiss->headStyle()->appendStyle($cssString);
+}
+
+//$this->headStyle()->appendStyle($contentArray['globalItems']['CSS']['main.css']);
+array_map('applyStyle', $contentArray['globalItems']['CSS']);
 
 $request = Zend_Controller_Front::getInstance()->getRequest();
 $this->headTitle($request->getActionName().'/')
@@ -48,13 +179,13 @@ foreach($scrapeDataList as $data){
 $contentListString=preg_replace('/<img.*?>/', '', $contentListString);
 
 ?>
-<div id='containerContent'>
+<div class='mainContentContainer'>
 	<div id='containerLinkSection'>
 		<?php echo $linkSectionString;?>
 	</div>
 	<div id='contentList'>
 		<ul>
-			<?php  echo $contentListString;?>
+		<?php echo $contentListString;?>
 		</ul>
 	</div>
 </div>
