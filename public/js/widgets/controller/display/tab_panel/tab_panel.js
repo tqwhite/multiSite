@@ -41,8 +41,11 @@ Widgets.Controller.Base.extend('Widgets.Controller.Display.TabPanel',
 		],
 		source:this.constructor._fullName
  	});
+
+ 	this.tabListSourceDomObj=$('#'+this.tabListIdName);
 	var controlsDomObj=$('#'+this.tabDisplayContainerIdName);
-		$('#'+this.switchableContentListId).anythingSlider({
+
+	$('#'+this.switchableContentListId).anythingSlider({
 
     // *********** Appearance ***********
     // Theme name; choose from: minimalist-round, minimalist-square,
@@ -125,10 +128,7 @@ Widgets.Controller.Base.extend('Widgets.Controller.Display.TabPanel',
     // if false, the slider will not wrap
     infiniteSlides: true,
     // Details at the top of the file on this use (advanced use)
-    navigationFormatter: function(index, panel) {
-        // This is the default format (show just the panel index number)
-        return "" + index;
-    },
+    navigationFormatter: this.callback('formatTabs'),
     // Set this to the maximum number of visible navigation tabs;
     // false to disable
     navigationSize: false,
@@ -214,7 +214,58 @@ Widgets.Controller.Base.extend('Widgets.Controller.Display.TabPanel',
 
 	$('.anythingSlider').css('padding', '0px');
 
-	}
+	//thanks: http://jsfiddle.net/Mottie/VM8XG/2952/
+	var thiss=this;
+	$('#'+thiss.switchableContentListId+' li a').click(function(){
+		var h = this.href, s
+		prefix='#&panel1-',
+		pattern=new RegExp(prefix+'\\d');
+		// external links will fall through and go to the external url
+		if (pattern.test(this.href)) {
+			s = h.substring( h.lastIndexOf(prefix) + prefix.length, h.length );
+			$('#'+thiss.switchableContentListId).anythingSlider(s);
+			return false;
+		}
+
+
+		var h = this.href, s
+		prefix='#id=',
+		pattern=new RegExp(prefix+'.*');
+		// external links will fall through and go to the external url
+		if (pattern.test(this.href)) {
+			s = h.substring( h.lastIndexOf(prefix) + prefix.length, h.length );
+
+
+			var slider=$('#'+thiss.switchableContentListId);
+
+			var target = slider.find('#'+s).closest('.panel');
+
+			var plugin = slider.data('AnythingSlider');
+
+
+			var index=plugin.$items.index( target );
+
+
+
+			$('#'+thiss.switchableContentListId).anythingSlider(index);
+			return false;
+		}
+
+
+
+	});
+
+
+
+	},
+
+	formatTabs:function(index, panel) {
+		var id=panel.attr('id'),
+			panelItem=this.tabListSourceDomObj.find('[href="#'+id+'"]'),
+			labelText=panelItem.text().replace(' ', '&nbsp;');
+        // This is the default format (show just the panel index number)
+        return labelText+' '; //the appended space allows the buttons to wrap into multiple lines
+    }
 })
 
 });

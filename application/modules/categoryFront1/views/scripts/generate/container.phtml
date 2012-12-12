@@ -20,6 +20,7 @@ $styleString="
 	font-size:14pt;
 	overflow:hidden;
 	text-align:left;
+	height:100%;
 }
 
 .panelItemContainer{
@@ -100,20 +101,36 @@ height:448px;
 .sliderTopControls li{
 	display:inline;
 	margin:0px 3px 0px 3px;
-	padding:0px 20px 0px 20px;
+	padding:0px 20px;
 	background: #e6e3e3;
-	border-radius: 10px 10px 0 0;
-	-moz-border-radius: 10px 10px 0 0;
-	-webkit-border-radius: 10px 10px 0 0;
+	border-radius: 10px 10px 10px 10px;
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
+
+	-moz-box-shadow: inset -2px -2px 2px #888;
+	-webkit-box-shadow: inset -2px -2px 2px #888;
+	box-shadow: inset -2px -2px 2px #888;
+
+
 }
 
 .tabControlGuts{
+padding:10px 0px;
 }
 .sliderTopControls a {
 	/* top shadow */
 	color: #2a7fff;
+	font-size:8pt;
+	vertical-align:top;
 }
 
+.sliderTopControls a:hover{
+color:#888;
+}
+
+.thumbNav{
+line-height:30px;
+}
 ";
 
 

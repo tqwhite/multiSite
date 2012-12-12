@@ -88,8 +88,6 @@ if(isset($this->contentArray['headNav.ini'])){
 		$this->contentArray['headNav.ini']['menu'],
 		array('mainClass'=>'dropdown')
 	);
-
-	$controlsString=$this->translateUrls($controlsString);
 }
 else{
 	$controlsString='';
@@ -145,7 +143,7 @@ font-family: 'Satisfy', cursive;
 font-family: 'Open Sans', sans-serif;
 font-family: 'Open Sans Condensed', sans-serif;
 */
-echo "
+$outputString="
 	<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
 	   'http://www.w3.org/TR/html4/strict.dtd'>
 	<html>
@@ -187,3 +185,6 @@ echo "
 	$widgetScriptCall
 	</html>
 ";
+
+$outputString=$this->translateUrls($outputString);
+echo $outputString;

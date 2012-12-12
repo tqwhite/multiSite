@@ -21,7 +21,10 @@ class MultiPanel_GenerateController extends Q_Controller_Base
 				$jsControllerList[]=array(
 				"domSelector"=>"#anythingslider",
 				"controllerName"=>'widgets_display_anythingslider',
-				"parameters"=>json_encode(array('background'=>'gray', 'color'=>'red'))
+				"parameters"=>json_encode(array(
+					'sliderParms'=>array('buildNavigation'=>false, 'color'=>'red')
+					)
+				)
 			);
 
      	$serverComm=$this->_helper->ArrayToServerCommList('controller_startup_list', $jsControllerList);
@@ -78,11 +81,11 @@ $siteDirectoryUrlList=<<<SITEDIR
 a.0.title="Company List"
 
 a.0.links.0.title='Administrative Solutions'
-a.0.links.0.url='http://admin.cmerdc.local/sitemap'
+a.0.links.0.url='http://admin.<!rootDomainSegment!>/sitemap'
 a.0.links.0.selector='.contentzone'	;this is a jQuery selector for the content to extract from target page
 
 a.0.links.1.title='Document Imaging'
-a.0.links.1.url='http://imaging.cmerdc.local/sitemap'
+a.0.links.1.url='http://imaging.<!rootDomainSegment!>/sitemap'
 a.0.links.1.selector='.contentzone'	;this is a jQuery selector for the content to extract from target page
 
 SITEDIR;
