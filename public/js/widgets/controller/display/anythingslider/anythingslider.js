@@ -1,12 +1,12 @@
 steal( 'jquery/controller','jquery/view/ejs' )
 .then(
-	'widgets/stylesheets/anythingslider/animate.css',
-	'widgets/stylesheets/anythingslider/anythingslider.css',
-	'widgets/stylesheets/anythingslider/theme-construction.css',
-	'widgets/stylesheets/anythingslider/theme-cs-portfolio.css',
-	'widgets/stylesheets/anythingslider/theme-metallic.css',
-	'widgets/stylesheets/anythingslider/theme-minimalist-round.css',
-	'widgets/stylesheets/anythingslider/theme-minimalist-square.css',
+	'widgets/stylesheets/anythingslider/css/animate.css',
+	'widgets/stylesheets/anythingslider/css/anythingslider.css',
+	'widgets/stylesheets/anythingslider/css/theme-construction.css',
+	'widgets/stylesheets/anythingslider/css/theme-cs-portfolio.css',
+	'widgets/stylesheets/anythingslider/css/theme-metallic.css',
+	'widgets/stylesheets/anythingslider/css/theme-minimalist-round.css',
+	'widgets/stylesheets/anythingslider/css/theme-minimalist-square.css',
 
 	'widgets/resources/jqueryPlugins/anythingslider/jquery.anythingslider.fx.js',
 //	'widgets/resources/jqueryPlugins/anythingslider/jquery.anythingslider.fx.min.js',
@@ -41,7 +41,7 @@ Widgets.Controller.Base.extend('Widgets.Controller.Display.Anythingslider',
 		source:this.constructor._fullName
  	});
 
- 	this.initControlParms();
+ 	this.initControlParameters();
 
  	var sliderParms={
 
@@ -215,7 +215,7 @@ Widgets.Controller.Base.extend('Widgets.Controller.Display.Anythingslider',
 
 	},
 
-initControlParms:function(){
+initControlParameters:function(){
 	if (typeof(this.sliderParms)=='undefined'){this.sliderParms={};}
 }
 })

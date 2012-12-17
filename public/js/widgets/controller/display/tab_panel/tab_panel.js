@@ -1,12 +1,12 @@
 steal( 'jquery/controller','jquery/view/ejs' )
 .then(
-	'widgets/stylesheets/anythingslider/animate.css',
-	'widgets/stylesheets/anythingslider/anythingslider.css',
-	'widgets/stylesheets/anythingslider/theme-construction.css',
-	'widgets/stylesheets/anythingslider/theme-cs-portfolio.css',
-	'widgets/stylesheets/anythingslider/theme-metallic.css',
-	'widgets/stylesheets/anythingslider/theme-minimalist-round.css',
-	'widgets/stylesheets/anythingslider/theme-minimalist-square.css',
+	'widgets/stylesheets/anythingslider/css/animate.css',
+	'widgets/stylesheets/anythingslider/css/anythingslider.css',
+	'widgets/stylesheets/anythingslider/css/theme-construction.css',
+	'widgets/stylesheets/anythingslider/css/theme-cs-portfolio.css',
+	'widgets/stylesheets/anythingslider/css/theme-metallic.css',
+	'widgets/stylesheets/anythingslider/css/theme-minimalist-round.css',
+	'widgets/stylesheets/anythingslider/css/theme-minimalist-square.css',
 
 	'widgets/resources/jqueryPlugins/anythingslider/jquery.anythingslider.fx.js',
 //	'widgets/resources/jqueryPlugins/anythingslider/jquery.anythingslider.fx.min.js',
@@ -65,7 +65,7 @@ Widgets.Controller.Base.extend('Widgets.Controller.Display.TabPanel',
     easing: "swing",
 
     // If true, builds the forwards and backwards buttons
-    buildArrows: false, //tqii
+    buildArrows: true, //tqii
     // If true, builds a list of anchor links to link to each panel
     buildNavigation: true,
     // If true, builds the start/stop button

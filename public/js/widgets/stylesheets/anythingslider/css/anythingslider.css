@@ -127,12 +127,12 @@
 	margin: -70px 0 0 0; /* half height of image */
 	text-align: center;
 	outline: 0;
-	background: url(../images/default.png) no-repeat;
+/*	background: url(../images/default.png) no-repeat; set by php which loads first */
 }
 
 /* back arrow */
 .anythingSlider-default .back { left: 0; }
-.anythingSlider-default .back a { background-position: left top; }
+.anythingSlider-default .back a { background-position: left top;  }
 .anythingSlider-default .back a:hover,
 .anythingSlider-default .back a.hover { background-position: left -140px; }
 /* forward arrow */

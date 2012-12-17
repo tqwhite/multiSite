@@ -22,7 +22,7 @@ class MultiPanel_GenerateController extends Q_Controller_Base
 				"domSelector"=>"#anythingslider",
 				"controllerName"=>'widgets_display_anythingslider',
 				"parameters"=>json_encode(array(
-					'sliderParms'=>array('buildNavigation'=>false, 'color'=>'red')
+					'sliderParms'=>array('buildNavigationOMIT'=>false, 'color'=>'red')
 					)
 				)
 			);
