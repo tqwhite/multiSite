@@ -285,12 +285,20 @@ class Zend_Controller_Front
      */
     public function addModuleDirectory($path)
     {
+    
+    //tqii hackery: added workaround DirectoryIterator problem.
+    //It would not iterate over directories on mounted volume with Parallels
+    //Bug #54256	DirectoryIterator isn't iterable with a foreach
+    //https://bugs.php.net/bug.php?id=54256&edit=1
+    
+            $gotModules=false;
         try{
             $dir = new DirectoryIterator($path);
         } catch(Exception $e) {
             require_once 'Zend/Controller/Exception.php';
             throw new Zend_Controller_Exception("Directory $path not readable", 0, $e);
         }
+        
         foreach ($dir as $file) {
             if ($file->isDot() || !$file->isDir()) {
                 continue;
@@ -304,7 +312,40 @@ class Zend_Controller_Front
             }
 
             $moduleDir = $file->getPathname() . DIRECTORY_SEPARATOR . $this->getModuleControllerDirectoryName();
+
             $this->addControllerDirectory($moduleDir, $module);
+            
+            $gotModules=true;
+        }
+        
+                
+        if (!$gotModules){
+			if ($handle = opendir($path)) {
+				while (false !== ($file = readdir($handle))) {
+				
+					$moduleDir = $path . DIRECTORY_SEPARATOR . $file. DIRECTORY_SEPARATOR . $this->getModuleControllerDirectoryName();
+					$module=$file;
+		
+					if ($file=='.' || !is_dir($moduleDir)) {
+						continue;
+					}
+		
+					// Don't use SCCS directories as modules
+					if (preg_match('/^[^a-z]/i', $file) || ('CVS' == $file)) {
+						continue;
+					}
+
+					$this->addControllerDirectory($moduleDir, $module);
+					
+					
+					$gotModules=true;
+				}
+				
+				closedir($handle);
+			}
+			
+			
+			
         }
 
         return $this;
