@@ -213,6 +213,29 @@ Widgets.Controller.Base.extend('Widgets.Controller.Display.Anythingslider',
 		sliderParms=$.extend(sliderParms, this.sliderParms);
 		this.element.anythingSlider(sliderParms);
 
+
+		var h = window.location.href, s
+		prefix='#id=',
+		pattern=new RegExp(prefix+'.*');
+		// external links will fall through and go to the external url
+		if (pattern.test(window.location.href)) {
+			s = h.substring( h.lastIndexOf(prefix) + prefix.length, h.length );
+
+
+			//var slider=$('#'+this.switchableContentListId);
+
+			var target = this.element.find('#'+s).closest('.panel');
+
+			var plugin = this.element.data('AnythingSlider');
+
+
+			var index=plugin.$items.index( target );
+
+
+
+			this.element.anythingSlider(index);
+			}
+
 	},
 
 initControlParameters:function(){
