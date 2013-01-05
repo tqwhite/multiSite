@@ -34,7 +34,7 @@
 
 private function makeDir($directory){
 	if (!is_dir($directory)){
-		$cmdString="mkdir $directory";
+		$cmdString="mkdir $directory; chmod 777 $directory;";
 		echo "<div style='color:green;'>DIRECTORY: creating $directory, result=".shell_exec($cmdString)."</div>";
 	}
 	else{
@@ -54,8 +54,9 @@ private function getRouteDirectory(){
 
 private function makeFile($filePath, $contents){
 		if (!is_readable($filePath)){
-			echo "<div style='color:green;'>FILE: creating $filePath</div>";
 			file_put_contents($filePath, $contents);
+			$result=shell_exec("chmod 777 $filePath;");
+			echo "<div style='color:green;'>FILE: creating $filePath, result=$result</div>";
 		}
 	else{
 		echo "<div style='color:gray;'>FILE: $filePath <u>already exists</u></div>";
