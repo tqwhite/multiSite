@@ -8,7 +8,7 @@ in your development environment only and should not be deployed with your
 application to it's final production location.
 
 
-Setting Up Your VHOST
+Setting Up Your VHOST 
 =====================
 
 The following is a sample VHOST you might want to consider for your project.

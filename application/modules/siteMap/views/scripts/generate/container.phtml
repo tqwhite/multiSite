@@ -47,7 +47,11 @@ function makeArray($sub, $url, &$outArray){
 				if (isset($this->section) && !preg_match('/'.str_replace('/', '\\/', $this->section).'/', $data['route'])){continue;}
 
 
-				if (isset($data['defaults']['title'])){
+				if (isset($data['defaults']['defaultAnchor'])){
+					$title=$data['defaults']['defaultAnchor'];
+				}
+
+				elseif (isset($data['defaults']['title'])){
 					$title=$data['defaults']['title'];
 				}
 				else{

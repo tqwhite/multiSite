@@ -161,9 +161,6 @@ function applyStyle($cssString){
 //$this->headStyle()->appendStyle($contentArray['globalItems']['CSS']['main.css']);
 array_map('applyStyle', $contentArray['globalItems']['CSS']);
 
-$request = Zend_Controller_Front::getInstance()->getRequest();
-$this->headTitle($request->getActionName().'/')
-     ->headTitle($request->getControllerName());
 
 
 $scrapeDataList=$this->contentArray['scrapeDataList'];
