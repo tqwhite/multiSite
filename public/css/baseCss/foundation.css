@@ -1,4 +1,8 @@
 
+.align-right { float:right; margin: 0 0 15px 15px; }
+.align-left { float:left; margin: 0 15px 15px 0; }
+
+
 /*micro clearfix, container with class='blah cf' will contain floating things inside
 thanks: http://themergency.com/css-clearfix-demystified/*/
 
