@@ -62,7 +62,7 @@ function makeArray($sub, $url, &$outArray){
 				$outString.="<li class='sitemapItem'><a href='{$data['route']}'>$title</a></li>";
 			}
 			else{
-				$url=$_SERVER['HTTP_HOST'].$data['route'];
+				$url=$_SERVER['HTTP_HOST'].'/'.$data['route'];
 
 				$pathComponents=explode('/', $data['route']?$data['route']:'/parent/');
 				$pathComponents=removeEmpty($pathComponents);
