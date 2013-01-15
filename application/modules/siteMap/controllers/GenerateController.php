@@ -16,6 +16,14 @@ class SiteMap_GenerateController extends Q_Controller_Base
     {
 		//blah.com/sitemap?section=elearning/blah filters to only routed URLs containing the string 'elearning/blah'
 
+
+// 
+// 
+// ==== REMEMBER: Access to the site directory requires the domain be in /etc/hosts
+// 
+// 
+
+
     	$section=$this->getRequest()->getQuery('section');
 
 		$this->setVariationLayout('minimal');
