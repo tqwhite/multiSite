@@ -14,6 +14,9 @@ Widgets.Models.Base.extend('Widgets.Models.Session',
 
 		success=success?success:function(){alert('success');};
 		error=error?error:function(){alert('error');};
+		
+success();
+return; //I removed GE\user and account from php but have not yet gotten around to adding them back to Q\user & account
 
 		$.ajax({
 				url: '/session/start',
