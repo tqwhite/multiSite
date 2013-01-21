@@ -26,14 +26,14 @@ class Application_Model_Base
 	}
 
 	public function generate(){
-		$entityClassName="GE\\Entity\\{$this->entityName}";
+		$entityClassName="Q\\Entity\\{$this->entityName}";
 		$this->entity=new $entityClassName();
 		return $this->entity;
 	}
 
 	public function getList($hydrationMode){
 
-		$query = $this->entityManager->createQuery("SELECT u from GE\\Entity\\{$this->entityName} u");
+		$query = $this->entityManager->createQuery("SELECT u from Q\\Entity\\{$this->entityName} u");
 
 		switch ($hydrationMode){
 			default:
@@ -51,7 +51,7 @@ class Application_Model_Base
 
 	public function getByRefId($refId){
 
-		$query = $this->entityManager->createQuery("SELECT u from GE\\Entity\\{$this->entityName} u WHERE u.refId = :refId");
+		$query = $this->entityManager->createQuery("SELECT u from Q\\Entity\\{$this->entityName} u WHERE u.refId = :refId");
 		$query->setParameters(array(
 			'refId' => $refId
 		));

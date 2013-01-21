@@ -1,0 +1,16 @@
+<?php 
+
+$subFormString=$this->subForm; 
+
+
+$outString="
+<div id='view-content'>
+	<p>View script for controller <b>Utility</b> and script/action name <b>query</b></p>
+</div>
+<div style='border:1pt solid red;'>
+results from other controller:<p/>
+$subFormString
+</div>
+";
+
+echo $outString;

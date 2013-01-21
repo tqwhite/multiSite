@@ -1,15 +1,20 @@
 <?php
 
-class ErrorController extends Zend_Controller_Action
+class ErrorController extends Q_Controller_Base
 {
 
     public function init() //this is called by the Zend __construct() method
     {
-        parent::init(array('controllerType'=>'json'));
+        parent::init(array('controllerType'=>'zend'));
     }
 
     public function errorAction()
     {
+    
+// $frontController = Zend_Controller_Front::getInstance();
+// $frontController->setParam('disableOutputBuffering', true);
+  //  $this->_helper->layout->setLayout('/home/websites/local.tqorg/multiSite/website/application/layouts/scripts/default/nonCmsData');
+    
         $errors = $this->_getParam('error_handler');
 
         if (!$errors || !$errors instanceof ArrayObject) {
@@ -55,6 +60,7 @@ class ErrorController extends Zend_Controller_Action
 
 		$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
 
+ 
     }
 
     public function getLog()

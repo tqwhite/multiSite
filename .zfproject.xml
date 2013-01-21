@@ -33,6 +33,16 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="get"/>
         </controllerFile>
+        <controllerFile controllerName="Utility">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="migrate"/>
+          <actionMethod actionName="adhoc"/>
+          <actionMethod actionName="query"/>
+        </controllerFile>
+        <controllerFile controllerName="Bookmark">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="enter"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
       <layoutsDirectory>
@@ -329,6 +339,30 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="test">
             <viewScriptFile forActionName="utility"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Utility">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Utility">
+            <viewScriptFile forActionName="migrate"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Utility">
+            <viewScriptFile forActionName="adhoc"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="utility">
+            <viewScriptFile forActionName="adhoc"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="utility">
+            <viewScriptFile forActionName="adhoc"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Utility">
+            <viewScriptFile forActionName="query"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Bookmark">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Bookmark">
+            <viewScriptFile forActionName="enter"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

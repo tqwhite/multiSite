@@ -7,6 +7,13 @@ private $initFlag;
 
 public function _initExposeStructures(){
 
+$front = Zend_Controller_Front::getInstance();
+//$front->setParam('noErrorHandler', true);
+
+//$front->setParam('noViewRenderer', true);
+
+//\Q\Utils::dumpWeb($front->getParams());
+
 //error_reporting(E_ERROR | E_WARNING | E_PARSE | E_NOTICE);
 
 	$config=$this->getOptions();
@@ -90,7 +97,7 @@ public function _initSession(){
 
 }
 
-protected function _initRoutes() {
+protected function _initRoutes(){
 	//thanks: http://www.devpatch.com/2010/02/load-routes-from-routes-ini-config-file-in-zend-application-bootstrap/
     $front = Zend_Controller_Front::getInstance();
     $router = $front->getRouter();
@@ -143,5 +150,21 @@ private function makeFile($filePath, $contents){
 	}
 }
 
+/*
+	protected function _initError ()
+	{
+
+		$front = Zend_Controller_Front::getInstance();
+	$front->registerPlugin(new Zend_Controller_Plugin_ErrorHandler());
+		$front->throwExceptions( false );
+	
+	
+		if (PHP_SAPI == 'cli')
+		{
+			$error->setErrorHandlerController ('error');
+			$error->setErrorHandlerAction ('cli');
+		}
+	}
+*/
 }//end of class
 

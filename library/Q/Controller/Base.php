@@ -47,6 +47,12 @@ class Q_Controller_Base extends Zend_Controller_Action
 
 			//echo Zend_Layout::getMvcInstance()->getLayoutPath(); exit;
 		}
+		elseif (isset($args['controllerType']) && $args['controllerType']=='json'){
+		
+		}
+		elseif (isset($args['controllerType']) && $args['controllerType']=='zend'){
+		
+		}
     }
 
     private function getSiteDirectoryPath(){
@@ -111,7 +117,7 @@ class Q_Controller_Base extends Zend_Controller_Action
 		$multiSite=$this->multiSite;
 		$defaultDirName=$multiSite['layout']['defaultDirName'].'/';
 
-		$siteLayout=$this->layoutDirectoryPath.$layoutName;
+		$siteLayout=$this->layoutDirectoryPath.'/'.$layoutName;
 		$defaultlayout=$this->defaultLayoutPath.$defaultDirName.$layoutName;
 
 		if ($this->checkLayoutExists($siteLayout)){

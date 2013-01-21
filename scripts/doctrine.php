@@ -1,11 +1,14 @@
 <?php
 
+//THIS FILE HAS BEEN CHANGED SINCE IT ARRIVED. 
+//If it is revised in a distribution, remember to change lines marked tqii
+
 // Define path to application directory
 defined('APPLICATION_PATH')
     || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../application'));
 
 // Define application environment, (I am only running this in development)
-define('APPLICATION_ENV', 'development');
+define('APPLICATION_ENV', 'commandLine'); //tqii was 'development'
 
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(

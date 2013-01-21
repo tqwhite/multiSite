@@ -18,7 +18,7 @@ class TestController extends Zend_Controller_Action
 
     public function indexAction()
     {
-		echo "helloX"; exit;
+		
     }
 
     public function databaseAction()
@@ -94,9 +94,22 @@ class TestController extends Zend_Controller_Action
 
     public function utilityAction()
     {
+// $request = new Zend_Controller_Request_Http(); 
+// $this->getFrontController()
+// ->setResponse(new Zend_Controller_Response_Cli)
+// ->setRequest($request
+// ->setControllerName('utilityController')
+// ->setActionName('adhocAction'))
+// ->setRouter(new Zend_Controller_Router_Route)
+// ->setParam('noViewRenderer', true);
+// 
+// 
+//     $response = new Zend_Controller_Response_Http();
+// 
+//     $frontController->dispatch($newRequest, $response);
+	
+	$this->view->message='hello from test/utility<br/>';
 
-		\Q\Utils::dumpWeb($_SERVER);
-		exit;
     }
 
 
