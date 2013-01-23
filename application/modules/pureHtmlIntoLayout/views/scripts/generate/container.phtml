@@ -146,15 +146,7 @@ array_map('applyStyle', $contentArray['globalItems']['CSS']);
 
 
 $contentPanel=$contentArray['contentPanel.html'];
-if (isset($contentArray['elements'])){
-$elementList=$contentArray['elements'];
-}
 
-if (isset($elementList) && is_array($elementList)){
-	foreach ($elementList as $label=>$data){
-		$contentPanel=str_replace("elements/$label", $data, $contentPanel);
-	}
-}
 
 //OUTPUT SECTION =========================================================================
 
@@ -165,4 +157,11 @@ $outString="
 ";
 ?>
 
-<?php  echo $outString;?>
+<?php  
+
+foreach ($contentArray['elements'] as $label=>$data){
+
+	$outString=str_replace("../elements/$label", $data, $outString);
+}
+
+echo $outString;?>

@@ -175,12 +175,17 @@ private function getContents($filePath){
 	else
 		{$switchVar='default';}
 
+//echo "$switchVar=$filePath<br/>"; //sometimes images arrive in weird condition, this helps.
+
 	switch ($switchVar){
 		default:
 			return $contents;
 		break;
 		case 'image':
 			return $this->putToMediaHash($filePath);
+		break;
+		case 'application':
+			return "$filePath is not a valid file";
 		break;
 	}
 }

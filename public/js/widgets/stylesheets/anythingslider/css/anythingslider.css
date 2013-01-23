@@ -77,23 +77,41 @@
  =================================
  Active State (has keyboard focus)
  =================================
+ 
+ 
 */
+
+/* 
+
+
+ These three are overridden in PHP, which is loaded first
+ 
+ */
 /* slider window - top & bottom borders, active state */
+/*
 .anythingSlider-default.activeSlider .anythingWindow {
 	border-color: #7C9127;
-}
+}*/
 /* Navigation buttons, active state */
+/*
 .anythingSlider-default.activeSlider .anythingControls a {
 	/* background image = top shadow */
 	background-color: #7C9127;
-}
+}*/
 /* Navigation current & hovered button, active state */
+/*
 .anythingSlider-default.activeSlider .anythingControls a.cur,
 .anythingSlider-default.activeSlider .anythingControls a:hover {
 	/* background image removed */
 	background: #7C9127;
 }
+*/
+/* 
 
+
+ Preceeding three are overridden in PHP, which is loaded first
+ 
+ */
 /* start-stop button, stopped, active state */
 .anythingSlider-default.activeSlider .anythingControls a.start-stop {
 	background-color: #080;
