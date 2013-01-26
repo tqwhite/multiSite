@@ -100,6 +100,27 @@ return;
     }
 
 
+
+    public function databaseAction()
+    {
+	$query='select * from bookmarks';
+    echo "DATABASE ($query)\n";
+
+			$db = new Zend_Db_Adapter_Pdo_Mysql(array(
+				'host'     => 'localhost',
+				'username' => 'tqorg',
+				'password' => 'money*pie',
+				'dbname'   => 'tqorg'
+			));
+
+		$stmt = $db->query($query);
+\Q\Utils::dumpWeb($stmt);
+
+	
+		echo '<p/>'.Zend_Version::VERSION;
+exit;
+    }
+
 }
 
 
