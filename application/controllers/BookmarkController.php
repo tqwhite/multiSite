@@ -88,8 +88,15 @@ class BookmarkController extends Zend_Controller_Action
 			exit;
     }
 
+    public function setupAction()
+    {
+        // action body
+    }
+
 
 }
+
+
 
 
 
