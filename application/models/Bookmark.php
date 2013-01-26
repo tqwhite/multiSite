@@ -14,9 +14,17 @@ class Application_Model_Bookmark extends Application_Model_Base
 		$errorList=array();
 
 		$name='uri';
-		$datum=$inData[$name];
+		$datum=isset($inData[$name])?$inData[$name]:'';
+
 		if (strlen($datum)<4){
 			$errorList[]=array($name, "URI is too short");
+		}
+		else{
+			$testObj=new \Application_Model_Bookmark();
+			$testObj=$testObj->getByFieldName('uri', $datum);
+			if (isset($testObj)){
+				$errorList[]=array($name, "URI already in database");
+			}
 		}
 
 		return $errorList;

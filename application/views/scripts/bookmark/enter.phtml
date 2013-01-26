@@ -1,10 +1,15 @@
 <?php
 
+$uri=isset($this->parms['uri'])?$this->parms['uri']:'';
+$anchor=isset($this->parms['anchor'])?$this->parms['anchor']:'';
 
 
-$outString="	<div style='height:100px;width:200px;background:#afa;padding:50px;'>
+$outString="	<div style='font-family:sans-serif;height:100px;width:300px;background:#afa;padding:50px 0px 25px 0px;'>
 	<form>
-		{$this->parms['addedInLayout']}: <input value='{$this->parms['url']}'>
+	<table>
+		<tr><td>URI:</td><td><input name='uri' value='{$uri}'></td></tr>
+		<tr><td>Anchor:</td><td><input name='anchor' value='{$anchor}'></td></tr>
+		<tr><td colspan='2'><input type='submit'>
 		</form>
 	</div>
 ";

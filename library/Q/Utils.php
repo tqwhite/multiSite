@@ -297,6 +297,15 @@ static function htmlEntities($inData){
 	return $outArray;
 }
 
+static function errorListToString($errorList, $separator){
+		$outString='';
+		for ($i=0, $len=count($errorList); $i<$len; $i++){
+			$element=$errorList[$i];
+			$outString.="{$element[0]}:{$element[1]}$separator";
+		}
+		return $outString;
+}
+
 }//end of class
 
 

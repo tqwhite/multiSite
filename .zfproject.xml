@@ -42,6 +42,8 @@
         <controllerFile controllerName="Bookmark">
           <actionMethod actionName="index"/>
           <actionMethod actionName="enter"/>
+          <actionMethod actionName="create"/>
+          <actionMethod actionName="redirect"/>
         </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
@@ -363,6 +365,12 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Bookmark">
             <viewScriptFile forActionName="enter"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Bookmark">
+            <viewScriptFile forActionName="create"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Bookmark">
+            <viewScriptFile forActionName="redirect"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

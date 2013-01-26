@@ -61,6 +61,24 @@ class Application_Model_Base
 
 	}
 
+	public function getByFieldName($fieldName, $value){
+
+		$query = $this->entityManager->createQuery("SELECT u from Q\\Entity\\{$this->entityName} u WHERE u.$fieldName = :$fieldName");
+		$query->setParameters(array(
+			$fieldName => $value
+		));
+		$list = $query->getResult();
+		
+		if (isset($list[0])){
+		$this->entity=$list[0];
+			return $this->entity;
+		}
+		else{
+			return;
+		}
+
+	}
+
 	public function newFromArrayList($source, $suppressFlush){
 
 		$outArray=array();

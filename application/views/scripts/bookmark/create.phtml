@@ -1,0 +1,25 @@
+<?php 
+
+$bookmark=$this->bookmark;
+$outString='';
+
+$outString.="bookmark URI= <a href='{$this->bookmark['uri']}'>{$this->bookmark['uri']}</a><br/><br/>";
+
+$outString.="<a href='http://<!rootDomainSegment!>?{$bookmark['shortId']}'>http://<!rootDomainSegment!>?{$bookmark['shortId']}</a><br/><br/>";
+
+$outString.="
+
+<textarea style='height:300px;width:400px;padding:50px;'>
+{$bookmark['anchor']}
+
+
+
+
+
+http://<!rootDomainSegment!>?{$bookmark['shortId']}
+
+</textarea>
+
+";
+
+echo $this->translateUrls($outString);
