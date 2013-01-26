@@ -102,3 +102,35 @@ p{
 	font-weight:bold;
 	text-align:center;
 }
+
+
+
+.simpleButton{
+  	font-weight:bold;
+	border-top:1pt solid gray;
+	cursor:pointer;
+	border-left:1pt solid gray;
+	border-right:1pt solid black;
+	border-bottom:1pt solid black;
+	text-align:center;
+	padding-left:2px;
+	padding-right:2px;
+	width:120px;
+	height:30px;
+	margin-right:10px;
+  -moz-border-radius: 4px; /* Firefox */
+  -webkit-border-radius: 4px; /* Safari, Chrome */
+  border-radius: 4px; /* CSS3 */
+	-webkit-box-shadow:2px 3px 5px rgba(0, 0, 0, .5);
+	   -moz-box-shadow:2px 3px 5px rgba(0, 0, 0, .5);
+	        box-shadow:2px 3px 5px rgba(0, 0, 0, .5);
+}
+
+
+.simpleButton:hover{
+	background:none;
+	color:red;
+  -moz-border-radius: 4px; /* Firefox */
+  -webkit-border-radius: 4px; /* Safari, Chrome */
+  border-radius: 4px; /* CSS3 */
+}

@@ -9,6 +9,18 @@ else{
 	$this->headTitle($request->getActionName().'/')
 		 ->headTitle($request->getControllerName());
 }
+
+
+
+if (APPLICATION_ENV=='production' && isset($this->contentArray['analytics.js']) && $this->contentArray['analytics.js']){
+	$analyticsString="<script type='text/javascript'>
+		{$this->contentArray['analytics.js']}
+		</script>";
+}
+else{
+	$analyticsString='';
+}
+
  ?>
 <!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
    'http://www.w3.org/TR/html4/strict.dtd'>
@@ -41,4 +53,5 @@ controller: <?php echo $this->codeNav['controller']; ?><br/>
 content: <?php echo $this->codeNav['contentDirPath']; ?><br/>
 layout: <?php echo $this->codeNav['actualLayoutFullPath']; ?><br/>
 -->
+$analyticsString
 </html>

@@ -14,6 +14,12 @@
 $contentArray=$this->contentArray; //needs to be a property so helpers can see it
 
 
+if (isset($contentArray['thisPage.css']) && $contentArray['thisPage.css']){
+	$thisPageCssString=$contentArray['thisPage.css'];
+}
+else{
+	$thisPageCssString='';
+}
 
 
 //DEFAULT STYLES (for this page type) =========================================================================
@@ -33,14 +39,33 @@ font-size:24pt;margin-bottom:20px;
 	width:750px;
 	margin:0px 25px;
 }
+
+/*
+These anything slider things are often overridden by content ==================
+*/
 .anythingSlider-default .arrow a {
 
 background: url(/js/widgets/stylesheets/anythingslider/imagesCustom/defaultX.png) no-repeat;
 }
 
 
+/* slider window - top & bottom borders, active state */
+.anythingSlider-default.activeSlider .anythingWindow {
+	border-color: #666;
+}
+/* Navigation buttons, active state */
+.anythingSlider-default.activeSlider .anythingControls a {
+	/* background image = top shadow */
+	background-color: #666;
+}
+/* Navigation current & hovered button, active state */
+.anythingSlider-default.activeSlider .anythingControls a.cur,
+.anythingSlider-default.activeSlider .anythingControls a:hover {
+	/* background image removed */
+	background: #666;
+}
 
-
+$thisPageCssString
 ";
 
 $this->headStyle()->appendStyle($styleString);
@@ -58,6 +83,8 @@ array_map('applyStyle', $contentArray['globalItems']['CSS']);
 
 //MAIN CONTENT SECTION =========================================================================
 
+
+
 $panelContentString='';
 		$list=$this->contentArray['slideshow'];
 		foreach ($list as $label=>$element){
@@ -71,6 +98,7 @@ $elementList=$contentArray['images'];
 foreach ($elementList as $label=>$data){
 	$panelContentString=str_replace("../images/$label", $data, $panelContentString);
 }
+
 
 $panelString="
 $panelContentString
