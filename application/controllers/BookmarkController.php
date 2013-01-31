@@ -34,7 +34,24 @@ class BookmarkController extends Zend_Controller_Action
 		$newObj=new \Application_Model_Bookmark();
 		$errorList=$newObj->validate($params);
     	if (count($errorList)>0){
-    		throw new Exception(\Q\Utils::errorListToString($errorList));
+    	
+    		$errorCodeInx=2; $dbDupeFound='dbDupeFound'; $errorDataInx=3;
+    		if (count($errorList)>0==1 && (isset($errorList[0][$errorCodeInx])==$dbDupeFound)){
+    		
+    			$newObj=$errorList[0][$errorDataInx];
+			
+				$bookmark=array(
+					'shortId'=>$newObj->shortId,
+					'anchor'=>$newObj->anchor,
+					'uri'=>$newObj->uri,
+					'status'=>'already in database'
+				);
+
+			$this->view->bookmark=$bookmark;
+    		}
+    		else{
+    			throw new Exception(\Q\Utils::errorListToString($errorList));
+    		}
     	}
     	else{
 			$newObj->newFromArrayList($source, false);
@@ -42,7 +59,8 @@ class BookmarkController extends Zend_Controller_Action
 			$bookmark=array(
 				'shortId'=>$newObj->entity->shortId,
 				'anchor'=>$newObj->entity->anchor,
-				'uri'=>$newObj->entity->uri
+				'uri'=>$newObj->entity->uri,
+				'status'=>'bookmark created'
 			);
 			$this->view->bookmark=$bookmark;
 		}
@@ -70,8 +88,15 @@ class BookmarkController extends Zend_Controller_Action
 			exit;
     }
 
+    public function setupAction()
+    {
+        // action body
+    }
+
 
 }
+
+
 
 
 

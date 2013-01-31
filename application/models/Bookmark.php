@@ -23,7 +23,7 @@ class Application_Model_Bookmark extends Application_Model_Base
 			$testObj=new \Application_Model_Bookmark();
 			$testObj=$testObj->getByFieldName('uri', $datum);
 			if (isset($testObj)){
-				$errorList[]=array($name, "URI already in database");
+				$errorList[]=array($name, "URI already in database", 'dbDupeFound', $testObj);
 			}
 		}
 

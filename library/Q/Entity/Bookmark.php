@@ -17,13 +17,13 @@ class Bookmark /*extends Base*/{
 	private $refId;
 
 	/**
-	 * @column(type="string", length=60, nullable=false, unique="true")
+	 * @column(type="string", length=300, nullable=false, unique="true")
 	 * @var string
 	 **/
 	private $uri;
 
 	/**
-	 * @column(type="string", length=60, nullable=true)
+	 * @column(type="string", length=300, nullable=true)
 	 * @var string
 	 **/
 	private $anchor;

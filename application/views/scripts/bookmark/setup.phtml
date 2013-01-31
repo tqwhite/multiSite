@@ -1,0 +1,59 @@
+<?php
+$firstPart="<a style='padding:5px;border:1pt solid green;text-decoration:none;
+  -moz-border-radius: 4px; /* Firefox */
+  -webkit-border-radius: 4px; /* Safari, Chrome */
+  border-radius: 4px; /* CSS3 */
+	-webkit-box-shadow:2px 3px 5px rgba(0, 0, 0, .5);
+	   -moz-box-shadow:2px 3px 5px rgba(0, 0, 0, .5);
+	        box-shadow:2px 3px 5px rgba(0, 0, 0, .5);
+'
+href=\"javascript:(function()%7Bvar%20bookmarkUrl%3D%28%27http%3A//tqwhite.org%3Furi%3D%27+window.location.href+%27%26anchor%3D%27+escape%28document.title%29%29%3Bwindow.open%28bookmarkUrl%2C%20%27TQs%20Short%20URLs%27%2C%20%27height%3D330%2C%20width%3D495%27%29%3B%7D)();\"
+>";
+
+
+$outString="
+<div style='font-family:sans-serif;padding:50px;width:400px;line-height:1.1;'>
+
+	<div>
+		The only way to use Q Shortener is with a bookmarklet.<br/><br/>
+		Drag the button below (take you choice of label, they all do the same thing) to your bookmark bar and click to your heart's content.
+	</div>
+
+	<div style='clear:both;border:1pt solid red;height:60px;position:relative;margin-top:30px;margin-bottom:40px;padding-top:40px;padding-left:50px;'>
+		<div style='float:left;margin-left:20px;'>
+			$firstPart
+			&bull;
+			</a>
+		</div>
+		<div style='float:left;margin-left:20px;'>
+			$firstPart
+			✚
+			</a>
+		</div>
+		<div style='float:left;margin-left:20px;'>
+			$firstPart
+			tq-
+			</a>
+		</div>
+		<div style='float:left;margin-left:20px;'>
+			$firstPart
+			&hearts;
+			</a>
+		</div>
+		
+	</div>
+
+	<div style='margin-bottom:20px;'>
+
+		You can use the following code to customize your own.
+
+	</div>
+
+	<div style='width:500px;color:gray;'>
+javascript:(function(){var bookmarkUrl=('http://tqwhite.org?uri='+window.location.href+'&anchor='+escape(document.title));window.open(bookmarkUrl, 'TQs Short URLs', 'height=330, width=495');})();
+	</div>
+
+</div>
+";
+
+echo $outString;

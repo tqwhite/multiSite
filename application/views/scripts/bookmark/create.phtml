@@ -3,22 +3,38 @@
 $bookmark=$this->bookmark;
 $outString='';
 
-$outString.="bookmark URI= <a href='{$this->bookmark['uri']}'>{$this->bookmark['uri']}</a><br/><br/>";
-
-$outString.="<a href='http://<!rootDomainSegment!>?{$bookmark['shortId']}'>http://<!rootDomainSegment!>?{$bookmark['shortId']}</a><br/><br/>";
-
 $outString.="
 
-<textarea style='height:300px;width:400px;padding:50px;'>
+<div style='margin:15px;border:1pt solid red;padding:25px;width:400px;font-family:sans-serif;font-size:8pt;'>
+
+<div style='float:left;overflow:scroll;width:170px;'>
+<div style='font-weight:bold;margin-bottom:10px;'>status: {$this->bookmark['status']}</div>
+<div style='margin-bottom:10px;'><a target=_blank href='{$this->bookmark['uri']}'>{$this->bookmark['uri']}</a></div>
+<div style='margin-bottom:10px;'><a target=_blank href='http://<!rootDomainSegment!>?{$bookmark['shortId']}'>http://<!rootDomainSegment!>?{$bookmark['shortId']}</a></div>
+</div>
+
+<div style='float:right;border:1pt solid gray; height:55px;width:190px;position:relative;'>
+
+
+<a style='position:absolute;bottom:0px;right:0px;border:1pt solid green; text-decoration:none;' 
+title='bookmarklet:drag to bookmark bar'
+href=\"javascript:(function(){var bookmarkUrl=('http://tqwhite.org?uri='+window.location.href+'&anchor='+escape(document.title));window.open(bookmarkUrl, 'TQ\'s Short URLs', 'height=330, width=495');})();\">+</a>
+
+</div>
+
+<textarea style='height:150px;width:400px;padding-left:25px;'>
+
+
+
+
 {$bookmark['anchor']}
-
-
-
-
 
 http://<!rootDomainSegment!>?{$bookmark['shortId']}
 
 </textarea>
+
+</div>
+
 
 ";
 
