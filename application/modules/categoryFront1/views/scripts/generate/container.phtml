@@ -162,7 +162,9 @@ function applyStyle($cssString){
 }
 
 //$this->headStyle()->appendStyle($contentArray['globalItems']['CSS']['main.css']);
-array_map('applyStyle', $contentArray['globalItems']['CSS']);
+
+$cssString=$this->mapServableToHash($this->contentArray, $contentArray['globalItems']['CSS']);
+array_map('applyStyle', $cssString);
 
 //MAIN CONTENT SECTION =========================================================================
 
@@ -194,11 +196,6 @@ $panelString="
 </div>
 ";
 
-
-
-foreach ($contentArray['images'] as $label=>$data){
-	$panelString=str_replace("../images/$label", $data, $panelString);
-}
 //OUTPUT SECTION =========================================================================
 
 

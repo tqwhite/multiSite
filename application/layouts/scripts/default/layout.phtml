@@ -196,4 +196,6 @@ $outputString="
 ";
 
 $outputString=$this->translateUrls($outputString);
+
+$outputString=$this->mapServableToHash($this->contentArray, $outputString);
 echo $outputString;
