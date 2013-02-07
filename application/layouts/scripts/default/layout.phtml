@@ -115,6 +115,9 @@ else{
 	$siteDirectory='';
 }
 
+$jqueryReadyScript=$this->buildJqueryReadyCall($this->contentArray);
+
+
 $contactFooter=$this->render('default/contactFooter.phtml');
 
 $footer="
@@ -162,7 +165,7 @@ $outputString="
 	<link href='http://fonts.googleapis.com/css?family=Satisfy|Open+Sans:400italic,400,700|Open+Sans+Condensed:700' rel='stylesheet' type='text/css'>
 	<link rel='stylesheet' type='text/css' href='http://yui.yahooapis.com/3.6.0/build/cssreset/cssreset-min.css'>
 	<link rel='stylesheet' type='text/css' href='/css/baseCss/foundation.css'>
-	<script type='text/javascript' src='js/jquery-1.6.4.js'></script>
+	<script type='text/javascript' src='/js/jquery-1.6.4.js'></script>
 
 	$headTitle
 
@@ -191,6 +194,7 @@ $outputString="
 	$codeNavHtml
 	</table>
 	$widgetScriptCall
+	$jqueryReadyScript
 	$analyticsString
 	</html>
 ";

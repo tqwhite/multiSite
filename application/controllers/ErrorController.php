@@ -16,7 +16,7 @@ class ErrorController extends Q_Controller_Base
   //  $this->_helper->layout->setLayout('/home/websites/local.tqorg/multiSite/website/application/layouts/scripts/default/nonCmsData');
     
         $errors = $this->_getParam('error_handler');
-\Q\Utils::dumpWeb($errors);;exit;
+
         if (!$errors || !$errors instanceof ArrayObject) {
             $this->view->message = 'You have reached the error page';
             return;
