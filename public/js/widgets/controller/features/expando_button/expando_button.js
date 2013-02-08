@@ -49,8 +49,8 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ExpandoButton',
 			var expandedHeight=this.getExpandedHeight(parent);
 			
 			this.duration=((expandedHeight-this.origHeight)/150)*500;
-			
-			$(parent).animate({height:expandedHeight}, this.duration);
+		
+			target.parent().animate({height:expandedHeight}, this.duration);
 			this.expandToggle='expanded';
 		}
 		else{
@@ -60,7 +60,7 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ExpandoButton',
 //no instances of multiple buttons per page, non-critical consequence when it happens, fix it then
 
 			$(target).removeClass(this.shrunkButtonClassName).addClass(this.expandedButtonClassName);
-			$(parent).animate({height:this.origHeight}, this.duration); 
+			target.parent().animate({height:this.origHeight}, this.duration); 
 			this.expandToggle='shrunk';
 		}
 		
