@@ -44,13 +44,13 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ExpandoButton',
 
 		if (this.expandToggle=='shrunk'){
 			target.removeClass(this.expandedButtonClassName).addClass(this.shrunkButtonClassName);
-			this.origHeight=target.parent().outerHeight();
+			this.origHeight=$(target).parent().outerHeight();
 			
 			var expandedHeight=this.getExpandedHeight(parent);
 			
 			this.duration=((expandedHeight-this.origHeight)/150)*500;
 			
-			parent.animate({height:expandedHeight}, this.duration);
+			$(parent).animate({height:expandedHeight}, this.duration);
 			this.expandToggle='expanded';
 		}
 		else{
@@ -59,8 +59,8 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ExpandoButton',
 //could result in faster or slower than you want for this one
 //no instances of multiple buttons per page, non-critical consequence when it happens, fix it then
 
-			target.removeClass(this.shrunkButtonClassName).addClass(this.expandedButtonClassName);
-			parent.animate({height:this.origHeight}, this.duration); 
+			$(target).removeClass(this.shrunkButtonClassName).addClass(this.expandedButtonClassName);
+			$(parent).animate({height:this.origHeight}, this.duration); 
 			this.expandToggle='shrunk';
 		}
 		
