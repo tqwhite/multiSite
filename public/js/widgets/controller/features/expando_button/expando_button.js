@@ -70,9 +70,9 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ExpandoButton',
 getExpandedHeight:function(domObj){
 
 	var currHeight=$(domObj).height();
-	domObj.css({height:'100%'}); //for some happy reason, this does not display to user
+	$(domObj).css({height:'100%'}); //for some happy reason, this does not display to user
 	var expandedHeight=$(domObj).height();
-	domObj.css({height:currHeight});
+	$(domObj).css({height:currHeight});
 	return expandedHeight;
 
 }
