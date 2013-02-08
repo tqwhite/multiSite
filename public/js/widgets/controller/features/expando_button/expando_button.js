@@ -48,12 +48,19 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ExpandoButton',
 			
 			var expandedHeight=this.getExpandedHeight(parent);
 			
-			parent.animate({height:expandedHeight}, 500);
+			this.duration=((expandedHeight-this.origHeight)/150)*500;
+			
+			parent.animate({height:expandedHeight}, this.duration);
 			this.expandToggle='expanded';
 		}
 		else{
+
+//hackery note: this.duration will refer to whatever the last expand button set, 
+//could result in faster or slower than you want for this one
+//no instances of multiple buttons per page, non-critical consequence when it happens, fix it then
+
 			target.removeClass(this.shrunkButtonClassName).addClass(this.expandedButtonClassName);
-			parent.animate({height:this.origHeight}, 500);
+			parent.animate({height:this.origHeight}, this.duration); 
 			this.expandToggle='shrunk';
 		}
 		
@@ -62,9 +69,9 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ExpandoButton',
 
 getExpandedHeight:function(domObj){
 
-	var currHeight=domObj.height();
+	var currHeight=$(domObj).height();
 	domObj.css({height:'100%'}); //for some happy reason, this does not display to user
-	var expandedHeight=domObj.height();
+	var expandedHeight=$(domObj).height();
 	domObj.css({height:currHeight});
 	return expandedHeight;
 
