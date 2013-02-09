@@ -36,11 +36,24 @@ class Bookmark /*extends Base*/{
 	private $shortId;
 
 	/**
+	 * @column(type="boolean", nullable=true)
+	 * @var string
+	 **/
+
+	private $published; //if it's published, it probably should be preserved
+
+	/**
 	 * @column(type="integer", nullable=true)
 	 * @var string
 	 **/
 
 	private $accessCount;
+
+    /**
+	 * @param \Doctrine\Common\Collections\Collection $property
+	 * @OneToMany(targetEntity="BookmarkCategoryNode", mappedBy="bookmark", cascade={"persist", "remove"});
+     */
+    private $categoryNodes;
 
 
 	/**

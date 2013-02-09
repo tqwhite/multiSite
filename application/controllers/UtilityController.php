@@ -103,22 +103,30 @@ return;
 
     public function databaseAction()
     {
-	$query='select * from bookmarks';
-    echo "DATABASE ($query)\n";
+    
+		//minimal demonstration of database functionality
+    
+		$query='show tables';
+	
+		$config=$this->getInvokeArg('bootstrap')->getOptions();
+	
+		$dbParms=$config['resources']['doctrine']['dbal']['connections']['default']['parameters'];
+	
+		$display=$dbParms;
+		$display['password']='****';
+    
+		echo Zend_Version::VERSION."\n<p/>";
+    	echo "DATABASE ($query)\n<p/>";
 
-			$db = new Zend_Db_Adapter_Pdo_Mysql(array(
-				'host'     => 'localhost',
-				'username' => 'tqorg',
-				'password' => 'money*pie',
-				'dbname'   => 'tqorg'
-			));
+		$dbParms['username']=$dbParms['user'];
+		
+		$db = new Zend_Db_Adapter_Pdo_Mysql($dbParms);
 
 		$stmt = $db->query($query);
-\Q\Utils::dumpWeb($stmt);
-
-	
-		echo '<p/>'.Zend_Version::VERSION;
-exit;
+		
+		\Q\Utils::dumpWeb($display);
+		\Q\Utils::dumpWeb($stmt->fetchAll());
+		exit;
     }
 
 }

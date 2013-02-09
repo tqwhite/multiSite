@@ -24,12 +24,11 @@ class BookmarkController extends Zend_Controller_Action
     {
     	
     	$params=$this->_request->getParams();
-		$source=array(
-			array(
-				'uri'=>isset($params['uri'])?$params['uri']:'', 
-				'anchor'=>isset($params['anchor'])?$params['anchor']:''
-			)
-		);
+    	
+    	
+			
+		$catObj=new \Application_Model_Category();
+		$this->view->categories=$catObj->getList();
 
 		$newObj=new \Application_Model_Bookmark();
 		$errorList=$newObj->validate($params);
@@ -39,13 +38,10 @@ class BookmarkController extends Zend_Controller_Action
     		if (count($errorList)>0==1 && (isset($errorList[0][$errorCodeInx])==$dbDupeFound)){
     		
     			$newObj=$errorList[0][$errorDataInx];
-			
-				$bookmark=array(
-					'shortId'=>$newObj->shortId,
-					'anchor'=>$newObj->anchor,
-					'uri'=>$newObj->uri,
-					'status'=>'already in database'
-				);
+    			$tmp=$newObj->categoryNodes;
+
+				$bookmark=\Application_Model_Bookmark::formatOutput($newObj, 'web');
+				$bookmark['status']='already in database';
 
 			$this->view->bookmark=$bookmark;
     		}
@@ -54,7 +50,16 @@ class BookmarkController extends Zend_Controller_Action
     		}
     	}
     	else{
-			$newObj->newFromArrayList($source, false);
+			$source=array(
+					'uri'=>isset($params['uri'])?$params['uri']:'', 
+					'anchor'=>isset($params['anchor'])?$params['anchor']:'',
+					'categoryList'=>array(
+						array('name'=>'nameOne'),
+						array('name'=>'nameTwo')
+					
+					)
+			);
+			$newObj->makeNew($source, false);
 
 			$bookmark=array(
 				'shortId'=>$newObj->entity->shortId,
@@ -62,6 +67,8 @@ class BookmarkController extends Zend_Controller_Action
 				'uri'=>$newObj->entity->uri,
 				'status'=>'bookmark created'
 			);
+			
+			
 			$this->view->bookmark=$bookmark;
 		}
 		//bookmark/create.phtml
@@ -76,7 +83,10 @@ class BookmarkController extends Zend_Controller_Action
 			if (!$redirectObj){
     			throw new Exception('No such shortId');
 			}
-			
+		
+			$redirectObj->accessCount=$redirectObj->accessCount+1;
+			$newObj->persist(true);
+		
 //			echo $redirectObj->uri;
 			$redirectString="Location: ".$redirectObj->uri;
 			header($redirectString);

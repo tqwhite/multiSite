@@ -31,7 +31,7 @@ class Application_Model_Base
 		return $this->entity;
 	}
 
-	public function getList($hydrationMode){
+	public function getList($hydrationMode='array'){
 
 		$query = $this->entityManager->createQuery("SELECT u from Q\\Entity\\{$this->entityName} u");
 
