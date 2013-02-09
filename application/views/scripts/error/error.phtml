@@ -1,5 +1,6 @@
 <?php /*require_once($_SERVER['DOCUMENT_ROOT'].'/tools/mailNotificationInclude.php');*/?>
 <?php
+
 	if (isset($this->exception)){
 		$getMessage=$this->exception->getMessage();
 	}
@@ -8,12 +9,36 @@
 	}
 	error_log("ZEND ERROR PAGE: $getMessage ");//STACK TRACE  ".Q\Utils::callStack(true));
 
-?>
+
+if (isset($this->exception)){
+	$exceptionMessage="
+
+	  <h3>Exception information:</h3>
+	  <p class='emphasize'>
+		  <b>Message:</b> <?php echo $this->exception->getMessage() ?>
+	  </p>
+
+	  <h3>Stack trace:</h3>
+	  <pre><?php echo $this->exception->getTraceAsString() ?>
+	  </pre>
+
+	  <h3>Request Parameters:</h3>
+	  <pre>".$this->escape(var_export($this->request->getParams(), true))."
+	  </pre>
+
+	";
+}
+else{
+	$exceptionMessage="no exception message";
+}
+
+$outString="
+
 <!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
    'http://www.w3.org/TR/html4/strict.dtd'>
 <html>
 <head>
-<title>Error "<?php echo $this->message ?>"</title>
+<title>Error '{$this->message}'</title>
 
 <script type='text/javascript' src='http://code.jquery.com/jquery-1.6.1.min.js'></script>
 <!--link rel='stylesheet' type='text/css' href='css/main.css' /-->
@@ -28,29 +53,14 @@
 <body>
 
 
-
 <div style='font-size:8pt;color:gray;'>
   <h1>An error occurred</h1>
-  <h2><?php echo $this->message ?></h2>
+  <h2>{$this->message}</h2>
 
-  <?php if (isset($this->exception)): ?>
+ $exceptionMessage
 
-  <h3>Exception information:</h3>
-  <p class='emphasize'>
-      <b>Message:</b> <?php echo $this->exception->getMessage() ?>
-  </p>
-
-  <h3>Stack trace:</h3>
-  <pre><?php echo $this->exception->getTraceAsString() ?>
-  </pre>
-
-  <h3>Request Parameters:</h3>
-  <pre><?php echo $this->escape(var_export($this->request->getParams(), true)) ?>
-  </pre>
-
-  <?php endif ?>
 </div>
-
+<div style='color:red;margin-top:50px;'>NOTE: Figure out why this template requires an exit;</div>
 </body>
 
 <script type='text/javascript'>
@@ -58,7 +68,7 @@
 $(document).ready(function(){
 
 
-//	$('body').append("<div style='z-index:200;position:absolute;left:100px;top:150px;'><?php echo $this->message ?><br/><?php echo $getMessage ?></div>");
+//	$('body').append(\"<div style='z-index:200;position:absolute;left:100px;top:150px;'><?php echo $this->message ?><br/><?php echo $getMessage ?></div>\");
 
 
 });
@@ -66,3 +76,6 @@ $(document).ready(function(){
 </script>
 
 </html>
+";
+
+echo $outString; exit;

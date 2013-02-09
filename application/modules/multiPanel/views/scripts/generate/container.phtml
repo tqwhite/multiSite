@@ -92,14 +92,6 @@ $panelContentString='';
 		}
 $panelContentString="<ul id='anythingslider' class='mainContentContainer panelBlock'>$panelContentString</ul>";
 
-
-$elementList=$contentArray['images'];
-
-foreach ($elementList as $label=>$data){
-	$panelContentString=str_replace("../images/$label", $data, $panelContentString);
-}
-
-
 $panelString="
 $panelContentString
 ";

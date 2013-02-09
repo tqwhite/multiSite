@@ -228,7 +228,7 @@ Widgets.Controller.Base.extend('Widgets.Controller.Display.TabPanel',
 		}
 
 
-		var h = this.href, s
+		var h = this.href, s,
 		prefix='#id=',
 		pattern=new RegExp(prefix+'.*');
 		// external links will fall through and go to the external url
@@ -256,7 +256,7 @@ Widgets.Controller.Base.extend('Widgets.Controller.Display.TabPanel',
 	});
 
 
-		var h = window.location.href, s
+		var h = window.location.href, s,
 		prefix='#id=',
 		pattern=new RegExp(prefix+'.*');
 		// external links will fall through and go to the external url
@@ -277,6 +277,32 @@ Widgets.Controller.Base.extend('Widgets.Controller.Display.TabPanel',
 
 			$('#'+this.switchableContentListId).anythingSlider(index);
 		}
+
+
+
+		var h = window.location.href, s,
+		prefix='/?id=',
+		pattern=new RegExp(prefix+'.*');
+		// external links will fall through and go to the external url
+		if (pattern.test(window.location.href)) {
+			s = h.substring( h.lastIndexOf(prefix) + prefix.length, h.length );
+
+
+			var slider=$('#'+this.switchableContentListId);
+
+			var target = slider.find('#'+s).closest('.panel');
+
+			var plugin = slider.data('AnythingSlider');
+
+
+			var index=plugin.$items.index( target );
+
+
+
+			$('#'+this.switchableContentListId).anythingSlider(index);
+		}
+
+
 
 	},
 

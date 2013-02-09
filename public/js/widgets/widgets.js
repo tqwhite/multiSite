@@ -24,6 +24,8 @@ steal(
 	'./controller/display/anythingslider/anythingslider.js',
 	'./controller/display/link_switch/link_switch.js',
 	'./controller/display/tab_panel/tab_panel.js',
+	
+	'./controller/features/expando_button/expando_button.js',
 
 	'./controller/simple_store/main/main.js',
 	'./controller/simple_store/product_selector/product_selector.js',

@@ -30,6 +30,9 @@ private $hashDir;
 public function __construct($args){
 	$this->initIgnoreList();
 	$this->args=$args;
+	if ($args['superGlobalItemsDirectoryPath']){
+		$this->superGlobalItemsDirectoryPath=$args['superGlobalItemsDirectoryPath'];
+		}
 	if ($args['contentDirPath']){
 		$this->contentDirPath=$args['contentDirPath'];
 		}
@@ -209,6 +212,7 @@ public function __get($property){
 		case 'contentArray':
 			if (isset($this->contentArray)){return $this->contentArray;}
 			$this->contentArray=$this->startFileExamination($this->contentDirPath);
+			$this->contentArray['superGlobalItems']=$this->startFileExamination($this->superGlobalItemsDirectoryPath);
 			$this->contentArray['globalItems']=$this->startFileExamination($this->globalItemsDirectoryPath);
 			$this->promoteGlobals();
 
@@ -235,6 +239,25 @@ public function promoteGlobals(){
 					$this->contentArray[$label]=$data;
 			}
 		}
+
+		if (isset($this->contentArray['superGlobalItems']) &&
+			isset($this->contentArray['superGlobalItems']['IMAGES']) &&
+			isset($this->contentArray['superGlobalItems'])){
+			
+			$list=$this->contentArray['superGlobalItems']['IMAGES'];
+			if (!is_array($this->contentArray['images'])){$this->contentArray['images']=array();}
+			foreach ($list as $label=>$data){
+
+				if (!isset($this->contentArray['images'][$label])){
+
+						$this->contentArray['images'][$label]=$data;
+				}
+			}
+		}
+
+
+		//CSS does the promotion by inserting into page in correct order 
+		
 }
 
 }//end of class

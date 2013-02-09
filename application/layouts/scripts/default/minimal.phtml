@@ -21,6 +21,9 @@ else{
 	$analyticsString='';
 }
 
+$contentString=$this->layout()->content;
+$contentString=$this->mapServableToHash($this->contentArray, $contentString);
+
  ?>
 <!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
    'http://www.w3.org/TR/html4/strict.dtd'>
@@ -42,7 +45,7 @@ else{
 
 <?php echo $this->serverComm; ?>
 
-<?php echo $this->layout()->content; ?>
+<?php echo $contentString; ?>
 
 <?/*php echo $this->headScript()->appendFile('/js/steal/steal.js?widgets'); */?>
 

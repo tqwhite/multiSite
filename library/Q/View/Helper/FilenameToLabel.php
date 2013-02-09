@@ -5,7 +5,7 @@
 
 		$extensionArray=array();
 		preg_match('/\\.(.*)$/', $filename, $extensionArray);
-		$extension=$extensionArray[0];
+		$extension=isset($extensionArray[0])?$extensionArray[0]:'';
 
 	 	$elementArray=explode('_', $filename);
 
@@ -14,8 +14,5 @@
 		$labelString=str_replace($extension, '', $labelString);
 		return $labelString;
 	 }
-
-
-
 
  }

@@ -42,6 +42,7 @@ class Q_Controller_Base extends Zend_Controller_Action
 			$this->siteDirectoryPath=$this->getSiteDirectoryPath();
 			$this->layoutDirectoryPath=$this->genLayoutContentDir();
 			$this->contentDirectoryPath=$this->getContentDir();
+			$this->superGlobalItemsDirectoryPath=$this->getSuperGlobalItemsDir();
 			$this->globalItemsDirectoryPath=$this->getGlobalItemsDir();
 			$this->setVariationLayout('layout'); //set default
 
@@ -70,6 +71,11 @@ class Q_Controller_Base extends Zend_Controller_Action
     	return $this->checkDir($directory);
     }
 
+    private function getSuperGlobalItemsDir(){
+    	$directory=$this->baseDir.'_GLOBAL/';
+    	return $this->checkDir($directory);
+    }
+
     private function getGlobalItemsDir(){
     	$directory=$this->siteDirectoryPath.'/_GLOBAL/';
     	return $this->checkDir($directory);
@@ -86,7 +92,6 @@ class Q_Controller_Base extends Zend_Controller_Action
     }
 
     private function checkDir($directory){
-
     	if (is_dir($directory)){
     		return realpath($directory);
     	}
@@ -104,6 +109,7 @@ class Q_Controller_Base extends Zend_Controller_Action
 		$codeNav['routeName']=$this->routeName;
 		$codeNav['moduleDirectoryPath']=$this->moduleDirectoryPath;
 		$codeNav['contentDirectoryPath']=$this->contentDirectoryPath;
+		$codeNav['superGlobalItemsDirectoryPath']=$this->superGlobalItemsDirectoryPath;
 		$codeNav['globalItemsDirectoryPath']=$this->globalItemsDirectoryPath;
 		$codeNav['zendactualLayoutFullPath']=$this->defaultLayoutPath;
 		return $codeNav;
@@ -153,6 +159,7 @@ class Q_Controller_Base extends Zend_Controller_Action
 				if (isset($this->contentObj)){return $this->contentObj;}
 				$this->contentObj=new Q\Helpers\FileContent(array(
 					'contentDirPath'=>$this->contentDirectoryPath,
+					'superGlobalItemsDirectoryPath'=>$this->superGlobalItemsDirectoryPath,
 					'globalItemsDirectoryPath'=>$this->globalItemsDirectoryPath,
 					'employer'=>$this,
 					'validatorName'=>'validateContentStructure'
