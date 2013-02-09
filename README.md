@@ -14,9 +14,9 @@ You need to make your web server config (I've only ever tried it with apache, bu
 
 It also has to have three php directives. The SITE_VARIATION directive has to have the name of a directory inside the 'content' directory, for the example above, it would be 'blah/content/main'.
 
-To get started, you can copy the contents of the 'demoContent/dev' directory into 'main'. 
+To get started, you can copy the contents of the 'demoContent' directory into the 'content' directory. 
 
-In principle, once you get apache serving that pubic directory, you should see the content you copied from the 'demoContent/dev' directory.
+In principle, once you get apache serving that public directory, you should see the content you copied from the 'demoContent' directory.
 
 
 
