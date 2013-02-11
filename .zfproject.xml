@@ -61,6 +61,7 @@
         <modelFile modelName="Purchase"/>
         <modelFile modelName="Payment"/>
         <modelFile modelName="Provision"/>
+        <modelFile modelName="Category"/>
       </modelsDirectory>
       <modulesDirectory>
         <moduleDirectory moduleName="multiPanel">

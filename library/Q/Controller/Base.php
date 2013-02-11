@@ -52,7 +52,8 @@ class Q_Controller_Base extends Zend_Controller_Action
 		
 		}
 		elseif (isset($args['controllerType']) && $args['controllerType']=='zend'){
-		
+
+			$this->_helper->layout()->setLayout('layout');
 		}
     }
 

@@ -31,6 +31,11 @@
 		$localScript=$contentArray['jqueryReadyScript.js'];
 
 	}
+	
+	
+	if (gettype($contentArray)=='string'){
+		$localScript=$contentArray;
+	}
 
 if ($globalScript || $localScript){
 	$outString="
