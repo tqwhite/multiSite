@@ -11,10 +11,11 @@ You need to make your web server config (I've only ever tried it with apache, bu
 	SetEnv APPLICATION_ENV development
 	SetEnv SITE_VARIATION main
 	
-
+	
 Also, you need to make a directory and make it writeable by php. It is used to store links from the servable directory to images and other servable things in the content directories.
 
-     mkdir website/media/hash; chmod 755 website/media/hash (or whatever you like for writable permissions).
+     mkdir website/media/hash;
+     chmod 755 website/media/hash (or whatever you like for writable permissions).
      
 
 It also has to have three php directives. The SITE_VARIATION directive has to have the name of a directory inside the 'content' directory, for the example above, it would be 'blah/content/main'.
