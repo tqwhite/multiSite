@@ -1,11 +1,11 @@
 <?php
 
-class BookmarkController extends Zend_Controller_Action
+class BookmarkController extends Q_Controller_Base
 {
 
     public function init()
     {
-        /* Initialize action controller here */
+        parent::init(array('controllerType'=>'zend'));
     }
 
     public function indexAction()
@@ -24,7 +24,6 @@ class BookmarkController extends Zend_Controller_Action
     {
     	
     	$params=$this->_request->getParams();
-    	
     	
 			
 		$catObj=new \Application_Model_Category();
@@ -83,7 +82,7 @@ class BookmarkController extends Zend_Controller_Action
 			if (!$redirectObj){
     			throw new Exception('No such shortId');
 			}
-		
+//	echo "$redirectObj->accessCount={$redirectObj->accessCount}<br/>";		
 			$redirectObj->accessCount=$redirectObj->accessCount+1;
 			$newObj->persist(true);
 		

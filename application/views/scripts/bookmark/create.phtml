@@ -2,7 +2,41 @@
 
 $bookmark=$this->bookmark;
 $outString='';
-\Q\Utils::dumpWeb($this->categories);
+
+//\Q\Utils::dumpWeb($this->categories);
+
+//making the styles =================================================
+
+$localStyles="
+.bookmarkCreateContainer{
+width:400px;
+height:250px;
+margin:15px;border:1pt solid red;padding:25px;font-family:sans-serif;font-size:8pt;
+position:relative;
+}
+.infoContainer{
+float:left;overflow:scroll;width:170px;
+}
+.controlsContainer{
+float:right;border:1pt solid gray; height:55px;width:190px;position:relative;
+}
+.editorContainer{
+position:absolute;
+bottom:15px;
+}
+.editorContainer textarea{
+height:150px;width:375px;padding-left:25px;
+}
+.footerContactBlock{
+font-size:8pt;
+}
+";
+
+
+$this->headStyle()->appendStyle($localStyles);
+
+//setting up categories ==================================================
+
 $categoryList=(isset($this->bookmark['categoryList']))?$this->bookmark['categoryList']:array();
 $categoryString='';
 
@@ -11,18 +45,30 @@ $categoryString='';
 				$categoryString.="{$data['name']}-{$data['refId']}<br/><br/>";
 		}
 		$categoryString="<div style='font-size:8pt;'>$categoryString</div>";
+
+
+//javascript call =================================================
+
+
+$controlSectionId='bookmarkControlId';
+
+$this->jqueryReadyScript="
+$('#$controlSectionId').widgets_apps_bookmark_create();
+";
+
+
 		
 $outString.="
 
-<div style='margin:15px;border:1pt solid red;padding:25px;width:400px;font-family:sans-serif;font-size:8pt;'>
+<div class='bookmarkCreateContainer'>
 
-<div style='float:left;overflow:scroll;width:170px;'>
-<div style='font-weight:bold;margin-bottom:10px;'>status: {$this->bookmark['status']}</div>
-<div style='margin-bottom:10px;'><a target=_blank href='{$this->bookmark['uri']}'>{$this->bookmark['uri']}</a></div>
-<div style='margin-bottom:10px;'><a target=_blank href='http://<!rootDomainSegment!>?{$bookmark['shortId']}'>http://<!rootDomainSegment!>?{$bookmark['shortId']}</a></div>
+<div class='infoContainer'>
+	<div style='font-weight:bold;margin-bottom:10px;'>status: {$this->bookmark['status']}</div>
+	<div style='margin-bottom:10px;'><a target=_blank href='{$this->bookmark['uri']}'>{$this->bookmark['uri']}</a></div>
+	<div style='margin-bottom:10px;'><a target=_blank href='http://<!rootDomainSegment!>?{$bookmark['shortId']}'>http://<!rootDomainSegment!>?{$bookmark['shortId']}</a></div>
 </div>
 
-<div style='float:right;border:1pt solid gray; height:55px;width:190px;position:relative;'>
+<div class='controlsContainer' id='$controlSectionId'>
 $categoryString
 
 <a style='position:absolute;bottom:0px;right:0px;border:1pt solid green; text-decoration:none;' 
@@ -31,16 +77,18 @@ href=\"javascript:(function(){var bookmarkUrl=('http://tqwhite.org?uri='+window.
 
 </div>
 
-<textarea style='height:150px;width:400px;padding-left:25px;'>
+
+<div class='editorContainer'>
+	<textarea>
 
 
 
 
-{$bookmark['anchor']}
+	{$bookmark['anchor']}
 
-http://<!rootDomainSegment!>?{$bookmark['shortId']}
-
+	http://<!rootDomainSegment!>?{$bookmark['shortId']}
 </textarea>
+</div>
 
 </div>
 
