@@ -245,7 +245,7 @@ public function promoteGlobals(){
 			isset($this->contentArray['superGlobalItems'])){
 			
 			$list=$this->contentArray['superGlobalItems']['IMAGES'];
-			if (!is_array($this->contentArray['images'])){$this->contentArray['images']=array();}
+			if (!isset($this->contentArray['images']) || !is_array($this->contentArray['images'])){$this->contentArray['images']=array();}
 			foreach ($list as $label=>$data){
 
 				if (!isset($this->contentArray['images'][$label])){
