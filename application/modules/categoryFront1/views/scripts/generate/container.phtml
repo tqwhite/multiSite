@@ -162,9 +162,9 @@ function applyStyle($cssString){
 }
 //$this->headStyle()->appendStyle($contentArray['globalItems']['CSS']['main.css']);
 
-$cssString=$this->mapServableToHash($this->contentArray, $contentArray['globalItems']['CSS']);
-array_map('applyStyle', $cssString);
 $cssString=$this->mapServableToHash($this->contentArray, $contentArray['superGlobalItems']['CSS']);
+array_map('applyStyle', $cssString);
+$cssString=$this->mapServableToHash($this->contentArray, $contentArray['globalItems']['CSS']);
 array_map('applyStyle', $cssString);
 
 //MAIN CONTENT SECTION =========================================================================

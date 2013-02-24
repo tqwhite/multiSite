@@ -31,32 +31,86 @@ class Application_Model_Bookmark extends Application_Model_Base
 	}
 
 	static function formatDetail($inData, $outputType){
-		if (isset($inData->refId) && $inData->refId){
+
+		if ($inData->refId){ //used to preface with isset($inData->refId) but that no longer returns correctly?
 			$outArray=array(
 				'refId'=>$inData->refId,
 				'uri'=>$inData->uri,
 				'shortId'=>$inData->shortId,
 				'anchor'=>$inData->anchor,
 				'accessCount'=>$inData->accessCount,
-				'created'=>$inData->created
+				'created'=>$inData->created,
+				'categoryList'=>\Application_Model_Category::formatOutput($inData->categoryNodes, $outputType)
 				);
 		}
 		else{
 			$outArray=array();
 		}
 
-
 			return $outArray;
 	}
 
+	public function makeNew($objArray, $suppressFlush){
 
-	public function getUserByShortId($shortId){
-		$query = $this->entityManager->createQuery('SELECT u from Q\Entity\Bookmark u WHERE u.shortId = :shortId');
-		$query->setParameters(array(
-			'shortId' => $shortId
-		));
-		$shortIds = $query->getResult();
-		return $shortIds[0];
+		$outArray=array();
+
+		if (!isset($suppressFlush)){ $suppressFlush=false; }
+
+//==
+
+
+			$this->generate();
+
+			foreach ($objArray as $label=>$data){
+
+				if ($label=='categoryList'){
+				
+					$categoryNotes=$this->hookUpCategories($data);
+				
+				}
+				else{
+					$this->entity->$label=$data;
+				}
+			}
+
+			$this->entityManager->persist($this->entity);
+
+			if (!$suppressFlush){
+				$this->entityManager->flush();
+			}
+
+			$outArray[]=$this->entity;
+		
+
+//==
+		return $outArray;
+	}
+	
+	private function hookUpCategories($inArray){
+	
+			$outArray=array();
+	
+		for ($i=0, $len=count($inArray); $i<$len; $i++){
+			$element=$inArray[$i];
+			
+			$category=new \Application_Model_Category();
+			$category->generate();
+			
+			foreach ($element as $label=>$data){
+				$category->entity->$label=$data;
+			}
+			
+			
+			$entityClassName="Q\\Entity\\BookmarkCategoryNode";
+			$node=new $entityClassName();
+		
+			$node->category=$category->entity;
+			$node->bookmark=$this->entity;
+			$this->entityManager->persist($node);
+						
+		}
+	
+	
 	}
 
 }

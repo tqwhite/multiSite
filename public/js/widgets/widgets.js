@@ -26,6 +26,8 @@ steal(
 	'./controller/display/tab_panel/tab_panel.js',
 	
 	'./controller/features/expando_button/expando_button.js',
+	
+	'./controller/apps/bookmark/create/create.js',
 
 	'./controller/simple_store/main/main.js',
 	'./controller/simple_store/product_selector/product_selector.js',
