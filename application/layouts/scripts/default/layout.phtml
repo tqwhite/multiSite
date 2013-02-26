@@ -148,7 +148,21 @@ if (APPLICATION_ENV=='production' && isset($this->contentArray['analytics.js']) 
 else{
 	$analyticsString='';
 }
+//GLOBAL OVERRIDES (from content dir) =========================================================================
+global $thiss;
+$thiss=$this;
+if(!function_exists('applyStyle')){
+	function applyStyle($cssString){
+		global $thiss;
+		$thiss->headStyle()->appendStyle($cssString);
+	}
+}
+//$this->headStyle()->appendStyle($contentArray['globalItems']['CSS']['main.css']);
 
+$cssString=$this->mapServableToHash($this->contentArray, $this->contentArray['superGlobalItems']['CSS']);
+array_map('applyStyle', $cssString);
+$cssString=$this->mapServableToHash($this->contentArray, $this->contentArray['globalItems']['CSS']);
+array_map('applyStyle', $cssString);
 //MAIN CONTENT SECTION =========================================================================
 /*
 font-family: 'Satisfy', cursive;
