@@ -70,16 +70,6 @@ $thisPageCssString
 
 $this->headStyle()->appendStyle($styleString);
 
-//GLOBAL OVERRIDES (from content dir) =========================================================================
-global $thiss;
-$thiss=$this;
-function applyStyle($cssString){
-	global $thiss;
-	$thiss->headStyle()->appendStyle($cssString);
-}
-
-//$this->headStyle()->appendStyle($contentArray['globalItems']['CSS']['main.css']);
-array_map('applyStyle', $contentArray['globalItems']['CSS']);
 
 //MAIN CONTENT SECTION =========================================================================
 
