@@ -55,20 +55,22 @@ else{
 }
 
 //GLOBAL OVERRIDES (from content dir) =========================================================================
-global $thiss;
-$thiss=$this;
-if(!function_exists('applyStyle')){
-	function applyStyle($cssString){
-		global $thiss;
-		$thiss->headStyle()->appendStyle($cssString);
-	}
-}
-//$this->headStyle()->appendStyle($contentArray['globalItems']['CSS']['main.css']);
 
-$cssString=$this->mapServableToHash($this->contentArray, $this->contentArray['superGlobalItems']['CSS']);
-array_map('applyStyle', $cssString);
-$cssString=$this->mapServableToHash($this->contentArray, $this->contentArray['globalItems']['CSS']);
-array_map('applyStyle', $cssString);
+$this->applyStyles($this, $this->contentArray);
+
+	
+	if (isset($this->contentArray['superGlobalItems']['COMPONENTS']['headSection.html'])){
+		$superGlobalHeadStuff=$this->contentArray['superGlobalItems']['COMPONENTS']['headSection.html'];
+	}
+	else{
+		$superGlobalHeadStuff='';
+	}
+	if (isset($this->contentArray['globalItems']['COMPONENTS']['headSection.html'])){
+		$siteHeadStuff=$this->contentArray['globalItems']['COMPONENTS']['headSection.html'];
+	}
+	else{
+		$siteHeadStuff='';
+	}
 
 //MAIN CONTENT SECTION =========================================================================
 /*
@@ -95,6 +97,11 @@ $outputString="
 
 	$headStyle
 
+	
+	$superGlobalHeadStuff
+	
+	$siteHeadStuff
+	
 	</head>
 
 	<body >

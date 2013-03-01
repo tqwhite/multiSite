@@ -22,7 +22,8 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ExpandoButton',
 			propList:[
 				{name:'buttonSelector'},
 				{name:'shrunkButtonClassName'},
-				{name:'expandedButtonClassName'}
+				{name:'expandedButtonClassName'},
+				{name:'contentSelector'}
 
 			],
 			source:this.constructor._fullName
@@ -40,17 +41,22 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ExpandoButton',
 	
 	expandHandler:function(eventObj){
 		var target=$(eventObj.target)
-			parent=target.parent();
-
+			parent=target.parent()
+			buttonHeight=$(target).height();
+	
+		this.addSpacer(parent, buttonHeight);
+		
 		if (this.expandToggle=='shrunk'){
 			target.removeClass(this.expandedButtonClassName).addClass(this.shrunkButtonClassName);
 			this.origHeight=$(target).parent().outerHeight();
 			
-			var expandedHeight=this.getExpandedHeight(parent);
+			var expandedHeight=this.getExpandedHeight(parent),
+				parentHeight=buttonHeight+expandedHeight; //I don't know why, but it needs the extra button height
 			
 			this.duration=((expandedHeight-this.origHeight)/150)*500;
 		
-			target.parent().animate({height:expandedHeight}, this.duration);
+			target.parent().animate({height:parentHeight}, this.duration);
+			$(this.contentSelector).css({overflow:'visible'});
 			this.expandToggle='expanded';
 		}
 		else{
@@ -61,15 +67,24 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ExpandoButton',
 
 			$(target).removeClass(this.shrunkButtonClassName).addClass(this.expandedButtonClassName);
 			target.parent().animate({height:this.origHeight}, this.duration); 
+			$(this.contentSelector).css({overflow:'hidden'});
 			this.expandToggle='shrunk';
 		}
 		
 		this.turnOffClicksForAwhile(1000);
 	},
 
+addSpacer:function(parent, buttonHeight){
+	if (!this.alreadySpaced){
+		parent.append("<div style='height:"+buttonHeight+"px;'>&nbsp;</div>");
+	}
+	this.alreadySpace=true;
+
+},
+
 getExpandedHeight:function(domObj){
 
-	var currHeight=$(domObj).height();
+	var currHeight=$(domObj).outerHeight();
 	$(domObj).css({height:'100%'}); //for some happy reason, this does not display to user
 	var expandedHeight=$(domObj).height();
 	$(domObj).css({height:currHeight});

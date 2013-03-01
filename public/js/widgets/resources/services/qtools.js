@@ -320,10 +320,16 @@ newGuid:function() {
 consoleMessage:function(message){
 //var code=arguments.callee.caller.toString(); //gets the source code of the calling item
 //var code=arguments.callee.caller.name; //gets teh name of the calling function, sadly, null if object method
-		message='** '+message;
+
 		if(true || GLOBALS.config.messageLevel == CONSTANTS.allowDebugMessages){
 			if ( window.console && console.log ) {
-				console.log(message);
+				if (typeof(message=='object')){
+					console.dir(message);
+				}
+				else{
+					message='** '+message;
+					console.log(message);
+				}
 			} else if ( window.opera && window.opera.postError ) {
 				opera.postError(message);
 			}
@@ -1156,6 +1162,10 @@ templateReplaceObject:function(template, inData, prefix){
 	}
 	return outString;
 
+},
+
+md5:function(value){
+	Widgets.Models.Utility.md5(value);
 }
 
 }

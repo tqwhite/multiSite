@@ -129,6 +129,19 @@ return;
 		exit;
     }
 
+    public function md5Action()
+    {
+		$inData=$this->getRequest()->getPost('data');
+
+		$this->_helper->json(array(
+			'status'=>1,
+			'data'=>array(
+				"md5"=>md5($inData),
+				"inData"=>$inData
+				)
+		));
+    }
+
 }
 
 
