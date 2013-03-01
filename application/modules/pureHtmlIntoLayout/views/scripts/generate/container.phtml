@@ -19,48 +19,52 @@ $styleString="
 	text-align:left;
 }
 
-.panelItemContainer{
-	font-size:10pt;
-	position:relative;
-}
-
-.panelHeadline{
-	font-size:24pt;margin-bottom:20px;
-}
-.panelSimpleBodyText{
-	margin:0px 10px;
-}
-
-.panelBasicImage{
-}
-
-#panelItemContainer{
-	width:500px;
-}
-
-.contentListActivator{color:#ddeeff;background:#588599;}
-.contentListActivator:hover{color:blue;background:#ddeeff;}
-
-#tabContainer{clear:both;border-bottom:2pt solid gray;height:20px;}
-
-.panelTab{
-}
-
-#feature{
-	float:left;width:265px;
-	margin-top:20px;
-	overflow:hidden;
-	font-size:10pt;
-}
-#featureHeadline{font-weight:bold;font-size:120%;margin-bottom:20px;}
-
-#panelContainer{float:left;width:620px;
-margin-left:13px; /*the boundary between left column and panel*/
-margin-top:20px;overflow:hidden;}
-
-#contentList{
-}
 ";
+
+// DISCARD THIS AFTER VERIFYING THAT NO PAGES USE IT =====================
+// 
+// .panelItemContainer{
+// 	font-size:10pt;
+// 	position:relative;
+// }
+// 
+// .panelHeadline{
+// 	font-size:24pt;margin-bottom:20px;
+// }
+// .panelSimpleBodyText{
+// 	margin:0px 10px;
+// }
+// 
+// .panelBasicImage{
+// }
+// 
+// #panelItemContainer{
+// 	width:500px;
+// }
+// 
+// .contentListActivator{color:#ddeeff;background:#588599;}
+// .contentListActivator:hover{color:blue;background:#ddeeff;}
+// 
+// #tabContainer{clear:both;border-bottom:2pt solid gray;height:20px;}
+// 
+// .panelTab{
+// }
+// 
+// #feature{
+// 	float:left;width:265px;
+// 	margin-top:20px;
+// 	overflow:hidden;
+// 	font-size:10pt;
+// }
+// #featureHeadline{font-weight:bold;font-size:120%;margin-bottom:20px;}
+// 
+// #panelContainer{float:left;width:620px;
+// margin-left:13px; /*the boundary between left column and panel*/
+// margin-top:20px;overflow:hidden;}
+// 
+// #contentList{
+// }
+// =============================================================================
 
 $this->headStyle()->appendStyle($styleString);
 
@@ -76,9 +80,6 @@ function applyStyle($cssString){
 
 //$this->headStyle()->appendStyle($contentArray['globalItems']['CSS']['main.css']);
 array_map('applyStyle', $contentArray['globalItems']['CSS']);
-
-
-
 
 
 $contentPanel=$contentArray['contentPanel.html'];

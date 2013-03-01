@@ -41,15 +41,20 @@ $controlsString="
 	<div class='navMenus'>$controlsString</div>
 </div>";
 
+//ELEMENTS, IMAGES, ETC =========================================================================
 
 
-$elementList=(isset($this->contentArray['images']))?$this->contentArray['images']:array();
-$headBanner=$this->contentArray['headBanner.html'];
-	foreach ($elementList as $label=>$data){
-		$headBanner=str_replace("images/$label", $data, $headBanner);
-	}
-$headBanner="<a href='http://<!baseDomain!>'>$headBanner</a>";
-$headBanner=$this->translateUrls($headBanner);
+	$elementList=(isset($this->contentArray['images']))?$this->contentArray['images']:array();
+
+	$headBanner=$this->contentArray['headBanner.html'];
+
+// erroneous 
+// 	foreach ($elementList as $label=>$data){
+// 		$headBanner=str_replace("images/$label", $data, $headBanner);
+// 	}
+	
+	$headBanner="<a href='http://<!baseDomain!>'>$headBanner</a>";
+//	$headBanner=$this->translateUrls($headBanner);
 
 if (isset($this->contentArray['siteDirectoryUrlList.ini'])){
 $siteDirectory=$this->render('default/siteDirectory.phtml');

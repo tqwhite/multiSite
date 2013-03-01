@@ -240,6 +240,21 @@ public function promoteGlobals(){
 			}
 		}
 
+		if (isset($this->contentArray['globalItems']) &&
+			isset($this->contentArray['globalItems']['IMAGES']) &&
+			isset($this->contentArray['globalItems'])){
+			
+			$list=$this->contentArray['globalItems']['IMAGES'];
+			if (!isset($this->contentArray['images']) || !is_array($this->contentArray['images'])){$this->contentArray['images']=array();}
+			foreach ($list as $label=>$data){
+
+				if (!isset($this->contentArray['images'][$label])){
+
+						$this->contentArray['images'][$label]=$data;
+				}
+			}
+		}
+
 		if (isset($this->contentArray['superGlobalItems']) &&
 			isset($this->contentArray['superGlobalItems']['IMAGES']) &&
 			isset($this->contentArray['superGlobalItems'])){
