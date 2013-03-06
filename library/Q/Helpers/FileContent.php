@@ -140,6 +140,8 @@ private function getDirectoryContents($path, $kind){
 	if (isset($this->ignoreList[$fileName])){continue;}
 	$fullPath=$path.'/'.$fileName;
 
+	if (substr(basename($fullPath), 0,1)=='.'){ continue; } //OSX keep sticking .DS_Store everywhere
+
 	switch ($kind){
 		case 'dir':
 			if (is_dir($fullPath)){$outList[]=$fullPath;}
