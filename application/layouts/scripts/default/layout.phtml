@@ -114,6 +114,19 @@ else{
 		$siteHeadStuff='';
 	}
 
+
+
+//PARAMETERS (for JS widgets) =========================================================================
+
+$serverData='';
+
+	$parameters=$this->contentArray['parameters'];
+	$parameters=\Q\Utils::htmlEntities($parameters);
+	$parameters=json_encode($parameters);
+	
+	$serverData.="<div class='serverData' id='parameters' style='display:none;'>$parameters</div>";
+
+
 //MAIN CONTENT SECTION =========================================================================
 
 
@@ -146,7 +159,8 @@ $outputString="
 	<body >
 	<table width=100%><tr><td align=center>
 	$serverComm
-
+	$serverData
+	
 	$headBanner
 	$controlsString
 	$viewContent

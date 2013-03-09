@@ -28,14 +28,14 @@ function applyStyle($cssString){
 //$this->headStyle()->appendStyle($contentArray['globalItems']['CSS']['main.css']);
 array_map('applyStyle', $contentArray['globalItems']['CSS']);
 
+
 $confirmationTemplate=$this->contentArray['pageFormTemplates.ini']['confirmationPageTemplate'];
-
 $confirmationPageTemplate=\Q\Utils::htmlEntities($confirmationTemplate);
-
 $confirmationPageTemplate=json_encode($confirmationPageTemplate);
-$list=$contentArray['products.ini'];
 
-	$json=json_encode($list);
+$list=$contentArray['products.ini'];
+$json=json_encode($list);
+
 	$outString="<div class='serverData' id='productInfo' style='display:none;'>$json</div>";
 	$outString.="<div class='serverData' id='confirmationPageTemplate' style='display:none;'>$confirmationPageTemplate</div>";
 	$outString.="<ul style='float:left;border:2pt solid #ccc;margin-left:20px;margin-bottom:40px;padding:20px;text-align:left;'>";

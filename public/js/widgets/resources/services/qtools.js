@@ -875,7 +875,7 @@ validateProperties:function(args){
 		propList=args.propList,
 		source=args.source,
 		importance=args.importance,
-		showAlertFlag=false, //should be pointing to a global but I don't have one today
+		showAlertFlag=(typeof(args.showAlertFlag)!='undefined')?args.showAlertFlag:false, //should be pointing to a global but I don't have one today
 		targetScope=args.targetScope?args.targetScope:'';
 
 	if (typeof(qtools)=='undefined' && showAlertFlag){

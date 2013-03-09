@@ -56,7 +56,7 @@ Widgets.Controller.Base.extend('Widgets.Controller.Session.Dispatch',
 		serverData[element.attr('id')]=JSON.parse(element.text());
 	}
 		this.serverData=serverData;
-
+		Widgets.Models.Session.keep('serverData', serverData);
 	},
 
 	receiveSessionStartup:function(inData){

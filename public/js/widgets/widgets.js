@@ -26,6 +26,7 @@ steal(
 	'./controller/display/tab_panel/tab_panel.js',
 	
 	'./controller/features/expando_button/expando_button.js',
+	'./controller/features/contact_form/contact_form.js',
 	
 	'./controller/apps/bookmark/create/create.js',
 

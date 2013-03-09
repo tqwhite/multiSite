@@ -15,6 +15,7 @@
 	 	$globalScript='';
 	 	
 	 	foreach ($contentArray['globalItems']['JS'] as $label=>$data){
+
 			$globalScript.="
 			
 				//$label
