@@ -46,6 +46,10 @@
           <actionMethod actionName="redirect"/>
           <actionMethod actionName="setup"/>
         </controllerFile>
+        <controllerFile controllerName="Email">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="form"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
       <layoutsDirectory>
@@ -403,6 +407,12 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Bookmark">
             <viewScriptFile forActionName="setup"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Email">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Email">
+            <viewScriptFile forActionName="form"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

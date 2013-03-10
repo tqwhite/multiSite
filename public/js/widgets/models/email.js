@@ -15,9 +15,9 @@ Widgets.Models.Base.extend('Widgets.Models.Email',
 		success=success?success:function(){alert('success');};
 		error=error?error:this.defaultError;
 
-		data.internalEmailAdr=data.internalEmailAdr.replace(/\{noSpam\}/, '@');
+		data.formParams.internalEmailAdr=data.formParams.internalEmailAdr.replace(/\{noSpam\}/, '@');
 
-		var errors=this.validate(data);
+		var errors=this.validate(data.formParams);
 		if (errors.length>0){
 			success({status:-1, messages:errors, data:{}});
 			return;
@@ -25,9 +25,9 @@ Widgets.Models.Base.extend('Widgets.Models.Email',
 
 
 var toServer=data;
-success(toServer);return;
+
 		$.ajax({
-				url: data.paymentServerUrl,
+				url: '/email/form',
 				type: 'post',
 				dataType: 'json',
 				data: {data:toServer},

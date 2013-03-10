@@ -140,7 +140,11 @@ saveButtonHandler:function(control, parameter){
 	switch(control){
 		case 'click':
 
-		Widgets.Models.Email.send(this.element.formParams(), this.callback('resetAfterSave'));
+		Widgets.Models.Email.send({
+			formParams:this.element.formParams(),
+			mailParams:this.formParameters
+			
+			}, this.callback('resetAfterSave'));
 
 		break;
 		case 'setAccessFunction':
