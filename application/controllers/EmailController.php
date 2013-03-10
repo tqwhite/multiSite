@@ -82,7 +82,7 @@ class EmailController extends Q_Controller_Base
 
 		$mail->addTo($destAdr);
 
-//		$mail->send($tr);
+		$mail->send($tr);
 
 
 		Zend_Mail::clearDefaultFrom();
