@@ -120,11 +120,13 @@ else{
 
 $serverData='';
 
-	$parameters=$this->contentArray['parameters'];
-	$parameters=\Q\Utils::htmlEntities($parameters);
-	$parameters=json_encode($parameters);
+	if (isset($this->contentArray['parameters'])){
+		$parameters=$this->contentArray['parameters'];
+		$parameters=\Q\Utils::htmlEntities($parameters);
+		$parameters=json_encode($parameters);
 	
-	$serverData.="<div class='serverData' id='parameters' style='display:none;'>$parameters</div>";
+		$serverData.="<div class='serverData' id='parameters' style='display:none;'>$parameters</div>";
+	}
 
 
 //MAIN CONTENT SECTION =========================================================================
