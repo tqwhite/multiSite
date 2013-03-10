@@ -20,7 +20,8 @@ class EmailController extends Q_Controller_Base
 		$inData=$this->getRequest()->getPost('data');
 		$formParams=$inData['formParams'];
 		$mailParams=$inData['mailParams'];
-\Q\Utils::dumpCli($mailParams);		
+		
+\Q\Utils::dumpCli($inData, 'inData');		
 		$view = new Zend_View();
 		$view->setScriptPath(APPLICATION_PATH.'/views/scripts/email');
 		$view->mailArray=$formParams;
@@ -28,7 +29,9 @@ class EmailController extends Q_Controller_Base
 		
 // 		$this->sendMail(array(
 // 			emailMessage=>$emailMessage,
-// 			mailParams=>$inData['formParams']
+// 			formParams=>$inData['formParams'],
+// 			mailParams=>$inData['mailParams'],
+
 // 		));
         
         $errorList=array();
@@ -48,13 +51,29 @@ class EmailController extends Q_Controller_Base
     
     private function sendMail($args){
     	$emailMessage=$args['emailMessage'];
-    	$mailParams=$argss['mailParams'];
+    	$mailParams=$args['mailParams'];
+    	$subject=$mailParams['mailSubject'];
     	
+    	
+    	$destAdr=$mailParams['destAddress']['firstPart'].'@'.$mailParams['destAddress']['secondPart'];
+    	$destName=$mailParams['destAddress']['name'];
+    	
+    	$fromAdr=$mailParams['fromAddress']['firstPart'].'@'.$mailParams['fromAddress']['secondPart'];
+    	$fromName=$mailParams['fromAddress']['name'];
+    	
+    	if (isset($mailParams['replyAddress'])){
+    		$replyAdr=$mailParams['replyAddress']['firstPart'].'@'.$mailParams['replyAddress']['secondPart'];
+    		$replyName=$mailParams['replyAddress']['name'];
+    	}
+    	else{
+    		$replyAdr=$fromAdr;
+    		$replyName=$fromName;
+    	}
     	
 		$tr=new Zend_Mail_Transport_Sendmail();
 		Zend_Mail::setDefaultTransport($tr);
-		Zend_Mail::setDefaultFrom('school@genatural.com', "Good Earth Lunch Program");
-		Zend_Mail::setDefaultReplyTo('school@genatural.com', "Good Earth Lunch Program");
+		Zend_Mail::setDefaultFrom($fromAdr, $fromName);
+		Zend_Mail::setDefaultReplyTo($replyAdr, $replyName);
 
 
 		$mail = new Zend_Mail();
@@ -62,7 +81,7 @@ class EmailController extends Q_Controller_Base
 		$mail->setBodyHtml($emailMessage);
 
 
-		$mail->addTo($element['address'], $element['name']);
+		$mail->addTo($destAdr);
 
 		$mail->send($tr);
 
