@@ -27,12 +27,12 @@ class EmailController extends Q_Controller_Base
 		$view->mailArray=$formParams;
 		$emailMessage=$view->render('simple-array.phtml');
 		
-// 		$this->sendMail(array(
-// 			emailMessage=>$emailMessage,
-// 			formParams=>$inData['formParams'],
-// 			mailParams=>$inData['mailParams'],
+		$this->sendMail(array(
+			'emailMessage'=>$emailMessage,
+			'formParams'=>$inData['formParams'],
+			'mailParams'=>$inData['mailParams'],
 
-// 		));
+		));
         
         $errorList=array();
         $status=99;
@@ -52,8 +52,7 @@ class EmailController extends Q_Controller_Base
     private function sendMail($args){
     	$emailMessage=$args['emailMessage'];
     	$mailParams=$args['mailParams'];
-    	$subject=$mailParams['mailSubject'];
-    	
+    	$emailSubject=$mailParams['mailSubject'];
     	
     	$destAdr=$mailParams['destAddress']['firstPart'].'@'.$mailParams['destAddress']['secondPart'];
     	$destName=$mailParams['destAddress']['name'];
@@ -83,7 +82,7 @@ class EmailController extends Q_Controller_Base
 
 		$mail->addTo($destAdr);
 
-		$mail->send($tr);
+//		$mail->send($tr);
 
 
 		Zend_Mail::clearDefaultFrom();
