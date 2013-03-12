@@ -62,8 +62,8 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ContactForm',
 			propList:[{name:this.parameterFileName}], source:this.constructor._fullName, showAlertFlag:true
 		});
 	
-		var target=$(this.event.target),
-			formName=target.attr('formName');
+		this.clickedButtonObj=$(this.event.target);
+		var	formName=this.clickedButtonObj.attr('formName');
 		
 		if (this.serverData.parameters[this.parameterFileName][formName]){
 			this.formParameters=this.serverData.parameters[this.parameterFileName][formName];
@@ -155,9 +155,11 @@ saveButtonHandler:function(control, parameter){
 	if (control.which=='13'){control='click';}; //enter key
 	switch(control){
 		case 'click':
+		
+		var buttonId=this.clickedButtonObj.attr('buttonId');
 
 		Widgets.Models.Email.send({
-			formParams:this.element.formParams(),
+			formParams:$.extend(this.element.formParams(), {buttonId:buttonId}),
 			mailParams:this.formParameters
 			
 			}, this.callback('resetAfterSave'));
