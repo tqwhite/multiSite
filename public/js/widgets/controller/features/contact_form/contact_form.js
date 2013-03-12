@@ -18,7 +18,8 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ContactForm',
 			targetObject:options,
 			targetScope: this, //will add listed items to targetScope
 			propList:[
-				{name:'event'}
+				{name:'event'},
+				{name:'parameterFileName'}
 
 			],
 			source:this.constructor._fullName
@@ -40,6 +41,7 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ContactForm',
 
 		name='status'; nameArray.push({name:name});
 		name='saveButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+		name='closeButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 
 		this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -57,18 +59,18 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ContactForm',
 		});
 		qtools.validateProperties({
 			targetObject:this.serverData['parameters'], targetScope: this, //will add listed items to targetScope
-			propList:[{name:'contactForms.ini'}], source:this.constructor._fullName, showAlertFlag:true
+			propList:[{name:this.parameterFileName}], source:this.constructor._fullName, showAlertFlag:true
 		});
 	
 		var target=$(this.event.target),
 			formName=target.attr('formName');
 		
-		if (this.serverData.parameters['contactForms.ini'][formName]){
-			this.formParameters=this.serverData.parameters['contactForms.ini'][formName];
+		if (this.serverData.parameters[this.parameterFileName][formName]){
+			this.formParameters=this.serverData.parameters[this.parameterFileName][formName];
 		
 		}
 		else{
-			alert('parameters/contactForms.ini contains no spec for :'+formName);
+			alert('_PARAMETERS/"+this.parameterFileName+" contains no spec for :'+formName+" in either the site or page directory");
 		}
 	},
 
@@ -116,10 +118,24 @@ initDomElements:function(){
 				unavailable:{classs:'basicUnavailable'},
 				accessFunction:this.displayParameters.saveButton.handler,
 				initialControl:'setToReady', //initialControl:'setUnavailable'
-				label:"<div style='margin-top:5px;'>Save</div>"
+				label:"<div style='margin-top:5px;'>Send</div>"
 			});
 			
 	this.displayPanel.append(this.displayParameters.saveButton.domObj);
+
+	this.displayParameters.closeButton.domObj=$("<div class='closeCircleReady' style='position:absolute;top:5px;right:5px;'></div>");
+
+			this.displayParameters.closeButton.domObj.widgets_tools_ui_button2({
+				ready:{classs:'closeCircleReady'},
+				hover:{classs:'closeCircleHover'},
+				clicked:{classs:'closeCircleReady'},
+				unavailable:{classs:'closeCircleUnavailable'},
+				accessFunction:this.displayParameters.closeButton.handler,
+				initialControl:'setToReady', //initialControl:'setUnavailable'
+				label:"<div style='margin-top:5px;'>&nbsp;</div>"
+			});
+			
+	this.displayPanel.append(this.displayParameters.closeButton.domObj);
 
 //	this.element.find('input').qprompt();
 
@@ -157,20 +173,50 @@ saveButtonHandler:function(control, parameter){
 },
 
 resetAfterSave:function(inData){ 
-this.displayPanel.remove(); return;
+
 	var errorString=this.listMessages(inData.messages);
 	if (inData.status<1){
 		$('#'+this.displayParameters.status.divId).html(errorString).removeClass('good').addClass('bad');
-	}
-	else{
-			var html=$.View('//widgets/controller/session/register/views/confirmEmail.ejs',
+		
+		var html=$.View('//widgets/controller/features/contact_form/views/confirmEmail.ejs',
 		$.extend(inData, {
 			displayParameters:this.displayParameters,
 			viewHelper:this.viewHelper
 		})
 		);
-	this.element.html(html);
+		html="<div class='bad'>"+errorString+"</div>";
+		this.displayPanel.prepend(html).css({overflow:'scroll'});
+	
 	}
+	else{
+		var html=$.View('//widgets/controller/features/contact_form/views/confirmEmail.ejs', {});
+		this.displayPanel.html(html);
+		
+		var thiss=this;
+		this.displayPanel.fadeOut(
+		3000,
+		function(){
+			thiss.displayPanel.remove();
+		});
+	}
+},
+
+closeButtonHandler:function(control, parameter){
+	var componentName='saveButton';
+	//if (control.which=='13'){control='click';}; //enter key
+	switch(control){
+		case 'click':
+
+		this.displayPanel.remove();
+		
+		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
 }
 
 

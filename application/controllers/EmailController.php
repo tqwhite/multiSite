@@ -6,6 +6,8 @@ class EmailController extends Q_Controller_Base
     public function init()
     {
         /* Initialize action controller here */
+        
+        $this->errorList=array();
     }
 
     public function indexAction()
@@ -20,27 +22,24 @@ class EmailController extends Q_Controller_Base
 		$inData=$this->getRequest()->getPost('data');
 		$formParams=$inData['formParams'];
 		$mailParams=$inData['mailParams'];
-		
-\Q\Utils::dumpCli($inData, 'inData');		
+			
 		$view = new Zend_View();
 		$view->setScriptPath(APPLICATION_PATH.'/views/scripts/email');
 		$view->mailArray=$formParams;
 		$emailMessage=$view->render('simple-array.phtml');
 		
-		$this->sendMail(array(
+		$status=$this->sendMail(array(
 			'emailMessage'=>$emailMessage,
 			'formParams'=>$inData['formParams'],
 			'mailParams'=>$inData['mailParams'],
 
 		));
-        
-        $errorList=array();
-        $status=99;
+        $status=-1;
 
 			
 		$this->_helper->json(array(
 			'status'=>$status,
-			'messages'=>$errorList,
+			'messages'=>$this->errorList,
 			'data'=>array(
 				$emailMessage
 				)
@@ -82,7 +81,14 @@ class EmailController extends Q_Controller_Base
 
 		$mail->addTo($destAdr);
 
-		$mail->send($tr);
+		if (getenv('APPLICATION_ENV')!='development'){
+			$mail->send($tr);
+			return 1;
+		}
+		else{
+			$this->errorList[]=array('mail', 'development: mail not sent');
+			return -1;
+		}
 
 
 		Zend_Mail::clearDefaultFrom();

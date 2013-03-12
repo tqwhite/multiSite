@@ -88,6 +88,7 @@ receiveCookies:function(pw){
 		if (goodCookie){
 
 		try {
+			if (!cookie){throw('empty cookie')}
 			value=JSON.parse(cookie);
 		}
 		catch (e) {

@@ -118,13 +118,20 @@ else{
 
 //PARAMETERS (for JS widgets) =========================================================================
 
-$serverData='';
+	$serverData='';
+	$parameters=array();
+	
+	if (isset($this->contentArray['globalItems']['_PARAMETERS'])){
+		$parameters=$this->contentArray['globalItems']['_PARAMETERS'];
+	}
 
-	if (isset($this->contentArray['parameters'])){
-		$parameters=$this->contentArray['parameters'];
+	if (isset($this->contentArray['_PARAMETERS'])){
+		$parameters=array_merge($parameters, $this->contentArray['_PARAMETERS']);
+	}
+	
+	if (count($parameters)>0){
 		$parameters=\Q\Utils::htmlEntities($parameters);
 		$parameters=json_encode($parameters);
-	
 		$serverData.="<div class='serverData' id='parameters' style='display:none;'>$parameters</div>";
 	}
 
@@ -174,7 +181,14 @@ $outputString="
 	$javascript
 
 	$codeNavHtml
-	</table>
+
+	<script type='text/javascript'>
+	/* <![CDATA[ */
+		document.getElementsByTagName('body')[0].style.display = 'none';
+	/* ]]> */
+	</script>
+
+
 	$widgetScriptCall
 	$jqueryReadyScript
 	$analyticsString

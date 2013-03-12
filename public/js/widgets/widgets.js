@@ -49,5 +49,5 @@ steal(
 	'./resources/services/static.js',
 
 	function(){					// configure your application
-		$('body').widgets_session_dispatch();
+		$('body').widgets_session_dispatch().show();
 	})

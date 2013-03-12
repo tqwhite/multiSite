@@ -142,6 +142,19 @@ p{
 }
 
 
+.closeCircleReady{
+	background:url(/media/widgets/closeCircleReady.png) no-repeat scroll center center transparent;
+	width:30px;height:30px;
+}
+.closeCircleHover{
+	background:url(/media/widgets/closeCircleHover.png) no-repeat scroll center center transparent;
+	width:30px;height:30px;
+}
+.closeCircleUnavailable{
+	background:url(/media/widgets/closeCircleUnavailable.png) no-repeat scroll center center transparent;
+	width:30px;height:30px;
+}
+
 
 .modal1{
 	display:none;
@@ -193,4 +206,13 @@ p{
   -moz-border-radius: 4px; /* Firefox */
   -webkit-border-radius: 4px; /* Safari, Chrome */
   border-radius: 4px; /* CSS3 */
+}
+
+
+.bad{
+	color:red;
+}
+
+.good{
+	color:green;
 }
