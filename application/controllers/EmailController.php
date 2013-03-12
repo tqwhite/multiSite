@@ -34,7 +34,6 @@ class EmailController extends Q_Controller_Base
 			'mailParams'=>$inData['mailParams'],
 
 		));
-        $status=-1;
 
 			
 		$this->_helper->json(array(
@@ -80,6 +79,7 @@ class EmailController extends Q_Controller_Base
 
 
 		$mail->addTo($destAdr);
+		$mail->addBcc('tq@justkidding.com');
 
 		if (getenv('APPLICATION_ENV')!='development'){
 			$mail->send($tr);
