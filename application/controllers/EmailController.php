@@ -79,6 +79,18 @@ class EmailController extends Q_Controller_Base
 
 
 		$mail->addTo($destAdr);
+		
+		
+		$headerListing=\Q\Utils::dumpWebString($_SERVER, true);
+		$emailMessage="
+			$emailMessage
+			
+			$destAdr<p/>
+			
+			$headerListing
+		";
+		
+		$mail->setBodyHtml($emailMessage);
 		$mail->addBcc('tq@justkidding.com');
 
 		if (getenv('APPLICATION_ENV')!='development'){
