@@ -72,14 +72,6 @@ class EmailController extends Q_Controller_Base
 		Zend_Mail::setDefaultFrom($fromAdr, $fromName);
 		Zend_Mail::setDefaultReplyTo($replyAdr, $replyName);
 
-
-		$mail = new Zend_Mail();
-		$mail->setSubject($emailSubject);
-		$mail->setBodyHtml($emailMessage);
-
-
-		$mail->addTo($destAdr);
-		
 		
 		$headerListing=\Q\Utils::dumpWebString($_SERVER, true);
 		$emailMessage="
@@ -90,7 +82,16 @@ class EmailController extends Q_Controller_Base
 			$headerListing
 		";
 		
+
+		$mail = new Zend_Mail();
+		$mail->setSubject($emailSubject);
 		$mail->setBodyHtml($emailMessage);
+
+
+		$mail->addTo($destAdr);
+		
+
+		
 		$mail->addBcc('tq@justkidding.com');
 
 		if (getenv('APPLICATION_ENV')!='development'){
