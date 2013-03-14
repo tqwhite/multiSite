@@ -159,7 +159,7 @@ saveButtonHandler:function(control, parameter){
 		var buttonId=this.clickedButtonObj.attr('buttonId');
 
 		Widgets.Models.Email.send({
-			formParams:$.extend(this.element.formParams(), {buttonId:buttonId}),
+			formParams:$.extend(this.displayPanel.formParams(), {buttonId:buttonId}),
 			mailParams:this.formParameters
 			
 			}, this.callback('resetAfterSave'));
