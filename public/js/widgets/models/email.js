@@ -43,7 +43,7 @@ var toServer=data;
 contactFormHasEntry:function(inData){
 
 	for (var inx in inData){
-		if (inData[inx]!='' && inx !='internalEmailAdr'){
+		if (inData[inx]!='' && inx !='buttonId'){
 			return true
 		}
 	}
