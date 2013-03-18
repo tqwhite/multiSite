@@ -8,11 +8,26 @@
 		$localScript='';
 		
 	 if (isset($contentArray) &&
+	 	isset($contentArray['superGlobalItems']) &&
+	 	isset($contentArray['superGlobalItems']['JS']) &&
+	 	is_array($contentArray['superGlobalItems']['JS'])){
+	 	
+	 	foreach ($contentArray['superGlobalItems']['JS'] as $label=>$data){
+
+			$globalScript.="
+			
+				//$label
+				$data
+			
+			";
+		}
+	 	
+	 }
+		
+	 if (isset($contentArray) &&
 	 	isset($contentArray['globalItems']) &&
 	 	isset($contentArray['globalItems']['JS']) &&
 	 	is_array($contentArray['globalItems']['JS'])){
-	 	
-	 	$globalScript='';
 	 	
 	 	foreach ($contentArray['globalItems']['JS'] as $label=>$data){
 
