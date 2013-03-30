@@ -20,6 +20,8 @@ $transactionJson=json_encode($transactionInfo);
 //	$ch =curl_init("http://store.demo.tensigma.org/test/index.php");
 	$ch =curl_init($url);
 
+//	curl_setopt($ch, CURLOPT_PORT, 8080);
+
 	curl_setopt($ch, CURLOPT_POST, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, array('transactionInfo'=>$transactionJson, 'productList'=>$productJson, 'token'=>$inData['orderId']));
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
