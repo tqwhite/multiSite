@@ -8,8 +8,8 @@
 	)));
 
 $request = Zend_Controller_Front::getInstance()->getRequest();
-$this->headTitle($request->getActionName().'/')
-     ->headTitle($request->getControllerName());
+ $this->headTitle($request->getActionName().'/')
+      ->headTitle($request->getControllerName());
 
 $this->contentArray=$this->contentObj->contentArray;
 

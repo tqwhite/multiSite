@@ -1,0 +1,93 @@
+<?php
+
+\Q\Utils::validateProperties(array(
+	'validatedEntity'=>$this,
+	'source'=>__file__,
+	'propertyList'=>array(
+		array('name'=>'codeNav'),
+		array('name'=>'contentArray')
+	)));
+
+//INIT =========================================================================
+
+
+$contentArray=$this->contentArray; //needs to be a property so helpers can see it
+
+
+if (isset($contentArray['thisPage.css']) && $contentArray['thisPage.css']){
+	$thisPageCssString=$contentArray['thisPage.css'];
+}
+else{
+	$thisPageCssString='';
+}
+
+
+//DEFAULT STYLES (for this page type) =========================================================================
+
+$styleString="
+.panelContainer{
+	width:800px;
+	font-size:10pt;
+}
+.panelHeadline{
+font-size:24pt;margin-bottom:20px;
+}
+.panelSimpleBodyText{
+	margin:0px 10px;
+}
+.panelBasicImage{
+	width:750px;
+	margin:0px 25px;
+}
+
+/*
+These anything slider things are often overridden by content ==================
+*/
+.anythingSlider-default .arrow a {
+
+background: url(/js/widgets/stylesheets/anythingslider/imagesCustom/defaultX.png) no-repeat;
+}
+
+
+/* slider window - top & bottom borders, active state */
+.anythingSlider-default.activeSlider .anythingWindow {
+	border-color: #666;
+}
+/* Navigation buttons, active state */
+.anythingSlider-default.activeSlider .anythingControls a {
+	/* background image = top shadow */
+	background-color: #666;
+}
+/* Navigation current & hovered button, active state */
+.anythingSlider-default.activeSlider .anythingControls a.cur,
+.anythingSlider-default.activeSlider .anythingControls a:hover {
+	/* background image removed */
+	background: #666;
+}
+
+$thisPageCssString
+";
+
+$this->headStyle()->appendStyle($styleString);
+
+
+//MAIN CONTENT SECTION =========================================================================
+
+
+
+$panelContentString='';
+		$list=$this->contentArray['images'];
+		foreach ($list as $label=>$element){
+			$thisOne=str_replace('<!imagePath!>', $element, $this->contentArray['pictureFrame.html']);
+			$panelContentString.="<li>$thisOne</li>";
+		}
+$panelContentString="<ul id='anythingslider' class='mainContentContainer panelBlock'>$panelContentString</ul>";
+
+$panelString="
+$panelContentString
+";
+
+
+//OUTPUT SECTION =========================================================================
+
+echo $panelString;

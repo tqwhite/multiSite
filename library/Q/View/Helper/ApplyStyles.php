@@ -13,12 +13,15 @@
 		}
 		//$viewObj->headStyle()->appendStyle($contentArray['globalItems']['CSS']['main.css']);
 
-		$cssString=$viewObj->mapServableToHash($contentArray, $contentArray['superGlobalItems']['CSS']);
-		array_map('applyStyle', $cssString);
+		if (isset($contentArray['superGlobalItems']['CSS'])){
+			$cssString=$viewObj->mapServableToHash($contentArray, $contentArray['superGlobalItems']['CSS']);
+			array_map('applyStyle', $cssString);
+		}
 		
-		$cssString=$viewObj->mapServableToHash($contentArray, $contentArray['globalItems']['CSS']);
-		array_map('applyStyle', $cssString);
-
+		if (isset($contentArray['globalItems']['CSS'])){
+			$cssString=$viewObj->mapServableToHash($contentArray, $contentArray['globalItems']['CSS']);
+			array_map('applyStyle', $cssString);
+		}
 
 	 }
 

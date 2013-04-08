@@ -1,8 +1,8 @@
 No, this isn't a real script. It's a reminder of the commands to do things
 
-./zf.sh create module tabbedMultiPanel
-./zf.sh create controller Generate 1 tabbedMultiPanel
-./zf.sh create action Container Generate 1 tabbedMultiPanel
+./zf.sh create module pictureShow
+./zf.sh create controller Generate 1 pictureShow
+./zf.sh create action Container Generate 1 pictureShow
 
 Don't forget to change this controller segment:
 

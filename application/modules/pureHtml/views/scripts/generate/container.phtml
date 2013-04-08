@@ -7,10 +7,6 @@
 		array('name'=>'contentArray')
 	)));
 
-$request = Zend_Controller_Front::getInstance()->getRequest();
-$this->headTitle($request->getActionName().'/')
-     ->headTitle($request->getControllerName());
-
 
 $contentArray=$this->contentArray;
 
