@@ -60,7 +60,7 @@ static function moneris($inData, $parms, $args="set array('debug'=>true) as seco
 	$orderid=$inData['orderId'];
 
 	if ($production){
-		$amount=$purchaseData['grandTotal'];
+		$amount=number_format($purchaseData['grandTotal'], 2);
 		$pan=$cardData['cardNumber'];
 		$expiry_date=$cardData['expYear'].$cardData['expMonth'];
 
