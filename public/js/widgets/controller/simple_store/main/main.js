@@ -17,16 +17,25 @@ Widgets.Controller.Base.extend('Widgets.Controller.SimpleStore.Main',
 
 init: function(el, options) {
 	this.baseInits();
-
+	
 	qtools.validateProperties({
 		targetObject:options,
 		targetScope: this, //will add listed items to targetScope
 		propList:[
 			{name:'paymentServerUrl'},
-			{name:'serverData'}
+			{name:'serverData'},
+			{name:'deferAppearance', importance:'optional'}, //this is sent by the catalog in fancyCatalog1
+			{name:'catalogData', importance:'optional'} //this comes from fancyCatalog1
 		],
 		source:this.constructor._fullName
  	});
+ 	
+ 	this.options=options;
+ 	
+ 	if (options.deferAppearance){
+ 		return;
+ 	}
+ 	
 	qtools.validateProperties({
 		targetObject:this.serverData,
 		targetScope: this, //will add listed items to targetScope
@@ -49,8 +58,27 @@ init: function(el, options) {
 
 },
 
-update:function(options){
-	this.init(this.element, options);
+update:function(control, parameter){
+	switch(control){
+		case 'display':
+			if (typeof(parameter)=='object'){ this.options=$.extend(this.options, parameter);}
+			this.options.deferAppearance=false;
+			this.init(this.element, this.options);
+			break;
+		case 'addEventObjToCart':
+			this.addEventObjToCart(parameter);
+			break;
+		case 'showViewCartButtonIfNeeded':
+				var incumbentCart=Widgets.Models.LocalStorage.getCookieData('cart').data;
+				if (typeof(incumbentCart)!='undefined'){
+					$(parameter).show();
+				}
+			break;
+		default:
+			if (typeof(parameter)=='object'){ this.options=$.extend(this.options, parameter);}
+			this.init(this.element, this.options);
+			break;
+	}
 },
 
 initDisplayProperties:function(){
@@ -70,6 +98,8 @@ initDisplayProperties:function(){
 initControlProperties:function(){
 	this.viewHelper=new viewHelper2();
 	this.purchaseData={};
+
+
 },
 
 initDisplay:function(inData){
@@ -101,9 +131,11 @@ initDomElements:function(){
 	$('#'+displayItem.divId).widgets_simple_store_payment_form({
 			paymentServerUrl:this.paymentServerUrl,
 			purchaseData:this.purchaseData,
-			infoDispatchHandler:this.displayParameters.infoDispatch.handler
+			infoDispatchHandler:this.displayParameters.infoDispatch.handler,
+			catalogUrl:this.options.catalogUrl
 	});
 
+	$('#'+this.displayParameters.productListContainer.divId).widgets_simple_store_product_selector('updatePriceDisplays');
 },
 
 infoDispatchHandler:function(control, parameter){
@@ -150,6 +182,46 @@ displayCompletion:function(){
 
 printButtonHandler:function(control, parameter){
 	window.print();
+},
+
+addEventObjToCart:function(eventObj){
+	var targetDomObj=$(eventObj.target).parent(),
+		newProductChoice=targetDomObj.formParams(true);
+	
+	if (this.isValidProductChoice(newProductChoice)){
+		this.addToCart(newProductChoice);
+	}
+},
+
+isValidProductChoice:function(productChoice){
+	if (!productChoice.price ||
+		!productChoice.quantity ||
+		!productChoice.prodCode){
+			alert(this._shortName+".addToCart() says, this product button is producing bad cart input (missing product, quantity or prodCode)"); 
+			return false;
+		}
+	//else
+		
+		return true;
+	
+},
+
+addToCart:function(newProductChoice){
+	var incumbentCart=Widgets.Models.LocalStorage.getCookieData('cart').data;
+
+	if (typeof(incumbentCart)=='undefined'){incumbentCart=[];}
+	
+	
+	var existingObject=qtools.lookupDottedPath(incumbentCart, 'prodCode', newProductChoice.prodCode);
+
+	if (typeof(existingObject)=='undefined'){
+		incumbentCart.push(newProductChoice);
+	}
+	else{
+		existingObject.quantity=(1.0*existingObject.quantity)+newProductChoice.quantity;
+	}
+
+	Widgets.Models.LocalStorage.setCookie('cart', incumbentCart);
 }
 
 })

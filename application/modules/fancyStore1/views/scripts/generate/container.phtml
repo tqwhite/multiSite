@@ -1,0 +1,84 @@
+<?php
+\Q\Utils::validateProperties(array(
+	'validatedEntity'=>$this,
+	'source'=>__file__,
+	'propertyList'=>array(
+		array('name'=>'codeNav'),
+		array('name'=>'contentArray')
+	)));
+
+$contentArray=$this->contentArray;
+$productSectionArray=$this->productSectionArray;
+
+$transformations=array();
+
+if (isset($contentArray['transformations.php'])){
+	$forbiddenCount=0;
+	$forbiddenList=array('exec', 'mysql');
+	$contentArray['transformations.php']=str_replace($forbiddenList, "", $contentArray['transformations.php'], $forbiddenCount);
+
+	if ($forbiddenCount===0){
+		eval($contentArray['transformations.php']);
+	}
+	else{
+		die("Illegal php statements in transformations file");
+	}
+}
+
+$transformations['dollarPrice']=function($itemRec, $referenceDataTagList){$out=isset($itemRec['price'])?'$'.number_format($itemRec['price'], 2):"!isset(\$itemRec['price'])"; return $out;};
+$transformations['capsName']=function($itemRec, $referenceDataTagList){$out=isset($itemRec['name'])?strtoupper($itemRec['name']):"!isset(\$itemRec['name'])"; return $out;};
+$transformations['catCaps']=function($itemRec, $referenceDataTagList){$out=isset($itemRec['categoryInfo:name'])?strtoupper($itemRec['categoryInfo:name']):"!isset(\$itemRec['categoryInfo:name'])"; return $out;};
+
+
+$referenceData=array();
+$outString='';
+
+foreach ($productSectionArray as $label=>$productSection){
+		$fileName=str_replace(' ', '_', $label);
+		
+	if (isset($contentArray['categoryTemplates']) && isset($contentArray['categoryTemplates'][$fileName.'.html'])){
+
+		$blockTemplate=$contentArray['categoryTemplates'][$fileName.'.html'];
+	}
+	else{
+		$blockTemplate=$contentArray['categoryDefaultTemplate.html'];
+	}
+
+	$itemProcessResult=$this->processTemplateArray(array(
+		'sourceData'=>$productSection,
+		'itemTemplate'=>$contentArray['productListingTemplate.html'],
+		'blockTemplate'=>$blockTemplate,
+		'transformations'=>$transformations,
+		'referenceData'=>array('categoryInfo'=>array('name'=>$label))
+	
+	));
+
+	$outString.=$itemProcessResult['outString'];
+}
+
+
+
+if (isset($contentArray['catalogTemplate.html'])){
+	$catalogTemplate=$contentArray['catalogTemplate.html'];
+}
+else{
+	$catalogTemplate="<!catalogInfo!>";
+}
+
+	$catalogProcessResult=$this->processTemplateArray(array(
+		'sourceData'=>array(array('catalogInfo'=>$outString)),
+		'itemTemplate'=>$catalogTemplate,
+		'transformations'=>$transformations
+	
+	));
+	
+	$outString=$catalogProcessResult['outString'];
+
+$outString="
+<div class='mainContentContainer' style='overflow:hidden;position:relative;'>
+
+	$outString
+</div>
+";
+
+echo $outString;

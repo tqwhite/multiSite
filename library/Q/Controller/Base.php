@@ -93,7 +93,7 @@ class Q_Controller_Base extends Zend_Controller_Action {
 		if (is_dir($directory)) {
 			return realpath($directory);
 		} else {
-			echo ("controller_base::getContentDir says, $directory does not exist 3<br/>");
+			echo ("controller_base::getContentDir says, page content directory (\$contentDirPath) does not exist.<br/>You probably need to do: <b>mkdir $directory</b><br/><br/>");
 		}
 	}
 	

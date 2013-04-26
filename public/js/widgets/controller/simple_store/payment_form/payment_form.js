@@ -20,7 +20,8 @@ init: function(el, options) {
 		propList:[
 			{name:'paymentServerUrl'},
 			{name:'purchaseData'},
-			{name:'infoDispatchHandler'}
+			{name:'infoDispatchHandler'},
+			{name:'catalogUrl', importance:'optional'}
 		],
 		source:this.constructor._fullName
  	});
@@ -82,7 +83,7 @@ initDisplay:function(inData){
 		$.extend(inData, {
 			displayParameters:this.displayParameters,
 			viewHelper:this.viewHelper,
-			formData:{}
+			formData:{catalogUrl:this.catalogUrl}
 		})
 		);
 	this.element.html(html);

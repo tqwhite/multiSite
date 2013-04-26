@@ -62,11 +62,11 @@ setCookie:function(key, value, options){
 	saveObj={meta:options, data:value};
 
 	jsonValue=JSON.stringify(saveObj)
-	outValue=$.rc4EncryptStr(jsonValue, '59dc387e-88cf-4597-abd8-d2eb5f8780fa');
+	outValue=$.rc4EncryptStr(jsonValue, '59dc387e-88cf-4597-abd8-d2eb5f8780fa'); //this guid is arbitrary, I don't want it easy to screw up my cookie, but this is not a secure storage
 
 	$.cookie(cookieIndex, outValue, { expires: 7, path: '/'});
 
-	this.cookieContainer=saveObj;
+	this.cookieContainer[cookieIndex]=saveObj;
 },
 
 receiveCookies:function(pw){

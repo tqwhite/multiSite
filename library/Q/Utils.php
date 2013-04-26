@@ -152,6 +152,19 @@ static function callStack($stringFlag){
 }
 
 static function validateProperties($args){
+/*
+	\Q\Utils::validateProperties(array(
+		'validatedEntity'=>$ARGS,
+		'source'=>__file__,
+		'propertyList'=>array(
+			array('name'=>'VARNAME'),
+			array('name'=>'VARNAME', 'assertNotEmptyFlag'=>true),
+			array('name'=>'VARNAME', 'importance'=>'optional'),
+			array('name'=>'VARNAME', 'requiredType'=>'array'),
+				
+		)));
+*/
+
 	$validatedEntity=$args['validatedEntity'];
 	$propertyList=$args['propertyList'];
 //	$targetScope=(isset($args['targetScope']))?$args['targetScope']:'';
@@ -193,11 +206,12 @@ static function validateProperties($args){
 	if (count($outMessages)>0){
 
 	$list=$outMessages;
-	$outString='validateProperties aborted execution:<p/>';
+	$outString='qUtils.validateProperties aborted execution:<p/>';
 	for ($i=0, $len=count($list); $i<$len; $i++){
 		$element=$list[$i];
 		$outString.="$element<br/";
 	}
+	$outString.="<br/><br/>run initIfNeeded=true";
 	die($outString);
 	}
 
@@ -304,6 +318,16 @@ static function errorListToString($errorList, $separator){
 			$outString.="{$element[0]}:{$element[1]}$separator";
 		}
 		return $outString;
+}
+
+static function makeArrayNumericIndexed($inArray){
+	$outArray=array();
+	$numberInx=0;
+		foreach ($inArray as $label=>$data){
+			$outArray[$numberInx]=$data;
+			$numberInx++;
+		}
+	return $outArray;
 }
 
 }//end of class

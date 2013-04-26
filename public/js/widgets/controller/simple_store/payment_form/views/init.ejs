@@ -11,6 +11,7 @@ qtools.validateProperties({
 qtools.validateProperties({
 	targetObject:formData,
 	propList:[
+		{name:'catalogUrl', importance:'optional'}
 	],
  source:'simple_store.payment_form.init.ejs' });
 
@@ -56,9 +57,16 @@ if (window.location.host.match(/local/) || window.location.host.match(/demo/) ||
 	}
 
 
+if (this.formData.catalogUrl){
+	var continueShoppingString="<a class='simpleButton shrinkButton10' href='"+this.formData.catalogUrl+"'>Continue Shopping</a>";
+}
+else{
+	var continueShoppingString="";
+}
+
 %>
 <div class='idSection'>
-<div class='prodListTitle' id='<%= displayParameters.status.divId %>'>Payment Information</div>
+<div class='prodListTitle' id='<%= displayParameters.status.divId %>'>Payment Information <div style='float:right;margin-left:30px;font-size:8pt;'><%==continueShoppingString%></div></div>
 <table class='idEntryForm'>
 	<tr><td>Name</td><td><input class='longInput' type='text' name='name' value='<%=name%>'></td>
 	<tr><td style='width:35%;'>Email Address</td><td style='width:60%;'><input class='longInput' type='text' name='emailAdr' value='<%=emailAdr%>'></td>

@@ -18,7 +18,7 @@ init: function(el, options) {
 		targetObject:options,
 		targetScope: this, //will add listed items to targetScope
 		propList:[
-			{name:'productInfo'},
+			{name:'productInfo', importance:'optional'}, //sometimes this is instantiated by fancyCatalog1
 			{name:'purchaseData'},
 			{name:'infoDispatchHandler'}
 		],
@@ -35,8 +35,16 @@ init: function(el, options) {
 
 },
 
-update:function(options){
-	this.init(this.element, options);
+update:function(control, parameter){
+	switch(control){
+		case 'updatePriceDisplays':
+			this.updatePurchase();
+			break;
+		default:
+			if (typeof(parameter)=='object'){ this.options=$.extend(this.options, parameter);}
+			this.init(this.element, this.options);
+			break;
+	}
 },
 
 initDisplayProperties:function(){
@@ -55,6 +63,11 @@ initDisplayProperties:function(){
 initControlProperties:function(){
 	this.viewHelper=new viewHelper2();
 	this.totalPrice=0;
+	
+	if (typeof(this.productInfo)=='undefined'){
+		this.extractProductInfo();
+	}
+	
 },
 
 initDisplay:function(inData){
@@ -103,6 +116,8 @@ initDomElements:function(){
 
 	this.element.find('input').qprompt();
 	$('[title]', this.element).qtip();
+	
+	
 
 },
 
@@ -126,9 +141,10 @@ inputHandler:function(control, parameter){
 			var targetObj=$(control.target),
 				value=targetObj.attr('value'),
 				parentObj=targetObj.parent();
-
-				$('input', this.element).attr('value', '0').each(function(){$(this).parent().removeClass('nonZeroProdLine')});
-				targetObj.attr('value', value);
+				
+//Wilbert used to not be able to receive an order for two things at once. That is no longer true.
+// 				$('input', this.element).attr('value', '0').each(function(){$(this).parent().removeClass('nonZeroProdLine')});
+// 				targetObj.attr('value', value);
 
 
 			this.updatePurchase(parentObj);
@@ -184,8 +200,9 @@ updatePurchase:function(parentObj){
 	this.purchaseData.totalsDisplayObject.grandTotal=this.purchaseData.grandTotal.toFixed(2).toString();
 
 
-
-	this.updateLinePrice(parentObj, price);
+	if (typeof(parentObj)!='undefined'){
+		this.updateLinePrice(parentObj, price);
+	}
 	this.writePriceDisplay();
 	this.infoDispatchHandler('changePurchaseData');
 },
@@ -240,6 +257,11 @@ writePriceDisplay:function(){
 		})
 		);
 	$('#'+this.displayParameters.priceDisplayContainer.divId).html(html);
+},
+
+extractProductInfo: function(){
+	this.productInfo=Widgets.Models.LocalStorage.getCookieData('cart').data;	
+
 }
 
 })
