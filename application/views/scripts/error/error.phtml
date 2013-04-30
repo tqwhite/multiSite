@@ -1,12 +1,17 @@
 <?php /*require_once($_SERVER['DOCUMENT_ROOT'].'/tools/mailNotificationInclude.php');*/?>
 <?php
 
+if (APPLICATION_ENV=='production'){
+header( 'Location: http://'.$this->multiSite['rootDomainSegment']);
+}
+
 	if (isset($this->exception)){
 		$getMessage=$this->exception->getMessage();
 	}
 	else{
 		$getMessage='no exception object';
 	}
+	
 	error_log("ZEND ERROR PAGE: $getMessage ");//STACK TRACE  ".Q\Utils::callStack(true));
 
 
