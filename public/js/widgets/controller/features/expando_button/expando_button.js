@@ -38,15 +38,35 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ExpandoButton',
 		//message: "Hello World"
 		//});
 	},
+
+update:function(control, parameter){
+	switch(control){
+		case 'killEmptyButtons':
+			this.killEmptyButton();
+			break;
+		default:
+			if (typeof(parameter)=='object'){ this.options=$.extend(this.options, parameter);}
+			this.init(this.element, this.options);
+			break;
+	}
+},
 	
 	expandHandler:function(eventObj){
 		var target=$(eventObj.target)
 			parent=target.parent()
-			buttonHeight=$(target).height();
+			buttonHeight=$(target).height(),
+			content=$(this.contentSelector);
 	
 		this.addSpacer(parent, buttonHeight);
 		
 		if (this.expandToggle=='shrunk'){
+			this.shrunkDisplayState=content.css('display');
+			
+			content.css({overflow:'visible'});
+			if (this.shrunkDisplayState=='none'){
+				content.show();
+			}
+			
 			target.removeClass(this.expandedButtonClassName).addClass(this.shrunkButtonClassName);
 			this.origHeight=$(target).parent().outerHeight();
 			
@@ -54,9 +74,8 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ExpandoButton',
 				parentHeight=buttonHeight+expandedHeight; //I don't know why, but it needs the extra button height
 			
 			this.duration=((expandedHeight-this.origHeight)/150)*500;
-		
 			target.parent().animate({height:parentHeight}, this.duration);
-			$(this.contentSelector).css({overflow:'visible'});
+			
 			this.expandToggle='expanded';
 		}
 		else{
@@ -66,8 +85,10 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ExpandoButton',
 //no instances of multiple buttons per page, non-critical consequence when it happens, fix it then
 
 			$(target).removeClass(this.shrunkButtonClassName).addClass(this.expandedButtonClassName);
-			target.parent().animate({height:this.origHeight}, this.duration); 
-			$(this.contentSelector).css({overflow:'hidden'});
+			target.parent().animate({height:this.origHeight}, this.duration, function(){
+			content.css({overflow:'hidden'}).css('display', this.shrunkDisplayState)
+			}); 
+			;
 			this.expandToggle='shrunk';
 		}
 		
@@ -90,7 +111,40 @@ getExpandedHeight:function(domObj){
 	$(domObj).css({height:currHeight});
 	return expandedHeight;
 
+},
+
+killEmptyButton:function(){
+		var contentSelector=this.contentSelector; //closure for .each's function
+		
+		this.buttonObj.each(function(inx, buttonObj){
+			buttonObj=$(buttonObj);
+			var parent=buttonObj.parent(),
+				content=parent.find(contentSelector);
+			
+				if (content.text()===''){
+					buttonObj.hide();
+				}
+		
+		});
+
+},
+
+showButtonsWithContent:function(){
+		var contentSelector=this.contentSelector; //closure for .each's function
+		
+		this.buttonObj.each(function(inx, buttonObj){
+			buttonObj=$(buttonObj);
+			var parent=buttonObj.parent(),
+				content=parent.find(contentSelector);
+			
+				if (content.text()!==''){
+					buttonObj.show();
+				}
+		
+		});
+
 }
+
 })
 
 });
