@@ -71,11 +71,12 @@ Widgets.Controller.Base.extend('Widgets.Controller.Session.Dispatch',
 	},
 
 	startController:function(startupItem){
-		domSelector=startupItem.domSelector,
+		var domSelector=startupItem.domSelector,
 		controllerName=startupItem.controllerName,
 		parameters=$.parseJSON(startupItem.parameters),
-		parameters.serverData=this.serverData,
 		domObj=$(domSelector);
+
+		parameters.serverData=this.serverData;
 
 		if (typeof(domObj[controllerName])=='function'){
 			domObj[controllerName](parameters);
