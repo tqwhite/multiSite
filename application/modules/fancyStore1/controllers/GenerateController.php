@@ -9,7 +9,7 @@ class FancyStore1_GenerateController extends Q_Controller_Base
 
     public function indexAction()
     {
-        // action body
+        // action body 
     }
 
 
