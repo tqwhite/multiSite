@@ -170,6 +170,7 @@ catchProcessResult:function(inData){
 			switch(inData.status.toString()){
 				case '1':
 					this.infoDispatchHandler('displayCompletion');
+					this.infoDispatchHandler('clearCart');
 					break;
 			}
 

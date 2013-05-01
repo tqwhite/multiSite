@@ -39,7 +39,7 @@ class FancyStore1_GenerateController extends Q_Controller_Base
 					array(
 						'paymentServerUrl'=>$scheme.$_SERVER['HTTP_HOST'].'/simpleStore/generate/process',
 						'deferAppearance'=>true,
-						'catalogData'=>$this->contentObj->contentArray['productSpecs']
+						'catalogData'=>htmlentities($this->contentObj->contentArray['productSpecs'])
 					)
 				)
 			);

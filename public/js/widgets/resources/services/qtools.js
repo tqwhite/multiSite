@@ -914,6 +914,7 @@ validateProperties:function(args){
 	for (var i=0, len=outList.length; i<len; i++){
 		outMessage+=outList[i]+'\n';
 	}
+
 	if (showAlertFlag && outMessage){
 		alert(outMessage);
 	}

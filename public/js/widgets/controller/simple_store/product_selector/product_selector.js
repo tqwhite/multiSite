@@ -18,10 +18,11 @@ init: function(el, options) {
 		targetObject:options,
 		targetScope: this, //will add listed items to targetScope
 		propList:[
-			{name:'productInfo', importance:'optional'}, //sometimes this is instantiated by fancyCatalog1
+			{name:'productInfo'}, //sometimes this is instantiated by fancyCatalog1
 			{name:'purchaseData'},
 			{name:'infoDispatchHandler'}
 		],
+		showAlertFlag:true,
 		source:this.constructor._fullName
  	});
 
@@ -63,10 +64,7 @@ initDisplayProperties:function(){
 initControlProperties:function(){
 	this.viewHelper=new viewHelper2();
 	this.totalPrice=0;
-	
-	if (typeof(this.productInfo)=='undefined'){
-		this.extractProductInfo();
-	}
+
 	
 },
 
@@ -257,11 +255,6 @@ writePriceDisplay:function(){
 		})
 		);
 	$('#'+this.displayParameters.priceDisplayContainer.divId).html(html);
-},
-
-extractProductInfo: function(){
-	this.productInfo=Widgets.Models.LocalStorage.getCookieData('cart').data;	
-
 }
 
 })

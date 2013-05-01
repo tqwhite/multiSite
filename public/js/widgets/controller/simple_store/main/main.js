@@ -40,9 +40,10 @@ init: function(el, options) {
 		targetObject:this.serverData,
 		targetScope: this, //will add listed items to targetScope
 		propList:[
-			{name:'productInfo'},
+			{name:'productInfo', importance:'optional'},
 			{name:'confirmationPageTemplate'}
 		],
+		showAlertFlag:true,
 		source:this.constructor._fullName
  	});
 
@@ -99,6 +100,9 @@ initControlProperties:function(){
 	this.viewHelper=new viewHelper2();
 	this.purchaseData={};
 
+	if (typeof(this.productInfo)=='undefined'){
+		this.productInfo=Widgets.Models.LocalStorage.getCookieData('cart').data;
+	}
 
 },
 
@@ -141,6 +145,9 @@ initDomElements:function(){
 infoDispatchHandler:function(control, parameter){
 	var componentName='infoDispatch';
 	switch(control){
+		case 'clearCart':
+			Widgets.Models.LocalStorage.deleteCookie('cart')
+			break;
 		case 'displayCompletion':
 			this.displayCompletion();
 		break;

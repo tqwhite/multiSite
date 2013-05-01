@@ -12,6 +12,11 @@ $productSectionArray=$this->productSectionArray;
 
 $transformations=array();
 
+$transformations['dollarPrice']=function($itemRec, $referenceDataTagList){$out=isset($itemRec['price'])?'$'.number_format($itemRec['price'], 2):"!isset(\$itemRec['price'])"; return $out;};
+$transformations['capsName']=function($itemRec, $referenceDataTagList){$out=isset($itemRec['name'])?strtoupper($itemRec['name']):"!isset(\$itemRec['name'])"; return $out;};
+$transformations['catCaps']=function($itemRec, $referenceDataTagList){$out=isset($itemRec['categoryInfo:name'])?strtoupper($itemRec['categoryInfo:name']):"!isset(\$itemRec['categoryInfo:name'])"; return $out;};
+
+
 if (isset($contentArray['transformations.php'])){
 	$forbiddenCount=0;
 	$forbiddenList=array('exec', 'mysql');
@@ -24,11 +29,6 @@ if (isset($contentArray['transformations.php'])){
 		die("Illegal php statements in transformations file");
 	}
 }
-
-$transformations['dollarPrice']=function($itemRec, $referenceDataTagList){$out=isset($itemRec['price'])?'$'.number_format($itemRec['price'], 2):"!isset(\$itemRec['price'])"; return $out;};
-$transformations['capsName']=function($itemRec, $referenceDataTagList){$out=isset($itemRec['name'])?strtoupper($itemRec['name']):"!isset(\$itemRec['name'])"; return $out;};
-$transformations['catCaps']=function($itemRec, $referenceDataTagList){$out=isset($itemRec['categoryInfo:name'])?strtoupper($itemRec['categoryInfo:name']):"!isset(\$itemRec['categoryInfo:name'])"; return $out;};
-
 
 $referenceData=array();
 $outString='';
@@ -74,7 +74,14 @@ else{
 	
 	$outString=$catalogProcessResult['outString'];
 
+
+$confirmationTemplate=$this->contentArray['pageFormTemplates.ini']['confirmationPageTemplate'];
+$confirmationPageTemplate=\Q\Utils::htmlEntities($confirmationTemplate);
+$confirmationPageTemplate=json_encode($confirmationPageTemplate);
+
+
 $outString="
+<div class='serverData' id='confirmationPageTemplate' style='display:none;'>$confirmationPageTemplate</div>
 <div class='mainContentContainer' style='overflow:hidden;position:relative;'>
 
 	$outString
