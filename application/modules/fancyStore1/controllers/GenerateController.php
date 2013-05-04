@@ -4,6 +4,7 @@ class FancyStore1_GenerateController extends Q_Controller_Base
 {
     public function init() //this is called by the Zend __construct() method
     {
+
         parent::init(array('controllerType'=>'cms'));
     }
 
@@ -30,6 +31,8 @@ class FancyStore1_GenerateController extends Q_Controller_Base
     
     	$productSectionArray=$this->productSectionArray($this->contentObj->contentArray['productSpecs']);
 
+    	$catalogEntities=\Q\Utils::htmlentities($this->contentObj->contentArray['productSpecs'], array("@apos;"=>'@apos;'));
+
 		$serverComm[]=array("fieldName"=>"message", "value"=>'hello from the server via javascript');
 
 				$jsControllerList[]=array(
@@ -39,7 +42,8 @@ class FancyStore1_GenerateController extends Q_Controller_Base
 					array(
 						'paymentServerUrl'=>$scheme.$_SERVER['HTTP_HOST'].'/simpleStore/generate/process',
 						'deferAppearance'=>true,
-						'catalogData'=>htmlentities($this->contentObj->contentArray['productSpecs'])
+						'catalogData'=>$catalogEntities,
+						'processContentSourceRouteName'=>Zend_Controller_Front::getInstance()->getRouter()->getCurrentRouteName()
 					)
 				)
 			);
@@ -61,10 +65,10 @@ class FancyStore1_GenerateController extends Q_Controller_Base
 			'validatedEntity'=>$contentArray,
 			'source'=>__file__,
 			'propertyList'=>array(
-				array('name'=>'catalogTemplate.html'),
-				array('name'=>'productListingTemplate.html'),
-				array('name'=>'productPageTemplate.html'),
-				array('name'=>'productPopupTemplate.html'),
+// 				array('name'=>'catalogTemplate.html'),
+// 				array('name'=>'productListingTemplate.html'),
+// 				array('name'=>'productPageTemplate.html'),
+// 				array('name'=>'productPopupTemplate.html'),
 				array('name'=>'productSpecs', 'assertNotEmptyFlag'=>true)
 			)));
 

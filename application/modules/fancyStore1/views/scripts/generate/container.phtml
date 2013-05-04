@@ -8,6 +8,8 @@
 	)));
 
 $contentArray=$this->contentArray;
+$displayTemplates=$this->contentArray['catalogDisplayTemplates'];
+
 $productSectionArray=$this->productSectionArray;
 
 $transformations=array();
@@ -17,13 +19,13 @@ $transformations['capsName']=function($itemRec, $referenceDataTagList){$out=isse
 $transformations['catCaps']=function($itemRec, $referenceDataTagList){$out=isset($itemRec['categoryInfo:name'])?strtoupper($itemRec['categoryInfo:name']):"!isset(\$itemRec['categoryInfo:name'])"; return $out;};
 
 
-if (isset($contentArray['transformations.php'])){
+if (isset($displayTemplates['transformations.php'])){
 	$forbiddenCount=0;
 	$forbiddenList=array('exec', 'mysql');
-	$contentArray['transformations.php']=str_replace($forbiddenList, "", $contentArray['transformations.php'], $forbiddenCount);
+	$displayTemplates['transformations.php']=str_replace($forbiddenList, "", $displayTemplates['transformations.php'], $forbiddenCount);
 
 	if ($forbiddenCount===0){
-		eval($contentArray['transformations.php']);
+		eval($displayTemplates['transformations.php']);
 	}
 	else{
 		die("Illegal php statements in transformations file");
@@ -41,12 +43,12 @@ foreach ($productSectionArray as $label=>$productSection){
 		$blockTemplate=$contentArray['categoryTemplates'][$fileName.'.html'];
 	}
 	else{
-		$blockTemplate=$contentArray['categoryDefaultTemplate.html'];
+		$blockTemplate=$contentArray['categoryTemplates']['categoryDefaultTemplate.html'];
 	}
 
 	$itemProcessResult=$this->processTemplateArray(array(
 		'sourceData'=>$productSection,
-		'itemTemplate'=>$contentArray['productListingTemplate.html'],
+		'itemTemplate'=>$displayTemplates['productListingTemplate.html'],
 		'blockTemplate'=>$blockTemplate,
 		'transformations'=>$transformations,
 		'referenceData'=>array('categoryInfo'=>array('name'=>$label))
@@ -58,8 +60,8 @@ foreach ($productSectionArray as $label=>$productSection){
 
 
 
-if (isset($contentArray['catalogTemplate.html'])){
-	$catalogTemplate=$contentArray['catalogTemplate.html'];
+if (isset($displayTemplates['catalogTemplate.html'])){
+	$catalogTemplate=$displayTemplates['catalogTemplate.html'];
 }
 else{
 	$catalogTemplate="<!catalogInfo!>";

@@ -19,8 +19,9 @@ init: function(el, options) {
 		targetScope: this, //will add listed items to targetScope
 		propList:[
 			{name:'paymentServerUrl'},
-			{name:'purchaseData'},
+			{name:'purchaseData'}, //communication object, owned by employer (main.js)
 			{name:'infoDispatchHandler'},
+			{name:'processContentSourceRouteName'},
 			{name:'catalogUrl', importance:'optional'}
 		],
 		source:this.constructor._fullName
@@ -127,6 +128,7 @@ submitButtonHandler:function(control, parameter){
 			this.assertModalScreen($('.mainContentContainer'), 'processing');
 			Widgets.Models.Purchase.process({
 					paymentServerUrl:this.paymentServerUrl,
+					processContentSourceRouteName:this.processContentSourceRouteName,
 					cardData:formParams,
 					purchaseData:this.purchaseData
 				},
@@ -169,7 +171,7 @@ catchProcessResult:function(inData){
 
 			switch(inData.status.toString()){
 				case '1':
-					this.infoDispatchHandler('displayCompletion');
+					this.infoDispatchHandler('displayCompletion', inData.data.mailSentStatus.message);
 					this.infoDispatchHandler('clearCart');
 					break;
 			}

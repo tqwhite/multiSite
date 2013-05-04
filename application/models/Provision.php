@@ -14,7 +14,7 @@ $transactionInfo=array(
 			'taxPaid'=>$inData['purchaseData']['tax']
 	);
 
-$productJson=json_encode($inData['purchaseData']['productList']);
+$productJson=json_encode($inData['purchaseData']['shoppingCart']);
 $transactionJson=json_encode($transactionInfo);
 
 //	$ch =curl_init("http://store.demo.tensigma.org/test/index.php");

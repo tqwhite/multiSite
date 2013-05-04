@@ -6,14 +6,23 @@ class SimpleStore_GenerateController extends Q_Controller_Base
 	private $useCardProdServer;
 	private $simpleStore;
 	private $cardProcessorAuth;
+	private $confirmationHtml;
 
-    public function init() //this is called by the Zend __construct() method
-    {
-        parent::init(array('controllerType'=>'cms'));
+    public function init(){ //this is called by the Zend __construct() method
+    	$inData=$this->getRequest()->getPost('data');
+    	$routeName=Zend_Controller_Front::getInstance()->getRouter()->getCurrentRouteName();
+
+		if ($routeName=='default' && $inData['processContentSourceRouteName']){
+			$overrideRouteName=$inData['processContentSourceRouteName'];
+		}
+		else{
+			$overrideRouteName='';
+		}
+
+        parent::init(array('controllerType'=>'cms', 'overrideRouteName'=>$overrideRouteName));
     }
 
-    public function indexAction()
-    {
+    public function indexAction(){
         // action body
     }
 
@@ -21,11 +30,9 @@ class SimpleStore_GenerateController extends Q_Controller_Base
     	$this->cardProcessorAuth=$config['simpleStore.ini']['moneris'];
 		$this->simpleStore=$config['simpleStore.ini']['simpleStore'];
 
-		$this->simpleStore['provision']['url']=$this->simpleStore['provision']['productionUrl'];
     }
 
-    public function containerAction()
-    {
+    public function containerAction(){
 		$contentArray=$this->contentObj->contentArray;
 		$this->updateGlobals($contentArray['globalItems']['CONFIG']);
 
@@ -40,7 +47,8 @@ class SimpleStore_GenerateController extends Q_Controller_Base
 				"controllerName"=>'widgets_simple_store_main',
 				"parameters"=>json_encode(
 					array(
-						'paymentServerUrl'=>$scheme.$_SERVER['HTTP_HOST'].'/simpleStore/generate/process'
+						'paymentServerUrl'=>$scheme.$_SERVER['HTTP_HOST'].'/simpleStore/generate/process',
+						'processContentSourceRouteName'=>Zend_Controller_Front::getInstance()->getRouter()->getCurrentRouteName()
 					)
 				)
 			);
@@ -61,7 +69,7 @@ class SimpleStore_GenerateController extends Q_Controller_Base
 			'source'=>__file__,
 			'propertyList'=>array(
 				array('name'=>'headBanner.html'),
-				array('name'=>'products.ini')
+				array('name'=>'productSpecs', 'assertNotEmptyFlag'=>true)
 			)));
 
 	}
@@ -136,19 +144,12 @@ PRODUCTS;
 		$this->_helper->InitPageTypeDirectory($directories);
 	}
 
-
-
-    public function processAction()
-    {
-        //HACKERY: This action is *not* mapped by the multiSite routing system. It uses the
-        //Zend default controller. Consequently, contentArray comes from
-        //a directory called 'default'.
-        //That means that many of the parameters contained in _default need to be REPEATED in default
-        //Also, I don't know why it's not being rejected by validateContentStructure() but
-        //I need to get this done. Maybe I'll come back to it later. tqii
-        //arrgggh!!
+    public function processAction(){
+		//this contentArray is mapped by the processContentSourceRouteName ajax'd in from the catalog,
+		//fancyStore1 or simpleStore
 
 		$contentArray=$this->contentObj->contentArray;
+		
 		$this->updateGlobals($contentArray['globalItems']['CONFIG']);
 
     	if (isset($this->simpleStore['useCardProdServer'])){
@@ -185,6 +186,8 @@ PRODUCTS;
 		else{
 			$paymentResult=array(
 				'responseData' => array(
+					'FakeResponseData' => true,
+					'FakeCardNumber'=>$inData['cardData']['cardNumber'],
 					'ReceiptId' => $inData['orderId'],
 					'ReferenceNum' => '640000030014779980',
 					'ResponseCode' => '001',
@@ -209,18 +212,28 @@ PRODUCTS;
 
 			$inData['cardData']['cardNumber']=substr($inData['cardData']['cardNumber'], strlen($inData['cardData']['cardNumber'])-4, 4);;
 
+
 			if ($paymentResult['responseData']['ResponseCode']==1){
-				if ($firstFour!='8881'){
-					$provisionResult=Application_Model_Provision::process($inData, $this->simpleStore['provision']['url']);
+				switch($firstFour){
+				case '8888':
+					$provisionResult=Application_Model_Provision::process($inData, $this->simpleStore['provision']['productionUrl']);
 						$status=1;
 					if ($provisionResult['status']!=1){
 						$errorList[]=array('provision', $provisionResult['message']);
 					}
-				}
-				else{
+					break;
+				case '8882':
+					$provisionResult=Application_Model_Provision::process($inData, $this->simpleStore['provision']['demoUrl']);
+						$status=1;
+					if ($provisionResult['status']!=1){
+						$errorList[]=array('provision', $provisionResult['message']);
+					}
+					break;
+				case '8881':
 					$status=1;
 					$inData['orderId']='Testing. No Token Created';
 					$provisionResult=array();
+					break;
 				}
 			}
 			else{
@@ -262,19 +275,29 @@ PRODUCTS;
 
 		foreach ($subForms as $label=>$data){
 			$inData[$label]='';
-			$subFormData=\Q\Utils::getDottedPath($inData, $data['pathToData']);
 
-			foreach ($subFormData as $label2=>$data2){
+			$shoppingCart=\Q\Utils::getDottedPath($inData, $data['pathToData']);
+
+			foreach ($shoppingCart as $label2=>$data2){
 				$inData[$label].=$this->processTemplate($data['template'], $data2);
 			}
-
 		}
+// \Q\Utils::dumpCli($contentArray['productSpecs'], 'contentArray productSpecs');
+// \Q\Utils::dumpCli($customerReceiptSetup, 'customerReceiptSetup');
+// \Q\Utils::dumpCli($inData['purchaseData']['shoppingCart'], 'inData shoppingCart');
+// \Q\Utils::dumpCli($inData, 'inData');exit;
 
+		$productConfirmationList=$this->assembleEmailBody($contentArray['productSpecs'], $inData);
 
-		$body=$this->processTemplate($customerReceiptSetup['body'], $inData);
+		$body=str_replace('<!productSpecificConfirmationInfo!>', $productConfirmationList, $customerReceiptSetup['body']);
+		$body=$this->processTemplate($body, $inData);
+		
+		$this->confirmationHtml=$body;
+		
 		$subject=$this->processTemplate($customerReceiptSetup['subject'], $inData);
 
 		$toAddress=\Q\Utils::getDottedPath($inData, $customerReceiptSetup['toAddressPath']);
+		
 		$toName=\Q\Utils::getDottedPath($inData, $customerReceiptSetup['toNamePath']);
 
     	$tr=new Zend_Mail_Transport_Sendmail();
@@ -306,7 +329,7 @@ PRODUCTS;
 
 		Zend_Mail::clearDefaultFrom();
 		Zend_Mail::clearDefaultReplyTo();
-		return $mailStatus=array('status'=>1, 'toAddress'=>$toAddress, 'toName'=>$toName);
+		return $mailStatus=array('status'=>1, 'toAddress'=>$toAddress, 'toName'=>$toName, 'subject'=>$subject, 'message'=>$body);
     }
 
     private function processTemplate($template, $inData, $debug=false){
@@ -324,15 +347,15 @@ PRODUCTS;
 				foreach ($data as $label2=>$data2){
 					if (gettype($data2)=='string'){
 						if ($debug){echo "$label $label2=$data\n\n";}
-						$template=preg_replace('/<%=+'.$label.'.'.$label2.'%>/', $data2, $template);
+						$template=preg_replace('/<!+'.$label.'.'.$label2.'!>/', $data2, $template);
 					}
 					else{
-						$template=preg_replace('/<%=+'.$label.'.'.$label2.'%>/', 'arrayResult', $template);
+						$template=preg_replace('/<!+'.$label.'.'.$label2.'!>/', 'arrayResult', $template);
 					}
 				}
 			elseif (gettype($data)=='string'){
 				if ($debug){echo "$label $label2=$data\n\n";}
-				$template=preg_replace('/<%=+'.$label.'%>/', $data, $template);
+				$template=preg_replace('/<!+'.$label.'!>/', $data, $template);
 			}
 		}
 		if ($debug){exit;}
@@ -342,8 +365,9 @@ PRODUCTS;
     private function freeCardNo($cardNo){
     	$prefix=substr($cardNo, 0, 4);
     	switch ($prefix){
-    		case '8881':
-    		case '8888':
+    		case '8881': //no provision
+    		case '8882': //provision with test server
+    		case '8888': //give real product for free
     			$status=true;
     		break;
     		default:
@@ -351,6 +375,93 @@ PRODUCTS;
     		break;
     	}
     	return $status;
+    }
+    
+    private function assembleEmailBodyOLD($productSpecs, $shoppingCart){
+    	/* this works correctly but is superceded by the only execute a confirmation once version */
+    	$stringHelper= new Q_View_Helper_ProcessTemplateArray();
+    	$sourceData=array();
+    	$outString='';
+    	
+    	for ($i=0, $len=count($shoppingCart); $i<$len; $i++){
+			$element=$shoppingCart[$i];
+			$productCatalogInfo=\Q\Utils::lookupDottedPath($productSpecs, 'prodCode', $element['prodCode']);
+			
+			$productConfirmationTemplate=$this->getConfirmationTemplate($productCatalogInfo);
+
+			if (isset($productConfirmationTemplate)){
+			$resultObj=$stringHelper->processTemplateArray(array(
+				'sourceData'=>array(array_merge($productCatalogInfo, $element)),
+				'itemTemplate'=>$productConfirmationTemplate
+			));
+			$outString.=$resultObj['outString'];
+}
+		}
+    	return $outString;
+    }
+    
+    private function assembleEmailBody($productSpecs, $inData){
+    	/* this works correctly but is superceded by the only execute a confirmation once version */
+    	$stringHelper= new Q_View_Helper_ProcessTemplateArray();
+    	$sourceData=array();
+    	$outString='';
+    	
+    	$shoppingCart=$inData['purchaseData']['shoppingCart'];
+    	
+    	$confirmationList=$this->consolidateConfirmationMessages($productSpecs, $shoppingCart);
+    	
+    	foreach ($confirmationList as $label=>$confirmationItem){
+			
+			$resultObj=$stringHelper->processTemplateArray(array(
+				'sourceData'=>array(array('temp'=>'test')),
+				'itemTemplate'=>$confirmationItem['template'],
+				'referenceData'=>$inData
+			));
+			$outString.=$resultObj['outString'];
+
+		}
+    	return $outString;
+    }
+    
+    private function getConfirmationTemplate($productCatalogInfo){
+    	
+		$contentArray=$this->contentObj->contentArray;
+		if (isset($productCatalogInfo['confirmationMessageTemplateName'])){
+			$outString=$contentArray['productConfirmationMessageTemplates'][$productCatalogInfo['confirmationMessageTemplateName']];
+		}
+		else{
+			$outString='';
+		}
+	
+		return $outString;
+
+    }
+    
+    private function consolidateConfirmationMessages($productSpecs, $shoppingCart){
+    	$outArray=array();
+    	for ($i=0, $len=count($shoppingCart); $i<$len; $i++){
+			$element=$shoppingCart[$i];
+			$productCatalogInfo=\Q\Utils::lookupDottedPath($productSpecs, 'prodCode', $element['prodCode']);
+			
+			
+		if (isset($productCatalogInfo['confirmationMessageTemplateName'])){
+		
+			$name=$productCatalogInfo['confirmationMessageTemplateName'];
+			
+			$productConfirmationTemplate=$this->getConfirmationTemplate($productCatalogInfo);
+			
+			if (!isset($outArray[$name]['cartItems'])){$outArray[$name]['cartItems']=array();}
+			if (!isset($outArray[$name]['productCatalogItems'])){$outArray[$name]['cartItems']=array();}
+			if (!isset($outArray[$name]['template'])){$outArray[$name]['cartItems']=array();}
+			$outArray[$name]['cartItems'][]=$element;
+			$outArray[$name]['productCatalogItems'][]=$productCatalogInfo;
+			$outArray[$name]['template']=$productConfirmationTemplate;
+		}
+			
+			
+		}
+		
+		return $outArray;
     }
 
 } //end of class

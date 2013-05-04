@@ -33,7 +33,9 @@ $confirmationTemplate=$this->contentArray['pageFormTemplates.ini']['confirmation
 $confirmationPageTemplate=\Q\Utils::htmlEntities($confirmationTemplate);
 $confirmationPageTemplate=json_encode($confirmationPageTemplate);
 
-$list=$contentArray['products.ini'];
+$list=$contentArray['productSpecs'];
+
+$list=\Q\Utils::htmlentities($list, array("@apos;"=>'@apos;'));
 $json=json_encode($list);
 
 	$outString="<div class='serverData' id='productInfo' style='display:none;'>$json</div>";

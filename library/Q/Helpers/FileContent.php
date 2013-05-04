@@ -28,6 +28,7 @@ private $ignoreList;
 private $hashDir;
 
 public function __construct($args){
+
 	$this->initIgnoreList();
 	$this->args=$args;
 	if ($args['superGlobalItemsDirectoryPath']){
