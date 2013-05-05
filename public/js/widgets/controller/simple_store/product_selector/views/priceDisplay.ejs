@@ -28,7 +28,7 @@ totalPrice=totalPrice.toFixed(2);
 
 if (typeof(purchaseData.subtotal)!='undefined'){
 	var totalPrice=purchaseData.subtotal;
-	var subtotalString="<tr><td>Subtotal:</td><td style='text-align:right;'>$"+totalPrice+"</td></tr>";
+	var subtotalString="<tr><td>Subtotal:</td><td style='text-align:right;'>$"+totalPrice.toFixed(2)+"</td></tr>";
 }
 else{
 	var subtotalString='';
@@ -36,7 +36,7 @@ else{
 
 if (typeof(purchaseData.tax)!='undefined'){
 	var taxAmount=purchaseData.tax;
-	var taxString="<tr style=display:none;'><td>Tax:</td><td style='text-align:right;'>$"+taxAmount+"</td></tr>";
+	var taxString="<tr style=display:none;'><td>Tax:</td><td style='text-align:right;'>$"+taxAmount.toFixed(2)+"</td></tr>";
 }
 else{
 	var taxString='';
@@ -44,7 +44,7 @@ else{
 
 if (typeof(purchaseData.grandTotal)!='undefined'){
 	var grandTotal=purchaseData.grandTotal;
-	var grandTotalString="<tr class='grandTotal'><td>Total:</td><td style='text-align:right;'>$"+grandTotal+"</td></tr>";
+	var grandTotalString="<tr class='grandTotal'><td>Total:</td><td style='text-align:right;'>$"+grandTotal.toFixed(2)+"</td></tr>";
 }
 else{
 	var grandTotalString='';

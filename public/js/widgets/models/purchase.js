@@ -92,8 +92,6 @@ validate:function(inData){
 	datum=inData[name];
 	if (!datum || datum=='MM')
 	{errors.push([name, "Expiration Date is required"]);}
-		else if (!datum.match(/^\d{2}$/))
-		{errors.push([name, "Month must be two digits"]);}
 		else if (datum<1 || datum>12)
 		{errors.push([name, "Month must be 1 to 12"]);}
 

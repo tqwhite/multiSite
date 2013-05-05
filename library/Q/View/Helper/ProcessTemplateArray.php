@@ -102,6 +102,7 @@ class Q_View_Helper_ProcessTemplateArray extends Zend_View_Helper_Abstract {
 	
 	private function replaceItem($template, $itemRec) {
 		$outString = $template;
+
 		foreach ($itemRec as $label => $data) {
 			if (!is_string($data)) {
 				continue;
@@ -112,7 +113,11 @@ class Q_View_Helper_ProcessTemplateArray extends Zend_View_Helper_Abstract {
 	}
 	
 	private function executeTransformations($transformations, $itemRec, $referenceDataTagList) {
-		
+
+		if (gettype($transformations)=='string'){
+			$transformations=$this->convertTransformations($transformations);
+		}
+
 		$outArray = array();
 		foreach ($transformations as $label => $data) {
 			$outArray[$label] = $data($itemRec, $referenceDataTagList);
@@ -136,6 +141,22 @@ class Q_View_Helper_ProcessTemplateArray extends Zend_View_Helper_Abstract {
 		}
 		return $outArray;
 	}
+	
+	private function convertTransformations($inString){
+		$forbiddenCount=0;
+		$forbiddenList=array('exec', 'mysql');
+		$inString=str_replace($forbiddenList, "", $inString, $forbiddenCount);
+		$transformations=array();
+
+		if ($forbiddenCount===0){
+			eval($inString); //protocol is that $inString generates $transformations=array()
+		}
+		else{
+			die("Illegal php statements in transformations file");
+		}
+	
+		return $transformations;
+}
 	
 	
 }

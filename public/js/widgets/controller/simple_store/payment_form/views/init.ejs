@@ -57,7 +57,7 @@ if (window.location.host.match(/local/) || window.location.host.match(/demo/) ||
 	}
 
 
-if (this.formData.catalogUrl){
+if (typeof(this.formData.catalogUrl)!='undefined'){
 	var continueShoppingString="<a class='simpleButton shrinkButton10' href='"+this.formData.catalogUrl+"'>Continue Shopping</a>";
 }
 else{
@@ -77,7 +77,7 @@ else{
 <table class='cardEntryForm'>
 	<tr><td style='width:35%;'>Name on Card</td><td style='width:60%;'><input class='longInput' type='text' name='cardName' value='<%=cardName%>'></td>
 	<tr><td>Billing Street</td><td><input class='longInput' type='text' name='street' value='<%=street%>'></td>
-	<tr><td>City, State</td><td><input type='text' style='width:30%;' name='city' value='<%=city%>'>, <input type='text' style='width:20%;' name='state' value='<%=state%>'></td>
+	<tr><td>City, State</td><td><input type='text' style='width:60%;' name='city' value='<%=city%>'>, <input type='text' style='width:20%;' name='state' value='<%=state%>'></td>
 
 	<tr><td>Zip</td><td><input type='text' style='width:30%;' name='zip' value='<%=zip%>' prompt='00000'></td>
 

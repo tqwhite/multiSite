@@ -29,7 +29,7 @@ class SimpleStore_GenerateController extends Q_Controller_Base
     private function updateGlobals($config){
     	$this->cardProcessorAuth=$config['simpleStore.ini']['moneris'];
 		$this->simpleStore=$config['simpleStore.ini']['simpleStore'];
-
+		unset($this->simpleStore['moneris']);
     }
 
     public function containerAction(){
@@ -149,6 +149,7 @@ PRODUCTS;
 		//fancyStore1 or simpleStore
 
 		$contentArray=$this->contentObj->contentArray;
+
 		
 		$this->updateGlobals($contentArray['globalItems']['CONFIG']);
 
@@ -287,9 +288,9 @@ PRODUCTS;
 // \Q\Utils::dumpCli($inData['purchaseData']['shoppingCart'], 'inData shoppingCart');
 // \Q\Utils::dumpCli($inData, 'inData');exit;
 
-		$productConfirmationList=$this->assembleEmailBody($contentArray['productSpecs'], $inData);
+		
+		$body=$this->assembleEmailBody($contentArray, $inData, $customerReceiptSetup);
 
-		$body=str_replace('<!productSpecificConfirmationInfo!>', $productConfirmationList, $customerReceiptSetup['body']);
 		$body=$this->processTemplate($body, $inData);
 		
 		$this->confirmationHtml=$body;
@@ -377,45 +378,53 @@ PRODUCTS;
     	return $status;
     }
     
-    private function assembleEmailBodyOLD($productSpecs, $shoppingCart){
-    	/* this works correctly but is superceded by the only execute a confirmation once version */
-    	$stringHelper= new Q_View_Helper_ProcessTemplateArray();
-    	$sourceData=array();
-    	$outString='';
+    private function assembleEmailBody($contentArray, $inData, $customerReceiptSetup){
+    	$productConfirmationList=$this->generateConfirmationMessages($contentArray['productSpecs'], $inData);
     	
-    	for ($i=0, $len=count($shoppingCart); $i<$len; $i++){
-			$element=$shoppingCart[$i];
-			$productCatalogInfo=\Q\Utils::lookupDottedPath($productSpecs, 'prodCode', $element['prodCode']);
-			
-			$productConfirmationTemplate=$this->getConfirmationTemplate($productCatalogInfo);
+    	if (isset($contentArray['catalogDisplayTemplates']['transformations.php'])){
+    		$transformations=$contentArray['catalogDisplayTemplates']['transformations.php'];
+    	}
+    	else{
+    		$transformations=array();
+    	}
+		
+    	$stringHelper= new Q_View_Helper_ProcessTemplateArray();
+		$resultObj=$stringHelper->processTemplateArray(array(
+			'sourceData'=>array(array('productSpecificConfirmationInfo'=>$productConfirmationList)),
+			'itemTemplate'=>$customerReceiptSetup['body'],
+				'referenceData'=>array_merge($inData, $this->simpleStore),
+			'transformations'=>$transformations
+		));
 
-			if (isset($productConfirmationTemplate)){
-			$resultObj=$stringHelper->processTemplateArray(array(
-				'sourceData'=>array(array_merge($productCatalogInfo, $element)),
-				'itemTemplate'=>$productConfirmationTemplate
-			));
-			$outString.=$resultObj['outString'];
-}
-		}
-    	return $outString;
+
+		return $resultObj['outString'];
     }
     
-    private function assembleEmailBody($productSpecs, $inData){
-    	/* this works correctly but is superceded by the only execute a confirmation once version */
+    private function generateConfirmationMessages($productSpecs, $inData){
+    	
     	$stringHelper= new Q_View_Helper_ProcessTemplateArray();
     	$sourceData=array();
     	$outString='';
     	
+		$contentArray=$this->contentObj->contentArray;
     	$shoppingCart=$inData['purchaseData']['shoppingCart'];
     	
-    	$confirmationList=$this->consolidateConfirmationMessages($productSpecs, $shoppingCart);
+    	if (isset($contentArray['catalogDisplayTemplates']['transformations.php'])){
+    		$transformations=$contentArray['catalogDisplayTemplates']['transformations.php'];
+    	}
+    	else{
+    		$transformations=array();
+    	}
     	
+    	$confirmationList=$this->consolidateConfirmationMessages($productSpecs, $shoppingCart);
+
     	foreach ($confirmationList as $label=>$confirmationItem){
 			
 			$resultObj=$stringHelper->processTemplateArray(array(
 				'sourceData'=>array(array('temp'=>'test')),
 				'itemTemplate'=>$confirmationItem['template'],
-				'referenceData'=>$inData
+				'referenceData'=>array_merge($inData, $this->simpleStore),
+				'transformations'=>$transformations
 			));
 			$outString.=$resultObj['outString'];
 
