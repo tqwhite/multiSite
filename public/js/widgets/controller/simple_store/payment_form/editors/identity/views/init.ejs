@@ -1,0 +1,73 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'viewHelper'},
+		{name:'displayParameters'},
+		{name:'formData'}
+	],
+ source:'boilerplate.view.name' });
+
+qtools.validateProperties({
+	targetObject:displayParameters,
+	propList:[
+		{name:'contentContainer'},
+		{name:'activationButton'},
+		{name:'placeholder', importance:'optional'}
+	],
+ source:'simple_store.main.init.ejs' });
+ 
+qtools.validateProperties({
+	targetObject:this.formData,
+	propList:[
+		{name:'message'},
+		{name:'dataGroupName'}
+	],
+ source:'session.login.mainPanel' });
+
+if (window.location.host.match(/local/) || window.location.host.match(/demo/) || window.location.hash=='#tq'){
+		var cardName='TQ School District',
+			street='5004 Three Points Blvd',
+			city='Mound',
+			state='MN',
+			zip='55364',
+			phoneNumber='708-763-0100',
+			cardNumber='8881 0000 0000 1243',
+			expMonth='06',
+			expYear='15',
+			emailAdr='tq@justkidding.com',
+			confirmEmail='tq@justkidding.com',
+			name='TQ White II',
+			poNumber='A0-995-628-8295',
+			poName='PO Name',
+			poPhone='000-000-0000',
+			poEmail='xy@zzz.com';
+	}
+	else{
+		var cardName='',
+			street='',
+			city='',
+			state='',
+			zip='',
+			phoneNumber='',
+			cardNumber='',
+			expMonth='',
+			expYear='',
+			emailAdr='',
+			confirmEmail='',
+			name='',
+			poNumber='',
+			poName='',
+			poPhone='',
+			poEmail='';
+
+	}
+	
+ %>
+<table>
+	<tr><td>Name</td><td><input class='longInput' type='text' name='<%=this.formData.dataGroupName%>[name]' value='<%=name%>'></td>
+	<tr><td>Phone</td><td><input name='<%=this.formData.dataGroupName%>[phoneNumber]' value='<%=phoneNumber%>' prompt='000-000-0000'></td>
+
+	<tr><td style='width:35%;'>Email Address</td><td style='width:60%;'><input class='longInput' type='text' name='<%=this.formData.dataGroupName%>[emailAdr]' value='<%=emailAdr%>'></td>
+	<tr><td>Email Confirm</td><td><input class='longInput' type='text' name='<%=this.formData.dataGroupName%>[confirmEmail]' value='<%=confirmEmail%>'></td>
+</table>
