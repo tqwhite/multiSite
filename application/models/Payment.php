@@ -44,7 +44,7 @@ static function moneris($inData, $parms, $args="set array('debug'=>true) as seco
 
 	new Q_Model_Payment_Moneris(); //initialize the class library
 
-\Q\Utils::dumpCli($parms, "parms");
+
 	/************************ Request Variables **********************************/
 	if ($production){
 		$store_id=$parms['storeId'];
