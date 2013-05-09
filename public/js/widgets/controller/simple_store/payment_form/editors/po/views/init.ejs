@@ -38,9 +38,10 @@ qtools.validateProperties({
 			emailAdr='tq@justkidding.com',
 			confirmEmail='tq@justkidding.com',
 			name='TQ White II',
-			number='A0-995-628-8295',
-			authName='PO Name',
-			authPhone='000-000-0000',
+			number='A0-995-628-8881',
+			authName='Sally Principal',
+			authPhone='111-000-0000',
+			orgName='Cool School',
 			authEmail='xy@zzz.com';
 	}
 	else{
@@ -69,11 +70,11 @@ qtools.validateProperties({
 	<tr><td style='width:35%;'>PO Number</td><td><input class='longInput' type='text' name='<%=this.formData.dataGroupName%>[number]' value='<%=number%>' prompt='required'></td>
 <tr><td style='height:5px;font-size:4px;' colspan='2'>&nbsp;</td></tr>
 	<tr><td>Authorizing Person</td><td><input class='longInput' type='text' name='<%=this.formData.dataGroupName%>[name]' value='<%=authName%>' prompt='required'></td>
-	<tr><td>Email Address</td><td><input class='longInput' type='text' name='<%=this.formData.dataGroupName%>[email]' value='<%=authEmail%>' prompt='optional'></td>
+	<tr><td>Email Address</td><td><input class='longInput' type='text' name='<%=this.formData.dataGroupName%>[emailAdr]' value='<%=authEmail%>' prompt='optional'></td>
 	<tr><td>Phone</td><td><input class='longInput' type='text' name='<%=this.formData.dataGroupName%>[phoneNumber]' value='<%=authPhone%>' prompt='required'></td>
 
 <tr><td style='height:5px;font-size:4px;' colspan='2'>&nbsp;</td></tr>	
-	<tr><td>Organization Name</td><td><input class='longInput' type='text' name='<%=this.formData.dataGroupName%>[orgName]' value='<%=poName%>' prompt='required'></td>
+	<tr><td>Organization Name</td><td><input class='longInput' type='text' name='<%=this.formData.dataGroupName%>[orgName]' value='<%=orgName%>' prompt='required'></td>
 
 	<tr><td>Billing Street</td><td><input class='longInput' type='text' name='<%=this.formData.dataGroupName%>[street]' value='<%=street%>'></td>
 	<tr><td>City, State</td><td><input type='text' style='width:60%;' name='<%=this.formData.dataGroupName%>[city]' value='<%=city%>'>, <input type='text' style='width:20%;' name='<%=this.formData.dataGroupName%>[state]' value='<%=state%>'></td>

@@ -10,23 +10,40 @@ Widgets.Models.Base.extend('Widgets.Models.Purchase',
 /* @Static */
 {
 
-	process:function(data, success, error){
+	process:function(inData, success, error){
 
 		success=success?success:function(){alert('success');};
 		error=error?error:this.defaultError;
+		
+		
+		//flatten the object for easier php living
+		var inDataDupe=qtools.passByValue(inData);
+		var toServer=$.extend(
+				inDataDupe.purchaseData,
+				{serverManagement:{
+					processContentSourceRouteName:inDataDupe.processContentSourceRouteName
+				}},
+				inDataDupe.purchaseData.cardData
+			);
+		toServer.priceSummary={};
+		toServer.priceSummary.grandTotal=inData.purchaseData.grandTotal;
+		toServer.priceSummary.tax=inData.purchaseData.tax;
+		toServer.priceSummary.subTotal=inData.purchaseData.subtotal; //note: case change in subtotal to subTotal
+		delete toServer.grandTotal;
+		delete toServer.tax;
+		delete toServer.subtotal;
+		delete toServer.cardData;
 
-
-		var errors=this.validate(data.cardData);
+		var errors=this.validate(toServer);
 		if (errors.length>0){
 			success({status:-1, messages:errors, data:{}});
 			return;
 		}
 
 
-var toServer=data;
 
 		$.ajax({
-				url: data.paymentServerUrl,
+				url: inData.paymentServerUrl,
 				type: 'post',
 				dataType: 'json',
 				data: {data:toServer},
@@ -98,6 +115,10 @@ validate:function(inData){
 	}
 	else{
 	sectionName='purchaseOrderPanel';
+		name='orgName';
+		datum=inData[sectionName][name];
+		if (!datum)
+		{errors.push([name, "Organization Name is required"]);}
 
 		name='number';
 		datum=inData[sectionName][name];

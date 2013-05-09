@@ -21,6 +21,7 @@ init: function(el, options) {
 			{name:'paymentServerUrl'},
 			{name:'purchaseData'}, //communication object, owned by employer (main.js)
 			{name:'infoDispatchHandler'},
+			{name:'simpleStore'},
 			{name:'processContentSourceRouteName'},
 			{name:'catalogUrl', importance:'optional'}
 		],
@@ -91,7 +92,10 @@ initDisplay:function(inData){
 		$.extend(inData, {
 			displayParameters:this.displayParameters,
 			viewHelper:this.viewHelper,
-			formData:{catalogUrl:this.catalogUrl}
+			formData:{
+				catalogUrl:this.catalogUrl,
+				simpleStore:this.simpleStore
+			}
 		})
 		);
 	this.element.html(html);
@@ -160,7 +164,7 @@ submitButtonHandler:function(control, parameter){
 			var formParams=this.element.formParams();
 			delete formParams.control
 
-			formParams=this.clearOptionalValues(formParams);
+			formParams=this.clearPromptValues(formParams);
 
 			this.purchaseData.cardData=formParams;
 			this.assertModalScreen($('.mainContentContainer'), 'processing');
@@ -168,7 +172,6 @@ submitButtonHandler:function(control, parameter){
 			Widgets.Models.Purchase.process({
 					paymentServerUrl:this.paymentServerUrl,
 					processContentSourceRouteName:this.processContentSourceRouteName,
-					paymentData:formParams,
 					purchaseData:this.purchaseData
 				},
 				this.callback('catchProcessResult'));
@@ -183,7 +186,7 @@ submitButtonHandler:function(control, parameter){
 	//focusin focusout keydown keyup keypress select
 },
 
-clearOptionalValues:function(formParams){
+clearPromptValues:function(formParams){
 
 	var outArray=qtools.passByValue(formParams);
 	for (var i in outArray){
@@ -191,6 +194,7 @@ clearOptionalValues:function(formParams){
 		if (typeof(element)=='object'){
 			for (var j in element){
 				if (element[j]=='optional'){element[j]='';}
+				if (element[j]=='required'){element[j]='';}
 			}
 		}
 	}
@@ -215,12 +219,6 @@ catchProcessResult:function(inData){
 	}
 	else{
 		if (true){ //this can go away as soon as debugging is well into the past. 'false' makes it so that the payment process can run repeatedly.
-
-			var cardNo=this.purchaseData.cardData.cardNumber,
-				len=cardNo.length;
-
-			cardNo=cardNo.substring(len-4, len);
-			this.purchaseData.cardData.cardNumber=cardNo;
 
 			switch(inData.status.toString()){
 				case '1':
@@ -265,8 +263,8 @@ controlHandler:function(eventObj){
 	switch(eventObj.type){
 		case 'click':
 
-		if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
-		else{eventObj.preventDefault(); return;}
+// 		if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+// 		else{eventObj.preventDefault(); return;}
 		
 		var target=$(eventObj.target),
 			info={};

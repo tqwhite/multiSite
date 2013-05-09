@@ -11,7 +11,8 @@ qtools.validateProperties({
 qtools.validateProperties({
 	targetObject:formData,
 	propList:[
-		{name:'catalogUrl', importance:'optional'}
+		{name:'catalogUrl', importance:'optional'},
+		{name:'simpleStore'}
 	],
  source:'simple_store.payment_form.init.ejs' });
 
@@ -31,7 +32,7 @@ qtools.validateProperties({
 
 var total=111;
 if (window.location.host.match(/local/) || window.location.host.match(/demo/) || window.location.hash=='#tq'){
-		var cardName='TQ School District',
+		var cardName='TQ Shipping Receiver',
 			street='5004 Three Points Blvd',
 			city='Mound',
 			state='MN',
@@ -76,18 +77,35 @@ else{
 	var continueShoppingString="";
 }
 
+if (typeof(this.formData.simpleStore.allowPurchaseOrders)!='undefined' && this.formData.simpleStore.allowPurchaseOrders){
+var purchaseOrderString="<div style='float:left;font-size:8pt;margin:5px 10px 3px 0px;color:#666;'>Pay with Purchase Order <input type='checkbox' name='usePurchaseOrder' value='true' class='"+ displayParameters.control.divId +"'></div>";
+
+}
+else{
+var purchaseOrderString='';
+}
+
+
+if (typeof(this.formData.simpleStore.showShippingOptions)!='undefined' && this.formData.simpleStore.showShippingOptions){
+var shippingOptionsString="<div style='float:left;font-size:8pt;margin:5px 10px 3px 0px;color:#666;'>Ship to a Different Address <input type='checkbox' name='wantShippingAddr' value='true' class='"+ displayParameters.control.divId +"'></div>";
+
+}
+else{
+var shippingOptionsString='';
+
+}
+
 %>
 <div class='idSection'>
 <div class='prodListTitle' id='<%= displayParameters.status.divId %>'>
 <div>Payment Information <div style='float:right;margin-left:30px;font-size:8pt;'><%==continueShoppingString%></div></div>
 </div>
 <div class='prodListTitle'>
-<div style='float:left;font-size:8pt;margin:5px 10px 3px 0px;color:#666;'>Ship to a Different Address <input type='checkbox' name='wantShippingAddr' value='true' class='<%= displayParameters.control.divId %>'></div>
-<div style='float:left;font-size:8pt;margin:5px 10px 3px 0px;color:#666;'>Pay with Purchase Order <input type='checkbox' name='usePurchaseOrder' value='true' class='<%= displayParameters.control.divId %>'></div>
+<%==shippingOptionsString%>
+<%==purchaseOrderString%>
 </div>
 
 <div style='clear:both;'></div>
-<input type='hidden' name='chargeTotal' value='<%=total%>'>
 <div id='<%= displayParameters.identityPanel.divId %>'></div>
 <div class='cardSection' id='<%= displayParameters.creditCardPanel.divId %>'></div>
 <div class='cardSection' id='<%= displayParameters.purchaseOrderPanel.divId %>'></div>

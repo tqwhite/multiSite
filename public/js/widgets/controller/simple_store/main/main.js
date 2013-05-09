@@ -42,7 +42,8 @@ init: function(el, options) {
 		targetScope: this, //will add listed items to targetScope
 		propList:[
 			{name:'productInfo', importance:'optional'}, //if not here, initControlProperties fills in from cookie
-			{name:'confirmationPageTemplate'}
+			{name:'confirmationPageTemplate'},
+			{name:'simpleStore'}
 		],
 		showAlertFlag:true,
 		source:this.constructor._fullName
@@ -104,6 +105,8 @@ initControlProperties:function(){
 		this.cartExists='true';
 	}
 	else{ this.cartExists=false; }
+	
+	this.simpleStore.showShippingOptions=this.needShipping(this.productInfo);
 
 },
 
@@ -138,7 +141,8 @@ initDomElements:function(){
 			purchaseData:this.purchaseData,
 			processContentSourceRouteName:this.processContentSourceRouteName,
 			infoDispatchHandler:this.displayParameters.infoDispatch.handler,
-			catalogUrl:this.options.catalogUrl
+			catalogUrl:this.options.catalogUrl,
+			simpleStore:this.simpleStore
 	});
 
 	$('#'+this.displayParameters.productListContainer.divId).widgets_simple_store_product_selector('updatePriceDisplays');
@@ -219,6 +223,18 @@ addToCart:function(newProductChoice){
 
 maintainCart:function(){
 	Widgets.Models.LocalStorage.setCookie('cart', this.purchaseData.shoppingCart);
+},
+
+needShipping:function(productInfo){
+	
+	var list=[];
+	for (var i in productInfo){
+		var element=productInfo[i];
+		if (element.requiresShipping===1){
+			return true;
+		}
+	}
+	return false;
 }
 
 })

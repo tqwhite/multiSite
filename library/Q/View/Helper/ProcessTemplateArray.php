@@ -38,8 +38,11 @@ class Q_View_Helper_ProcessTemplateArray extends Zend_View_Helper_Abstract {
 				)
 			)
 		));
+		if (!isset($args['debug'])) {$debug = false;} else {$debug=$args['debug'];}
+
+//Remember: $sourceData is an numeric array of associative arrays, ie, [{}, {}]
 		
-		$sourceData   = \Q\Utils::makeArrayNumericIndexed($args['sourceData']);
+		$sourceData   = \Q\Utils::makeArrayNumericIndexed($args['sourceData']);	
 		$itemTemplate = $args['itemTemplate'];
 		if (!isset($args['blockTemplate'])) {
 			$args['blockTemplate'] = '<!productList!>';
@@ -71,14 +74,21 @@ class Q_View_Helper_ProcessTemplateArray extends Zend_View_Helper_Abstract {
 		} else {
 			$referenceData = $args['referenceData'];
 		}
-		
+			
 		$itemString      = '';
 		$internalGoodies = array();
 		
 		//for ($i=$offset, $len=min($offset+$count, count($sourceData)); $i<$len; $i++){
 		
 		$referenceDataTagList = $this->prepareReferenceData($referenceData);
-		
+
+if ($debug){
+echo "===";
+	\Q\Utils::dumpCli($referenceDataTagList, "referenceDataTagList");
+	echo htmlentities($itemTemplate);
+echo "===";
+	}
+			
 		for ($i = 0, $len = count($sourceData); $i < $len; $i++) {
 			$itemRec = $sourceData[$i];
 			
