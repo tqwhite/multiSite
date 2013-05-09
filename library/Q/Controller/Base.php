@@ -12,6 +12,7 @@ class Q_Controller_Base extends Zend_Controller_Action {
 	private $layoutName;
 	private $contentDirectoryPath;
 	private $globalItemsDirectoryPath;
+	private $routeName;
 	
 	private $contentObj;
 	private $layoutContainer;
@@ -34,8 +35,14 @@ class Q_Controller_Base extends Zend_Controller_Action {
 			
 			$this->baseDir = $this->getBaseDir() . '/';
 			
+			if (isset($args['overrideRouteName'])  && $args['overrideRouteName']!=''){ //see modules/simpleStore to see how this is used
+				$this->routeName               = $args['overrideRouteName'];
+			}
+			else{
+				$this->routeName               = Zend_Controller_Front::getInstance()->getRouter()->getCurrentRouteName();
+			}
+			
 			$this->defaultLayoutPath       = Zend_Layout::getMvcInstance()->getLayoutPath();
-			$this->routeName               = Zend_Controller_Front::getInstance()->getRouter()->getCurrentRouteName();
 			$this->layoutSiteDirectoryName = SITE_VARIATION . '/';
 			
 			$this->siteDirectoryPath             = $this->getSiteDirectoryPath();

@@ -1,1 +1,3 @@
-js jquery/generate/controller widgets/controller/features/contactForm
+js jquery/generate/controller widgets/controller/simple_store/payment_form/editors/card
+js jquery/generate/controller widgets/controller/simple_store/payment_form/editors/po
+js jquery/generate/controller widgets/controller/simple_store/payment_form/editors/identity

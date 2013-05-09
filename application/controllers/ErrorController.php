@@ -15,6 +15,8 @@ class ErrorController extends Q_Controller_Base
 // $frontController->setParam('disableOutputBuffering', true);
   //  $this->_helper->layout->setLayout('/home/websites/local.tqorg/multiSite/website/application/layouts/scripts/default/nonCmsData');
     
+    	$multiSite=Zend_Registry::get('multiSite');
+    	
         $errors = $this->_getParam('error_handler');
 
         if (!$errors || !$errors instanceof ArrayObject) {
@@ -59,7 +61,8 @@ class ErrorController extends Q_Controller_Base
 		$serverComm[]=array("fieldName"=>"assert_initial_controller", "value"=>'none');
 
 		$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
-
+		$this->view->multiSite=$multiSite;
+		
     }
 
     public function getLog()

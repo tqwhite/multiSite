@@ -4,31 +4,34 @@
 	'source'=>__file__,
 	'propertyList'=>array(
 		array('name'=>'codeNav'),
-		array('name'=>'contentArray')
+		array('name'=>'contentArray'),
+		array('name'=>'simpleStore')
 	)));
 
 $contentArray=$this->contentArray;
+$displayTemplates=$this->contentArray['catalogDisplayTemplates'];
+
 $productSectionArray=$this->productSectionArray;
 
 $transformations=array();
-
-if (isset($contentArray['transformations.php'])){
-	$forbiddenCount=0;
-	$forbiddenList=array('exec', 'mysql');
-	$contentArray['transformations.php']=str_replace($forbiddenList, "", $contentArray['transformations.php'], $forbiddenCount);
-
-	if ($forbiddenCount===0){
-		eval($contentArray['transformations.php']);
-	}
-	else{
-		die("Illegal php statements in transformations file");
-	}
-}
 
 $transformations['dollarPrice']=function($itemRec, $referenceDataTagList){$out=isset($itemRec['price'])?'$'.number_format($itemRec['price'], 2):"!isset(\$itemRec['price'])"; return $out;};
 $transformations['capsName']=function($itemRec, $referenceDataTagList){$out=isset($itemRec['name'])?strtoupper($itemRec['name']):"!isset(\$itemRec['name'])"; return $out;};
 $transformations['catCaps']=function($itemRec, $referenceDataTagList){$out=isset($itemRec['categoryInfo:name'])?strtoupper($itemRec['categoryInfo:name']):"!isset(\$itemRec['categoryInfo:name'])"; return $out;};
 
+
+if (isset($displayTemplates['transformations.php'])){
+	$forbiddenCount=0;
+	$forbiddenList=array('exec', 'mysql');
+	$displayTemplates['transformations.php']=str_replace($forbiddenList, "", $displayTemplates['transformations.php'], $forbiddenCount);
+
+	if ($forbiddenCount===0){
+		eval($displayTemplates['transformations.php']);
+	}
+	else{
+		die("Illegal php statements in transformations file");
+	}
+}
 
 $referenceData=array();
 $outString='';
@@ -41,12 +44,12 @@ foreach ($productSectionArray as $label=>$productSection){
 		$blockTemplate=$contentArray['categoryTemplates'][$fileName.'.html'];
 	}
 	else{
-		$blockTemplate=$contentArray['categoryDefaultTemplate.html'];
+		$blockTemplate=$contentArray['categoryTemplates']['categoryDefaultTemplate.html'];
 	}
 
 	$itemProcessResult=$this->processTemplateArray(array(
 		'sourceData'=>$productSection,
-		'itemTemplate'=>$contentArray['productListingTemplate.html'],
+		'itemTemplate'=>$displayTemplates['productListingTemplate.html'],
 		'blockTemplate'=>$blockTemplate,
 		'transformations'=>$transformations,
 		'referenceData'=>array('categoryInfo'=>array('name'=>$label))
@@ -58,8 +61,8 @@ foreach ($productSectionArray as $label=>$productSection){
 
 
 
-if (isset($contentArray['catalogTemplate.html'])){
-	$catalogTemplate=$contentArray['catalogTemplate.html'];
+if (isset($displayTemplates['catalogTemplate.html'])){
+	$catalogTemplate=$displayTemplates['catalogTemplate.html'];
 }
 else{
 	$catalogTemplate="<!catalogInfo!>";
@@ -74,7 +77,21 @@ else{
 	
 	$outString=$catalogProcessResult['outString'];
 
+
+$confirmationTemplate=$this->contentArray['pageFormTemplates.ini']['confirmationPageTemplate'];
+$confirmationPageTemplate=\Q\Utils::htmlEntities($confirmationTemplate);
+$confirmationPageTemplate=json_encode($confirmationPageTemplate);
+
+$simpleStore=$this->simpleStore;
+$simpleStore=\Q\Utils::htmlEntities($simpleStore);
+$simpleStore=json_encode($simpleStore);
+
+//I believe that $confirmationPageTemplate is NO LONGER USED by the UI. The message is now generated on the server.
+//Remove this reference at the earliest convenience. tqii
+
 $outString="
+<div class='serverData' id='confirmationPageTemplate' style='display:none;'>$confirmationPageTemplate</div>
+<div class='serverData' id='simpleStore' style='display:none;'>$simpleStore</div>
 <div class='mainContentContainer' style='overflow:hidden;position:relative;'>
 
 	$outString

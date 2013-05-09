@@ -18,10 +18,11 @@ init: function(el, options) {
 		targetObject:options,
 		targetScope: this, //will add listed items to targetScope
 		propList:[
-			{name:'productInfo', importance:'optional'}, //sometimes this is instantiated by fancyCatalog1
-			{name:'purchaseData'},
+			{name:'productInfo'},
+			{name:'purchaseData'}, //communication object, owned by employer (main.js)
 			{name:'infoDispatchHandler'}
 		],
+		showAlertFlag:true,
 		source:this.constructor._fullName
  	});
 
@@ -64,10 +65,7 @@ initControlProperties:function(){
 	this.viewHelper=new viewHelper2();
 	this.totalPrice=0;
 	
-	if (typeof(this.productInfo)=='undefined'){
-		this.extractProductInfo();
-	}
-	
+	this.productInfo=qtools.intoSortedArray(this.productInfo, 'fileName');
 },
 
 initDisplay:function(inData){
@@ -165,8 +163,7 @@ updatePurchase:function(parentObj){
 	var list=this.element.formParams(true).product,
 		totalPrice=0;
 
-	this.purchaseData.productList=[];
-	this.purchaseData.productDisplayList=[];
+	this.purchaseData.shoppingCart=[]; //has complete product object plus price and quantity info
 	this.purchaseData.totalsDisplayObject={};
 
 	for (var prodCode in list){
@@ -178,15 +175,13 @@ updatePurchase:function(parentObj){
 
 				extendedPrice=1.0*(price*quantity),
 				totalPrice=totalPrice+extendedPrice;
-
-			this.purchaseData.productList.push({prodCode:prodCode, quantity:quantity});
-			this.purchaseData.productDisplayList.push({
-				prodCode:prodCode,
-				quantity:quantity,
-				name:productObj.name,
-				price:price,
-				extendedPrice:extendedPrice.toFixed(2).toString()
-			});
+			productObj=$.extend(productObj, {
+					quantity:quantity,
+					price:price,
+					extendedPrice:extendedPrice.toFixed(2).toString()
+				});
+			
+			this.purchaseData.shoppingCart.push(productObj);
 		}
 	}
 
@@ -257,11 +252,6 @@ writePriceDisplay:function(){
 		})
 		);
 	$('#'+this.displayParameters.priceDisplayContainer.divId).html(html);
-},
-
-extractProductInfo: function(){
-	this.productInfo=Widgets.Models.LocalStorage.getCookieData('cart').data;	
-
 }
 
 })

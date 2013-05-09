@@ -11,21 +11,28 @@ qtools.validateProperties({
 qtools.validateProperties({
 	targetObject:formData,
 	propList:[
-		{name:'catalogUrl', importance:'optional'}
+		{name:'catalogUrl', importance:'optional'},
+		{name:'simpleStore'}
 	],
  source:'simple_store.payment_form.init.ejs' });
+
 
 qtools.validateProperties({
 	targetObject:displayParameters,
 	propList:[
 		{name:'chargePrice'},
-		{name:'status'}
+		{name:'status'},
+		{name:'control'},
+		{name:'identityPanel'},
+		{name:'purchaseOrderPanel'},
+		{name:'creditCardPanel'},
+		{name:'shippingPanel'}
 	],
  source:'simple_store.payment_form.init.ejs' });
 
 var total=111;
 if (window.location.host.match(/local/) || window.location.host.match(/demo/) || window.location.hash=='#tq'){
-		var cardName='TQ School District',
+		var cardName='TQ Shipping Receiver',
 			street='5004 Three Points Blvd',
 			city='Mound',
 			state='MN',
@@ -37,7 +44,10 @@ if (window.location.host.match(/local/) || window.location.host.match(/demo/) ||
 			emailAdr='tq@justkidding.com',
 			confirmEmail='tq@justkidding.com',
 			name='TQ White II',
-			poNumber='A0-995-628-8295';
+			poNumber='A0-995-628-8295',
+			poName='PO Name',
+			poPhone='000-000-0000',
+			poEmail='xy@zzz.com';
 	}
 	else{
 		var cardName='',
@@ -52,47 +62,55 @@ if (window.location.host.match(/local/) || window.location.host.match(/demo/) ||
 			emailAdr='',
 			confirmEmail='',
 			name='',
-			poNumber='';
+			poNumber='',
+			poName='',
+			poPhone='',
+			poEmail='';
 
 	}
 
 
-if (this.formData.catalogUrl){
+if (typeof(this.formData.catalogUrl)!='undefined'){
 	var continueShoppingString="<a class='simpleButton shrinkButton10' href='"+this.formData.catalogUrl+"'>Continue Shopping</a>";
 }
 else{
 	var continueShoppingString="";
 }
 
+if (typeof(this.formData.simpleStore.allowPurchaseOrders)!='undefined' && this.formData.simpleStore.allowPurchaseOrders){
+var purchaseOrderString="<div style='float:left;font-size:8pt;margin:5px 10px 3px 0px;color:#666;'>Pay with Purchase Order <input type='checkbox' name='usePurchaseOrder' value='true' class='"+ displayParameters.control.divId +"'></div>";
+
+}
+else{
+var purchaseOrderString='';
+}
+
+
+if (typeof(this.formData.simpleStore.showShippingOptions)!='undefined' && this.formData.simpleStore.showShippingOptions){
+var shippingOptionsString="<div style='float:left;font-size:8pt;margin:5px 10px 3px 0px;color:#666;'>Ship to a Different Address <input type='checkbox' name='wantShippingAddr' value='true' class='"+ displayParameters.control.divId +"'></div>";
+
+}
+else{
+var shippingOptionsString='';
+
+}
+
 %>
 <div class='idSection'>
-<div class='prodListTitle' id='<%= displayParameters.status.divId %>'>Payment Information <div style='float:right;margin-left:30px;font-size:8pt;'><%==continueShoppingString%></div></div>
-<table class='idEntryForm'>
-	<tr><td>Name</td><td><input class='longInput' type='text' name='name' value='<%=name%>'></td>
-	<tr><td style='width:35%;'>Email Address</td><td style='width:60%;'><input class='longInput' type='text' name='emailAdr' value='<%=emailAdr%>'></td>
-	<tr><td>Email Confirm</td><td><input class='longInput' type='text' name='confirmEmail' value='<%=confirmEmail%>'></td>
-</table>
+<div class='prodListTitle' id='<%= displayParameters.status.divId %>'>
+<div>Payment Information <div style='float:right;margin-left:30px;font-size:8pt;'><%==continueShoppingString%></div></div>
 </div>
-<div class='cardSection'>
-<table class='cardEntryForm'>
-	<tr><td style='width:35%;'>Name on Card</td><td style='width:60%;'><input class='longInput' type='text' name='cardName' value='<%=cardName%>'></td>
-	<tr><td>Billing Street</td><td><input class='longInput' type='text' name='street' value='<%=street%>'></td>
-	<tr><td>City, State</td><td><input type='text' style='width:30%;' name='city' value='<%=city%>'>, <input type='text' style='width:20%;' name='state' value='<%=state%>'></td>
-
-	<tr><td>Zip</td><td><input type='text' style='width:30%;' name='zip' value='<%=zip%>' prompt='00000'></td>
-
-	<tr><td>Phone</td><td><input name='phoneNumber' value='<%=phoneNumber%>' prompt='000-000-0000'></td>
-
-	<tr><td style='padding-top:5px;;'>Card Number</td><td><input class='longInput' type='text' name='cardNumber' value='<%=cardNumber%>' prompt='visa/mc/amex/discover/diners/jcb'></td>
-	<tr><td>Expiration Date</td><td><input type='text' style='width:20%;' name='expMonth' value='<%=expMonth%>'  prompt='MM'><input style='margin-left:5px;width:20%;' value='<%=expYear%>' name='expYear' value='' prompt='YY'></td>
-	<input type='hidden' name='chargeTotal' value='<%=total%>'>
-	</table>
+<div class='prodListTitle'>
+<%==shippingOptionsString%>
+<%==purchaseOrderString%>
 </div>
-<div class='annotationSection'>
-<table class='poEntryForm'>
-	<tr><td>PO Number/Memo</td><td><input class='longInput' type='text' name='poNumber' value='<%=poNumber%>' prompt='optional'></td>
-</table>
-</div>
+
+<div style='clear:both;'></div>
+<div id='<%= displayParameters.identityPanel.divId %>'></div>
+<div class='cardSection' id='<%= displayParameters.creditCardPanel.divId %>'></div>
+<div class='cardSection' id='<%= displayParameters.purchaseOrderPanel.divId %>'></div>
+<div id='<%= displayParameters.shippingPanel.divId %>'></div>
+
 <div class='actionSection'>
 	<div class='purchaseInstruction'>Click to 'Purchase' charge <span class='chargePrice' id='<%=displayParameters.chargePrice.divId%>'></span></div>
 	<div class='submitButton' style='float:right;margin-right:40px;' id='<%= displayParameters.submitButton.divId %>'></div>

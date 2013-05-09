@@ -1,12 +1,24 @@
 <?php /*require_once($_SERVER['DOCUMENT_ROOT'].'/tools/mailNotificationInclude.php');*/?>
 <?php
 
+if (APPLICATION_ENV=='production'){
+	$count=0;
+	str_replace('products/prdataw', '', $_SERVER['REQUEST_URI'], $count); //http://www.erdc.k12.mn.us/products/prdataw/index.php
+	if ($count){
+		header( 'Location: http://viewpoint.technology.'.$this->multiSite['rootDomainSegment']);
+		exit;
+	}
+	//else
+	header( 'Location: http://'.$this->multiSite['rootDomainSegment']);
+}
+
 	if (isset($this->exception)){
 		$getMessage=$this->exception->getMessage();
 	}
 	else{
 		$getMessage='no exception object';
 	}
+	
 	error_log("ZEND ERROR PAGE: $getMessage ");//STACK TRACE  ".Q\Utils::callStack(true));
 
 

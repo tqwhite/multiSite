@@ -4,12 +4,13 @@ class FancyStore1_GenerateController extends Q_Controller_Base
 {
     public function init() //this is called by the Zend __construct() method
     {
+
         parent::init(array('controllerType'=>'cms'));
     }
 
     public function indexAction()
     {
-        // action body
+        // action body 
     }
 
 
@@ -29,6 +30,8 @@ class FancyStore1_GenerateController extends Q_Controller_Base
     	else{ $scheme='http://';}
     
     	$productSectionArray=$this->productSectionArray($this->contentObj->contentArray['productSpecs']);
+    	
+    	$catalogEntities=\Q\Utils::htmlentities($this->contentObj->contentArray['productSpecs'], array("@apos;"=>'@apos;'));
 
 		$serverComm[]=array("fieldName"=>"message", "value"=>'hello from the server via javascript');
 
@@ -39,7 +42,8 @@ class FancyStore1_GenerateController extends Q_Controller_Base
 					array(
 						'paymentServerUrl'=>$scheme.$_SERVER['HTTP_HOST'].'/simpleStore/generate/process',
 						'deferAppearance'=>true,
-						'catalogData'=>$this->contentObj->contentArray['productSpecs']
+						'catalogData'=>$catalogEntities,
+						'processContentSourceRouteName'=>Zend_Controller_Front::getInstance()->getRouter()->getCurrentRouteName()
 					)
 				)
 			);
@@ -49,6 +53,9 @@ class FancyStore1_GenerateController extends Q_Controller_Base
 
 
 		$this->setVariationLayout('layout');
+		
+		
+		$this->view->simpleStore=$this->simpleStore;
 		$this->view->productSectionArray=$productSectionArray;
 		$this->view->contentArray=$this->contentObj->contentArray;
 		$this->view->codeNav=$this->getCodeNav(__method__);
@@ -61,10 +68,10 @@ class FancyStore1_GenerateController extends Q_Controller_Base
 			'validatedEntity'=>$contentArray,
 			'source'=>__file__,
 			'propertyList'=>array(
-				array('name'=>'catalogTemplate.html'),
-				array('name'=>'productListingTemplate.html'),
-				array('name'=>'productPageTemplate.html'),
-				array('name'=>'productPopupTemplate.html'),
+// 				array('name'=>'catalogTemplate.html'),
+// 				array('name'=>'productListingTemplate.html'),
+// 				array('name'=>'productPageTemplate.html'),
+// 				array('name'=>'productPopupTemplate.html'),
 				array('name'=>'productSpecs', 'assertNotEmptyFlag'=>true)
 			)));
 
@@ -113,4 +120,5 @@ $remainderList=array();
 
 return $productSectionArray;
 }
+	
 } //end of class

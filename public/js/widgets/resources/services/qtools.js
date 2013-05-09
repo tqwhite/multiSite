@@ -914,6 +914,7 @@ validateProperties:function(args){
 	for (var i=0, len=outList.length; i<len; i++){
 		outMessage+=outList[i]+'\n';
 	}
+
 	if (showAlertFlag && outMessage){
 		alert(outMessage);
 	}
@@ -1166,6 +1167,19 @@ templateReplaceObject:function(template, inData, prefix){
 
 md5:function(value){
 	Widgets.Models.Utility.md5(value);
+},
+
+intoSortedArray:function(inObj, newPropertyName){
+	var workArray=[],
+		tmp;
+	for (var i in inObj){
+		tmp=qtools.passByValue(inObj[i]);
+		tmp[newPropertyName]=i;
+		workArray.push(tmp);
+	}
+	
+	outArray=workArray.sort(qtools.byObjectProperty(newPropertyName));
+	return outArray;
 }
 
 }

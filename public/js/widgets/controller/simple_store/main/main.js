@@ -2,7 +2,7 @@ steal( 'jquery/controller','jquery/view/ejs' )
 .then(
 	'widgets/stylesheets/simpleStore.css'
 )
-	.then( './views/init.ejs', './views/displayCompletion.ejs', function($){
+	.then( './views/init.ejs', function($){
 
 /**
  * @class Widgets.Controller.SimpleStore.Main
@@ -24,8 +24,9 @@ init: function(el, options) {
 		propList:[
 			{name:'paymentServerUrl'},
 			{name:'serverData'},
+			{name:'processContentSourceRouteName'},
 			{name:'deferAppearance', importance:'optional'}, //this is sent by the catalog in fancyCatalog1
-			{name:'catalogData', importance:'optional'} //this comes from fancyCatalog1
+			{name:'catalogData', importance:'optional'} //this comes from fancyCatalog1 UNUSED REMOVE FROM BOTH
 		],
 		source:this.constructor._fullName
  	});
@@ -40,9 +41,11 @@ init: function(el, options) {
 		targetObject:this.serverData,
 		targetScope: this, //will add listed items to targetScope
 		propList:[
-			{name:'productInfo'},
-			{name:'confirmationPageTemplate'}
+			{name:'productInfo', importance:'optional'}, //if not here, initControlProperties fills in from cookie
+			{name:'confirmationPageTemplate'},
+			{name:'simpleStore'}
 		],
+		showAlertFlag:true,
 		source:this.constructor._fullName
  	});
 
@@ -53,8 +56,6 @@ init: function(el, options) {
 	if (options.initialStatusMessage){this.initialStatusMessage=options.initialStatusMessage;}
 
 	this.initDisplay();
-
-	testFinal=this.callback('infoDispatchHandler', 'testFinal');
 
 },
 
@@ -97,8 +98,15 @@ initDisplayProperties:function(){
 
 initControlProperties:function(){
 	this.viewHelper=new viewHelper2();
-	this.purchaseData={};
+	this.purchaseData={}; //communication object, subordinate controllers write to this
 
+	if (typeof(this.productInfo)=='undefined'){
+		this.productInfo=Widgets.Models.LocalStorage.getCookieData('cart').data; //shopping cart is same format as file-based productInfo
+		this.cartExists='true';
+	}
+	else{ this.cartExists=false; }
+	
+	this.simpleStore.showShippingOptions=this.needShipping(this.productInfo);
 
 },
 
@@ -131,8 +139,10 @@ initDomElements:function(){
 	$('#'+displayItem.divId).widgets_simple_store_payment_form({
 			paymentServerUrl:this.paymentServerUrl,
 			purchaseData:this.purchaseData,
+			processContentSourceRouteName:this.processContentSourceRouteName,
 			infoDispatchHandler:this.displayParameters.infoDispatch.handler,
-			catalogUrl:this.options.catalogUrl
+			catalogUrl:this.options.catalogUrl,
+			simpleStore:this.simpleStore
 	});
 
 	$('#'+this.displayParameters.productListContainer.divId).widgets_simple_store_product_selector('updatePriceDisplays');
@@ -141,16 +151,15 @@ initDomElements:function(){
 infoDispatchHandler:function(control, parameter){
 	var componentName='infoDispatch';
 	switch(control){
+		case 'clearCart':
+			Widgets.Models.LocalStorage.deleteCookie('cart')
+			break;
 		case 'displayCompletion':
-			this.displayCompletion();
+			this.displayCompletion(parameter);
 		break;
 		case 'changePurchaseData':
 			$('#'+this.displayParameters.paymentFormContainer.divId).widgets_simple_store_payment_form(control, parameter);
-		break;
-		case 'testFinal':
-			var testData=eval(({"productList":[{"prodCode":"prodA","quantity":11},{"prodCode":"prodB","quantity":22}],"productDisplayList":[{"prodCode":"prodA","quantity":11,"name":"submitButton"},{"prodCode":"prodB","quantity":22,"name":"submitButton","price":11.33}],"subtotal":615.89,"tax":2.1,"grandTotal":617.99,"cardData":{"name":"TQ White II","emailAdr":"tq@justkidding.com","confirmEmail":"tq@justkidding.com","cardName":"TQ School District","street":"5004 Three Points Blvd","city":"Mound","state":"MN","zip":"55364","phoneNumber":"708-763-0100","cardNumber":"3124","expMonth":"12","expYear":"13","chargeTotal":"111","poNumber":"A0-995-628-8295"}}));
-			this.purchaseData=testData;
-			this.infoDispatchHandler('displayCompletion');
+			if (this.cartExists){this.maintainCart();}
 		break;
 		case 'setAccessFunction':
 			if (!this[componentName]){this[componentName]={};}
@@ -161,22 +170,9 @@ infoDispatchHandler:function(control, parameter){
 	//focusin focusout keydown keyup keypress select
 },
 
-displayCompletion:function(){
+displayCompletion:function(confirmationHtml){
 
-	var html=$.View("//widgets/controller/simple_store/main/views/displayCompletion.ejs",
-		$.extend({}, {
-			displayParameters:this.displayParameters,
-			viewHelper:this.viewHelper,
-			formData:{
-				displayParameters:this.displayParameters,
-				serverData:this.serverData,
-				purchaseData:this.purchaseData,
-
-				confirmationPageTemplate:this.confirmationPageTemplate
-			}
-		})
-		);
-	this.element.html(html);
+	this.element.html(confirmationHtml);
 	$('#'+this.displayParameters.printButton.divId).click(this.displayParameters.printButton.handler);
 },
 
@@ -222,6 +218,23 @@ addToCart:function(newProductChoice){
 	}
 
 	Widgets.Models.LocalStorage.setCookie('cart', incumbentCart);
+	this.cartExists=true;
+},
+
+maintainCart:function(){
+	Widgets.Models.LocalStorage.setCookie('cart', this.purchaseData.shoppingCart);
+},
+
+needShipping:function(productInfo){
+	
+	var list=[];
+	for (var i in productInfo){
+		var element=productInfo[i];
+		if (element.requiresShipping===1){
+			return true;
+		}
+	}
+	return false;
 }
 
 })

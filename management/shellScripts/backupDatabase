@@ -1,0 +1,1 @@
+mysqldump --single-transaction <database_name> | gzip -c > /tmp/$(date '+%Y-%m-%d')_backup.dump.gz

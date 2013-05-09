@@ -265,43 +265,60 @@ getDottedPath:function(baseObj, subPathString, debug){
 },
 */
 
-static function getDottedPath($baseObj, $subPathString, $debug=true){
+static function getDottedPath($baseObj, $dottedPath){
+	//basically treats $baseObj.a.b.c as if it were $baseObj['a']['b']['c']
+	//good for constructed indexes and stuff that comes from Javascript
 	$target=$baseObj;
-	global $getDottedPathLastProgressiveString; //since this is static, I don't have a $this to hold it
+	$getDottedPathLastProgressiveString='';
 
-	$elements=explode('.', $subPathString);
+	$elements=explode('.', $dottedPath);
 
-	if (!$subPathString){ return $baseObj; }
+	if (!$dottedPath){ return $baseObj; }
 
-	if (count($elements)<2){ echo "exiting\n"; return $baseObj[$subPathString]; }
+	if (count($baseObj)<2){ return $baseObj[$dottedPath]; }
 	else{
-		for ($i=0, $len=count($elements); $i<$len; $i++){
-			if ($elements[$i]){ //mainly eliminates trailing periods but would also eliminate double periods
+		foreach ($elements as $label=>$data){
+			if ($data){ //mainly eliminates trailing periods but would also eliminate double periods
 
-				$target=$target[$elements[$i]];
+				$target=$target[$data];
 
-				$getDottedPathLastProgressiveString.=$elements[$i].'.';
+				$getDottedPathLastProgressiveString.=$data.'.';
 				if (!isset($target)){
-					if ($debug){ echo $elements[$i]."<br/>\n";}
-					echo 'bad path='.$getDottedPathLastProgressiveString."<br/>\n";
+			//		echo 'bad path='.$getDottedPathLastProgressiveString."<br/>\n";
 					return '';
 				}
 			}
 		}
 	}
+
 	return $target;
 
 }
 
-static function htmlEntities($inData){
+static function lookupDottedPath($inArray, $dottedPath, $matchValue){
+		foreach ($inArray as $label=>$data){
+			$value=\Q\Utils::getDottedPath($data, $dottedPath);
+			if ($value==$matchValue){return $data;}
+		}
+		return '';
+}
+
+static function htmlEntities($inData, $otherConversions=array()){
 
 	if (gettype($inData)=='string'){
-		return htmlentities($inData);
+		$outString=$inData;
+		if (count($otherConversions)>0){
+			foreach ($otherConversions as $label=>$data){
+				$outString=str_replace(($label=='@apos;')?"'":$label, $data, $outString);
+			}
+		}
+		$outString=htmlentities($outString);
+		return $outString;
 	}
 	elseif (gettype($inData)=='array'){
 
 		foreach ($inData as $label=>$data){
-			$outArray[$label]=self::htmlentities($data);
+			$outArray[$label]=self::htmlentities($data, $otherConversions);
 		}
 	}
 	else{

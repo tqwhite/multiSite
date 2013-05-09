@@ -283,9 +283,16 @@ Widgets.Controller.Base.extend('Widgets.Controller.Display.TabPanel',
 		var h = window.location.href, s,
 		prefix='/?id=',
 		pattern=new RegExp(prefix+'.*');
+		prefix2='?id=',
+		pattern2=new RegExp(prefix+'.*');
 		// external links will fall through and go to the external url
-		if (pattern.test(window.location.href)) {
+		if (pattern.test(window.location.href) || pattern2.test(window.location.href)) {
+			if (pattern.test(window.location.href)){
 			s = h.substring( h.lastIndexOf(prefix) + prefix.length, h.length );
+			}
+			else{
+			s = h.substring( h.lastIndexOf(prefix2) + prefix2.length, h.length );
+			}
 
 
 			var slider=$('#'+this.switchableContentListId);

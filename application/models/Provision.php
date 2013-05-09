@@ -7,14 +7,14 @@ class Application_Model_Provision extends Application_Model_Base
 static function process($inData, $url){
 
 $transactionInfo=array(
-			'purchaserName'=>$inData['purchaseData']['cardData']['name'],
-			'purchaserPhone'=>$inData['purchaseData']['cardData']['phoneNumber'],
-			'purchaserEmail'=>$inData['purchaseData']['cardData']['emailAdr'],
-			'totalPaid'=>$inData['purchaseData']['grandTotal'],
-			'taxPaid'=>$inData['purchaseData']['tax']
+			'purchaserName'=>$inData['identityPanel']['name'],
+			'purchaserPhone'=>$inData['identityPanel']['phoneNumber'],
+			'purchaserEmail'=>$inData['identityPanel']['emailAdr'],
+			'totalPaid'=>$inData['priceSummary']['grandTotal'],
+			'taxPaid'=>$inData['priceSummary']['tax']
 	);
 
-$productJson=json_encode($inData['purchaseData']['productList']);
+$productJson=json_encode($inData['shoppingCart']);
 $transactionJson=json_encode($transactionInfo);
 
 //	$ch =curl_init("http://store.demo.tensigma.org/test/index.php");
