@@ -4,8 +4,10 @@
 	 public function unorderedListForSelect($list, $components) {
 
 		$outString='';
+		if (is_array($list)){
 		foreach ($list as $label=>$data){
 			$outString.=$this->makeOneMenu($data, $components);
+		}
 		}
 	return $outString;
 

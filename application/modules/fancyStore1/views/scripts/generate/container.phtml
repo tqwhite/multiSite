@@ -4,7 +4,8 @@
 	'source'=>__file__,
 	'propertyList'=>array(
 		array('name'=>'codeNav'),
-		array('name'=>'contentArray')
+		array('name'=>'contentArray'),
+		array('name'=>'simpleStore')
 	)));
 
 $contentArray=$this->contentArray;
@@ -81,9 +82,16 @@ $confirmationTemplate=$this->contentArray['pageFormTemplates.ini']['confirmation
 $confirmationPageTemplate=\Q\Utils::htmlEntities($confirmationTemplate);
 $confirmationPageTemplate=json_encode($confirmationPageTemplate);
 
+$simpleStore=$this->simpleStore;
+$simpleStore=\Q\Utils::htmlEntities($simpleStore);
+$simpleStore=json_encode($simpleStore);
+
+//I believe that $confirmationPageTemplate is NO LONGER USED by the UI. The message is now generated on the server.
+//Remove this reference at the earliest convenience. tqii
 
 $outString="
 <div class='serverData' id='confirmationPageTemplate' style='display:none;'>$confirmationPageTemplate</div>
+<div class='serverData' id='simpleStore' style='display:none;'>$simpleStore</div>
 <div class='mainContentContainer' style='overflow:hidden;position:relative;'>
 
 	$outString

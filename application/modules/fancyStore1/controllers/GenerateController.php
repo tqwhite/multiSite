@@ -30,7 +30,7 @@ class FancyStore1_GenerateController extends Q_Controller_Base
     	else{ $scheme='http://';}
     
     	$productSectionArray=$this->productSectionArray($this->contentObj->contentArray['productSpecs']);
-
+    	
     	$catalogEntities=\Q\Utils::htmlentities($this->contentObj->contentArray['productSpecs'], array("@apos;"=>'@apos;'));
 
 		$serverComm[]=array("fieldName"=>"message", "value"=>'hello from the server via javascript');
@@ -53,6 +53,9 @@ class FancyStore1_GenerateController extends Q_Controller_Base
 
 
 		$this->setVariationLayout('layout');
+		
+		
+		$this->view->simpleStore=$this->simpleStore;
 		$this->view->productSectionArray=$productSectionArray;
 		$this->view->contentArray=$this->contentObj->contentArray;
 		$this->view->codeNav=$this->getCodeNav(__method__);
@@ -117,4 +120,5 @@ $remainderList=array();
 
 return $productSectionArray;
 }
+	
 } //end of class

@@ -4,18 +4,138 @@ steal( 'jquery/controller','jquery/view/ejs' )
 /**
  * @class <%= name %>
  */
-$.Controller('<%= name %>',
+APPNAME.Controller.Base.extend('<%= name %>',
 /** @Static */
 {
 	defaults : {}
 },
 /** @Prototype */
 {
-	init : function(){
-		this.element.html("//<%= path %>/<%= underscore %>/views/init.ejs",{
-			message: "Hello World"
-		});
+
+//
+//dependency phrase: <%= path %>/<%= underscore %>/<%= underscore %>.js
+//
+
+init : function(element, options){
+	this.baseInits();
+
+	qtools.validateProperties({
+		targetObject:options,
+		targetScope: this, //will add listed items to targetScope
+		propList:[
+			{name:'placeHolder', importance:'optional'}
+		],
+		source:this.constructor._fullName
+	});
+
+	this.initControlProperties();
+	this.initDisplayProperties();
+	this.initDisplay({});	
+	
+	return this;
+},
+
+update:function(control, parameter){
+	switch(control){
+		case 'hide':
+			this.element.hide();
+			break;
+		case 'show':
+			this.element.show();
+			break;
+		default:
+			if (typeof(parameter)=='object'){ this.options=$.extend(this.options, parameter);}
+			this.init(this.element, this.options);
+			break;
+		case 'setAccessFunction':
+			if (!this.employer){this.employer={};}
+			this.employer.accessFunction=parameter;
+		break;
 	}
-})
+	
+	return this;
+},
+
+initDisplayProperties:function(){
+
+	nameArray=[];
+
+	name='contentContainer'; nameArray.push({name:name});
+	name='activationButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+
+	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
+
+},
+
+initControlProperties:function(){
+	this.viewHelper=new viewHelper2();
+
+},
+
+initDisplay:function(inData){
+
+	var html=$.View("//<%= path %>/<%= underscore %>/views/init.ejs",
+		$.extend(inData, {
+			displayParameters:this.displayParameters,
+			viewHelper:this.viewHelper,
+			formData:{
+				message:'<%= name %>'
+			}
+		})
+		);
+		
+	this.element.html(html);
+	this.initDomElements();
+},
+
+initDomElements:function(){
+
+	var displayItem=this.displayParameters.activationButton;
+	
+	$('#'+displayItem.divId).click(displayItem.handler);
+	
+
+	var name='activationButton', displayItem=this.displayParameters[name]; 
+		displayItem['controllerName']='widgets_tools_ui_button2';
+		displayItem.domObj=$('#'+displayItem.divId)
+			[displayItem.controllerName]({
+				ready:{classs:'basicReady'},
+				hover:{classs:'basicHover'},
+				clicked:{classs:'basicActive'},
+				unavailable:{classs:'basicUnavailable'},
+				accessFunction:displayItem.handler,
+				initialControl:'setToReady', //initialControl:'setUnavailable'
+				label:"Click Me"
+			})
+			.addClass('basicButton');
+
+	this.element.find('input').qprompt();
+
+},
+
+//BUTTON HANDLERS =========================================================================================================
+
+activationButtonHandler:function(control, parameter){
+	var componentName='activationButton',
+		displayItem=this.displayParameters[componentName];
+		
+	if (control.which=='13'){control='click';}; //enter key
+	
+	switch(control.type || control){
+		case 'click': if (this.isAcceptingClicks()){this.turnOffClicksForAwhile(200);} else{eventObj.preventDefault(); return;}
+			
+			alert('got click for '+componentName);
+
+		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
+}
+
+}) //end of method-containing object ===
 
 });

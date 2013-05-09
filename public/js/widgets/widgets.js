@@ -33,6 +33,11 @@ steal(
 	'./controller/simple_store/main/main.js',
 	'./controller/simple_store/product_selector/product_selector.js',
 	'./controller/simple_store/payment_form/payment_form.js',
+	
+	'./controller/simple_store/payment_form/editors/po/po.js',
+	'./controller/simple_store/payment_form/editors/card/card.js',
+	'./controller/simple_store/payment_form/editors/identity/identity.js',
+	'./controller/simple_store/payment_form/editors/shipping/shipping.js',
 
 	'./resources/other/json2.js',
 	'./resources/other/mousetrap.js',

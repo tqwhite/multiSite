@@ -21,6 +21,7 @@ init: function(el, options) {
 			{name:'paymentServerUrl'},
 			{name:'purchaseData'}, //communication object, owned by employer (main.js)
 			{name:'infoDispatchHandler'},
+			{name:'simpleStore'},
 			{name:'processContentSourceRouteName'},
 			{name:'catalogUrl', importance:'optional'}
 		],
@@ -69,6 +70,13 @@ initDisplayProperties:function(){
 	name='status'; nameArray.push({name:name});
 
 	name='submitButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+	name='control'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+
+	name='identityPanel'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+	name='purchaseOrderPanel'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+	name='creditCardPanel'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+	name='shippingPanel'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
+
 
 	this.displayParameters=$.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
 
@@ -84,7 +92,10 @@ initDisplay:function(inData){
 		$.extend(inData, {
 			displayParameters:this.displayParameters,
 			viewHelper:this.viewHelper,
-			formData:{catalogUrl:this.catalogUrl}
+			formData:{
+				catalogUrl:this.catalogUrl,
+				simpleStore:this.simpleStore
+			}
 		})
 		);
 	this.element.html(html);
@@ -95,7 +106,9 @@ initDomElements:function(){
 
 
 
-	var displayItem=this.displayParameters.submitButton;
+	$('.'+this.displayParameters.control.divId).click(this.displayParameters.control.handler);
+
+	var name='submitButton', displayItem=this.displayParameters[name];
 	$('#'+displayItem.divId).widgets_tools_ui_button2({
 		ready:{classs:'submitButtonReady'},
 		hover:{classs:'submitButtonHover'},
@@ -106,6 +119,34 @@ initDomElements:function(){
 		label:"<div style='margin-top:8px;'>Purchase</div>"
 	});
 
+
+
+	var name='identityPanel', displayItem=this.displayParameters[name]; 
+		displayItem['controllerName']='widgets_simple_store_payment_form_editors_identity';
+		displayItem['dataGroupName']=name;
+		displayItem.domObj=$('#'+displayItem.divId)
+			[displayItem.controllerName]({dataGroupName:displayItem['dataGroupName']});
+
+
+	var name='purchaseOrderPanel', displayItem=this.displayParameters[name]; 
+		displayItem['controllerName']='widgets_simple_store_payment_form_editors_po';
+		displayItem['dataGroupName']=name;
+		displayItem.domObj=$('#'+displayItem.divId)
+			[displayItem.controllerName]({dataGroupName:displayItem['dataGroupName']})
+			[displayItem.controllerName]('hide');
+
+	var name='creditCardPanel', displayItem=this.displayParameters[name]; 
+		displayItem['controllerName']='widgets_simple_store_payment_form_editors_card';
+		displayItem['dataGroupName']=name;
+		displayItem.domObj=$('#'+displayItem.divId)
+			[displayItem.controllerName]({dataGroupName:displayItem['dataGroupName']});
+
+	var name='shippingPanel', displayItem=this.displayParameters[name]; 
+		displayItem['controllerName']='widgets_simple_store_payment_form_editors_shipping';
+		displayItem['dataGroupName']=name;
+		displayItem.domObj=$('#'+displayItem.divId)
+			[displayItem.controllerName]({dataGroupName:displayItem['dataGroupName']})
+			[displayItem.controllerName]('hide');
 
 	this.element.find('input').qprompt();
 
@@ -121,15 +162,16 @@ submitButtonHandler:function(control, parameter){
 			else{return;}
 
 			var formParams=this.element.formParams();
+			delete formParams.control
 
-			if (formParams.poNumber=='optional'){formParams.poNumber='';}
+			formParams=this.clearPromptValues(formParams);
 
 			this.purchaseData.cardData=formParams;
 			this.assertModalScreen($('.mainContentContainer'), 'processing');
+			
 			Widgets.Models.Purchase.process({
 					paymentServerUrl:this.paymentServerUrl,
 					processContentSourceRouteName:this.processContentSourceRouteName,
-					cardData:formParams,
 					purchaseData:this.purchaseData
 				},
 				this.callback('catchProcessResult'));
@@ -142,6 +184,21 @@ submitButtonHandler:function(control, parameter){
 	}
 	//change dblclick mousedown mouseover mouseout dblclick
 	//focusin focusout keydown keyup keypress select
+},
+
+clearPromptValues:function(formParams){
+
+	var outArray=qtools.passByValue(formParams);
+	for (var i in outArray){
+		var element=outArray[i];
+		if (typeof(element)=='object'){
+			for (var j in element){
+				if (element[j]=='optional'){element[j]='';}
+				if (element[j]=='required'){element[j]='';}
+			}
+		}
+	}
+	return outArray;
 },
 
 catchProcessResult:function(inData){
@@ -162,12 +219,6 @@ catchProcessResult:function(inData){
 	}
 	else{
 		if (true){ //this can go away as soon as debugging is well into the past. 'false' makes it so that the payment process can run repeatedly.
-
-			var cardNo=this.purchaseData.cardData.cardNumber,
-				len=cardNo.length;
-
-			cardNo=cardNo.substring(len-4, len);
-			this.purchaseData.cardData.cardNumber=cardNo;
 
 			switch(inData.status.toString()){
 				case '1':
@@ -205,8 +256,155 @@ clearModalScreen:function(){
 	if (typeof(this.modalSender)=='undefined' || typeof(this.modalSender.accessFunction)=='undefined'){return;} //during debugging, I don't always turn on the modal screen
 	this.modalSender.accessFunction('clear');
 
-}
+},
 
+controlHandler:function(eventObj){
+	var componentName='submitButton';
+	switch(eventObj.type){
+		case 'click':
+
+// 		if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} //turn off clicks for awhile and continue, default is 500ms
+// 		else{eventObj.preventDefault(); return;}
+		
+		var target=$(eventObj.target),
+			info={};
+			info.controlChoice=target.attr('name');
+			info.controlClickedState=target.attr('checked');
+
+		this.switchPanels(info);
+
+		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
+},
+
+switchPanels:function(info){
+	switch(info.controlChoice){
+		case 'wantShippingAddr':
+
+		if (info.controlClickedState){
+			var displayItem=this.displayParameters['shippingPanel'];
+			displayItem.domObj[displayItem.controllerName]('show')
+			console.log('showing');
+		}
+		else{
+			var displayItem=this.displayParameters['shippingPanel'];
+			displayItem.domObj[displayItem.controllerName]('hide')
+			console.log('hiding');
+		}
+				
+				
+			break;
+		case 'usePurchaseOrder':
+
+		if (info.controlClickedState){
+			var displayItem=this.displayParameters['purchaseOrderPanel'];
+			displayItem.domObj[displayItem.controllerName]('show');
+			
+			var displayItem=this.displayParameters['creditCardPanel'];
+			displayItem.domObj[displayItem.controllerName]('hide');
+
+		}
+		else{
+			var displayItem=this.displayParameters['purchaseOrderPanel'];
+			displayItem.domObj[displayItem.controllerName]('hide')
+			
+			var displayItem=this.displayParameters['creditCardPanel'];
+			displayItem.domObj[displayItem.controllerName]('show');
+
+		}
+							
+			break;
+
+	
+	}
+},
+
+
+//EDITOR HANDLERS =========================================================================================================
+
+
+
+identityPanelHandler:function(control, parameter){
+	var componentName='identityPanel',
+		displayItem=this.displayParameters[componentName];
+	if (control.which=='13'){control='click';}; //enter key
+	switch(control.type || control){
+		case 'click': if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} else{return;}
+			
+			alert('got click for '+componentName);
+
+		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
+},
+
+purchaseOrderPanelHandler:function(control, parameter){
+	var componentName='purchaseOrderPanel',
+		displayItem=this.displayParameters[componentName];
+	if (control.which=='13'){control='click';}; //enter key
+	switch(control.type || control){
+		case 'click': if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} else{return;}
+			
+			alert('got click for '+componentName);
+
+		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
+},
+
+creditCardPanelHandler:function(control, parameter){
+	var componentName='creditCardPanel',
+		displayItem=this.displayParameters[componentName];
+	if (control.which=='13'){control='click';}; //enter key
+	switch(control.type || control){
+		case 'click': if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} else{return;}
+			
+			alert('got click for '+componentName);
+
+		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
+},
+
+shippingPanelHandler:function(control, parameter){
+	var componentName='shippingPanel',
+		displayItem=this.displayParameters[componentName];
+	if (control.which=='13'){control='click';}; //enter key
+	switch(control.type || control){
+		case 'click': if (this.isAcceptingClicks()){this.turnOffClicksForAwhile();} else{return;}
+			
+			alert('got click for '+componentName);
+
+		break;
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter;
+		break;
+	}
+	//change dblclick mousedown mouseover mouseout dblclick
+	//focusin focusout keydown keyup keypress select
+}
 
 })
 
