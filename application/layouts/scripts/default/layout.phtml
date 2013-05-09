@@ -26,14 +26,12 @@ else{
 
 $this->setDefaultNavStyles($this);
 
-if(isset($this->contentArray['headNav.ini'])){
+	$controlsString='';
+if(isset($this->contentArray['headNav.ini']) && isset($this->contentArray['headNav.ini']['menu'])){
 	$controlsString=$this->unorderedListForSelect(
 		$this->contentArray['headNav.ini']['menu'],
 		array('mainClass'=>'dropdown')
 	);
-}
-else{
-	$controlsString='';
 }
 
 $controlsString="
