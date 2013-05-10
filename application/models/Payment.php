@@ -66,7 +66,7 @@ static function moneris($orderId, $cardData, $purchaseData, $priceSummary, $parm
 		$pan=$cardData['number'];
 		$expiry_date=$cardData['expYear'].$cardData['expMonth'];
 
-	  	$amount='1.00';
+//	  	$amount='1.00';
 
 	}
 	else{
