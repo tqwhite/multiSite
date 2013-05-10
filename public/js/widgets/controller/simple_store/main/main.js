@@ -192,7 +192,7 @@ addEventObjToCart:function(eventObj){
 
 getCompleteProduct:function(productChoice){
 
-	var selectedProduct=qtools.lookupDottedPath(this.catalogData, productChoice.prodCode);
+	var selectedProduct=qtools.lookupDottedPath(this.catalogData, 'prodCode', productChoice.prodCode);
 	
 	if (!selectedProduct){
 			alert(this._shortName+".addToCart() says, this product button is producing bad cart input (missing product, quantity or prodCode)"); 
