@@ -105,6 +105,8 @@ validate:function(inData){
 		{errors.push([name, "Card Expiration Date is required"]);}
 			else if (datum<1 || datum>12)
 			{errors.push([name, "Month must be 1 to 12"]);}
+			else if (!datum.match(/^\d{2}$/))
+			{errors.push([name, "Month must be two digits"]);}
 
 		name='expYear';
 		datum=inData[sectionName][name];
