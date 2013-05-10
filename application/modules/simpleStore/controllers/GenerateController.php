@@ -335,7 +335,7 @@ PRODUCTS;
 				break;
 			case 'demo': //demo server
 				$provisionProcessResult = Application_Model_Provision::process($inData, $this->simpleStore['provision']['demoUrl']);
-
+$provisionProcessResult['status']=-1;
 				if ($provisionProcessResult['status'] != 1) {
 					$errorList[] = array(
 						'provision',

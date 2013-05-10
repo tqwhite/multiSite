@@ -13,7 +13,8 @@ $transactionInfo=array(
 			'taxPaid'=>$inData['priceSummary']['tax']
 	);
 
-$productJson=json_encode($inData['shoppingCart']);
+$shoppingCart=self::cleanCart($inData['shoppingCart']);
+$productJson=json_encode($shoppingCart);
 $transactionJson=json_encode($transactionInfo);
 
 $outBoundPayload=array('transactionInfo'=>$transactionJson, 'productList'=>$productJson, 'token'=>$inData['token']);
@@ -29,13 +30,26 @@ $outBoundPayload=array('transactionInfo'=>$transactionJson, 'productList'=>$prod
 	curl_close($ch);
 	
 
-// \Q\Utils::dumpWeb($url, "url");
-// \Q\Utils::dumpWeb($outBoundPayload, "outBoundPayload");
-// \Q\Utils::dumpWeb($inData['shoppingCart'], "inData['shoppingCart']");
-// \Q\Utils::dumpWeb($transactionInfo, "transactionInfo");
-// \Q\Utils::dumpWeb(json_decode($result, true), "json_decode(result, true)");
+// \Q\Utils::dumpCli($url, "url");
+// \Q\Utils::dumpCli($outBoundPayload, "outBoundPayload");
+// \Q\Utils::dumpCli($shoppingCart, "shoppingCart");
+// \Q\Utils::dumpCli($transactionInfo, "transactionInfo");
+// \Q\Utils::dumpCli(json_decode($result, true), "json_decode(result, true)");
+// \Q\Utils::dumpCli($result, "result");
 
 	return json_decode($result, true);
+}
+
+private function cleanCart($shoppingCart){
+$outArray=array();
+		foreach ($shoppingCart as $label=>$data){
+			$outItem=array();
+			$name='prodCode'; $outItem[$name]=$data[$name];
+			$name='quantity'; $outItem[$name]=$data[$name];
+			$outArray[]=$outItem;
+		}
+	return $outArray;
+
 }
 
 }
