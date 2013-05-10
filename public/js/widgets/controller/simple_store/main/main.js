@@ -184,21 +184,30 @@ addEventObjToCart:function(eventObj){
 	var targetDomObj=$(eventObj.target).parent(),
 		newProductChoice=targetDomObj.formParams(true);
 	
-	if (this.isValidProductChoice(newProductChoice)){
-		this.addToCart(newProductChoice);
+	var selectedProduct=this.getCompleteProduct(newProductChoice);
+	if (selectedProduct){
+		this.addToCart(selectedProduct);
 	}
 },
 
-isValidProductChoice:function(productChoice){
-	if (!productChoice.price ||
-		!productChoice.quantity ||
-		!productChoice.prodCode){
+getCompleteProduct:function(productChoice){
+
+	var selectedProduct=qtools.lookupDottedPath(this.catalogData, productChoice.prodCode);
+	
+	if (!selectedProduct){
 			alert(this._shortName+".addToCart() says, this product button is producing bad cart input (missing product, quantity or prodCode)"); 
 			return false;
 		}
-	//else
+	
+	selectedProduct=qtools.passByValue(selectedProduct);
+	if (typeof(productChoice.quantity)=='undefined'){ //which is to say, selected quantity could be zero
+		selectedProduct.quantity=1;
+	}
+	else{
+		selectedProduct.quantity=productChoice.quantity;
+	}
 		
-		return true;
+		return selectedProduct;
 	
 },
 

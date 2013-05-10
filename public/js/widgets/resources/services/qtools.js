@@ -560,7 +560,7 @@ indexObjFromPath:function(inObj, fieldName){
 lookupDottedPath:function(inArray, subPathString, matchValue){
 
 	var list=inArray;
-	for (var i=0, len=list.length; i<len; i++){
+	for (var i in list){
 		var element=list[i];
 		if (this.getDottedPath(element, subPathString)==matchValue){
 			return element;
@@ -574,7 +574,13 @@ getDottedPath:function(baseObj, subPathString, debug){
 		elements;
 		this.getDottedPathLastProgressiveString='';
 
-	var elements=subPathString.split('.');
+	if (subPathString.toString().match(/\./)){
+		var elements=subPathString.split('.');
+	}
+	else{
+		var elements=[];
+		elements.push(subPathString);
+	}
 
 	if (!subPathString){ return baseObj;}
 

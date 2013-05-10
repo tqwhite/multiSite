@@ -66,9 +66,10 @@ qtools.validateProperties({
 			}
 			
 			
-			
-			
-			prodString+="<div><input type='text' name='product["+element.prodCode+"]' class='numberEntry' prompt='0' value="+element.quantity+"><span  "+tooltip+">"+element.name+" ($"+element.price.toFixed(2)+" each)</span></div>";
+			var showPrice=(1.0*element.price).toFixed(2); //comes in via serverData. json parses price into string
+		
+			prodString+="<div><input type='text' name='product["+element.prodCode+"]' class='numberEntry' prompt='0' value="+element.quantity+"><span  "+tooltip+">"+element.name+" ($"+showPrice+" each)</span></div>";
+
 		}
 	}
 

@@ -22,10 +22,13 @@ class Application_Model_Payment extends Application_Model_Base
 */
 
 static function process($inData, $processorAuth, $args="set array('debug'=>true) as second parameter in instantiation"){
-	return self::moneris($inData, $processorAuth, $args);
+
+$inData['creditCardPanel']['phoneNumber']=$inData['identityPanel']['phoneNumber'];
+
+	return self::moneris($inData['orderId'], $inData['creditCardPanel'], $inData['shoppingCart'], $inData['priceSummary'], $processorAuth, $args);
 }
 
-static function moneris($inData, $parms, $args="set array('debug'=>true) as second parameter in instantiation"){
+static function moneris($orderId, $cardData, $purchaseData, $priceSummary, $parms, $args="set array('debug'=>true) as second parameter in instantiation"){
 
 	$holdErrorState=error_reporting(); //error_reporting(E_ERROR | E_PARSE);
 
@@ -39,8 +42,8 @@ static function moneris($inData, $parms, $args="set array('debug'=>true) as seco
 	}
 
 
-	$cardData=$inData['cardData'];
-	$purchaseData=$inData['purchaseData'];
+// 	$cardData=$inData['cardData'];
+// 	$purchaseData=$inData['purchaseData'];
 
 	new Q_Model_Payment_Moneris(); //initialize the class library
 
@@ -57,14 +60,13 @@ static function moneris($inData, $parms, $args="set array('debug'=>true) as seco
 
 	/************************ Transaction Variables ******************************/
 
-	$orderid=$inData['orderId'];
 
 	if ($production){
-		$amount=number_format($purchaseData['grandTotal'], 2);
-		$pan=$cardData['cardNumber'];
+		$amount=number_format($priceSummary['grandTotal'], 2);
+		$pan=$cardData['number'];
 		$expiry_date=$cardData['expYear'].$cardData['expMonth'];
 
-	//  	$amount='1.00';
+	  	$amount='1.00';
 
 	}
 	else{
@@ -90,12 +92,12 @@ static function moneris($inData, $parms, $args="set array('debug'=>true) as seco
 	$email =$cardData['emailAdr'];
 	$mpgCustInfo->setEmail($email);
 
-	$instructions ="PO#/Memo: ".$cardData['poNumber'];
+	$instructions ="PO#/Memo: ".$cardData['memo'];
 	$mpgCustInfo->setInstructions($instructions);
 
 	/********************* Create Billing Array and set it **********/
 
-	$nameBits=explode(' ', $cardData['cardName']);
+	$nameBits=explode(' ', $cardData['name']);
 
 	$billing = array( first_name => $nameBits[0],
 					  last_name => $nameBits[1],
@@ -156,7 +158,7 @@ static function moneris($inData, $parms, $args="set array('debug'=>true) as seco
 	/************************ Transaction Array **********************************/
 
 	$txnArray=array(type=>'us_purchase',
-			 order_id=>$orderid,
+			 order_id=>$orderId,
 			 cust_id=>'cust',
 			 amount=>$amount,
 			 pan=>$pan,

@@ -199,6 +199,9 @@ PRODUCTS;
 			$paymentStatus = $paymentResultArray['paymentProcessResult']['responseData']['ResponseCode'];
 			if ($paymentStatus == 1) {
 				$provisionResultArray = $this->getProvisionResult($inData);
+				
+				$inData['token']=$provisionResultArray['provisionProcessResult']['data']['tokenValue']; //should always be the same as $inData['orderId']
+			
 				$messages[]           = array(
 					'provisioning',
 					$provisionResultArray['provisionProcessResult']['message']
@@ -262,6 +265,7 @@ PRODUCTS;
 				'debug' => !$this->useCardProdServer,
 				'forceDecline' => false
 			));
+			
 			$paymentResult['isFreeCard']      = false;
 			$paymentResult['usingProdServer'] = $this->useCardProdServer;
 		} 
@@ -317,27 +321,33 @@ PRODUCTS;
 			default:
 			case 'prod': //production server
 				$provisionProcessResult = Application_Model_Provision::process($inData, $this->simpleStore['provision']['productionUrl']);
-				$status                 = 1;
+
+				
 				if ($provisionProcessResult['status'] != 1) {
 					$errorList[] = array(
 						'provision',
 						$provisionProcessResult['message']
 					);
+		
 				}
+		$provisionProcessResult['data']=array(); //provision server is currently returning bad JSON.
+		$provisionProcessResult['data']['tokenValue']=$inData['token']; //this is always the same anyway
 				break;
 			case 'demo': //demo server
 				$provisionProcessResult = Application_Model_Provision::process($inData, $this->simpleStore['provision']['demoUrl']);
-				$status                 = 1;
+
 				if ($provisionProcessResult['status'] != 1) {
 					$errorList[] = array(
 						'provision',
 						$provisionProcessResult['message']
 					);
 				}
+
+		$provisionProcessResult['data']=array(); //provision server is currently returning bad JSON.
+		$provisionProcessResult['data']['tokenValue']=$inData['token']; //this is always the same anyway
+
 				break;
 			case 'noProvision':
-				$status                 = 1;
-				$inData['orderId']      = 'Local testing. No Token Created';
 				$provisionProcessResult = array(
 					'status' => 1,
 					'message' => 'Testing. Generated locally.',
