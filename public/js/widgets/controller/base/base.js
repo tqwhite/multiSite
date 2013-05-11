@@ -132,6 +132,39 @@ startProgressIndicator:function(args){
 
 	var spinner = new Spinner(opts).spin();
 	$('#'+divId).append(spinner.el);
+},
+
+modalReceiver:function(control, parameter){
+	var componentName='modalSender';
+	switch(control){
+		case 'setAccessFunction':
+			if (!this[componentName]){this[componentName]={};}
+			this[componentName].accessFunction=parameter; //eg, this.hScroll.accessFunction()
+		break;
+	}
+},
+
+assertModalScreen:function(targetObject, message){
+	
+	var controls={};
+	
+	if (typeof(message)=='object'){
+		controls=message;
+		message=(typeof(controls.message)=='string')?controls.message:'';
+	}
+
+	targetObject.widgets_tools_ui_modal_screen({
+		employerSender:this.callback('modalReceiver'),
+		controls:controls
+	});
+
+	this.modalSender.accessFunction('setMessage', message);
+},
+
+clearModalScreen:function(){
+	if (typeof(this.modalSender)=='undefined' || typeof(this.modalSender.accessFunction)=='undefined'){return;} //during debugging, I don't always turn on the modal screen
+	this.modalSender.accessFunction('clear');
+
 }
 
 })

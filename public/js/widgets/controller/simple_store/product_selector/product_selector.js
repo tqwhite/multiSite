@@ -20,11 +20,14 @@ init: function(el, options) {
 		propList:[
 			{name:'productInfo'},
 			{name:'purchaseData'}, //communication object, owned by employer (main.js)
-			{name:'infoDispatchHandler'}
+			{name:'infoDispatchHandler'},
+			{name:'specialDisplayOption', importance:'optional'}
 		],
 		showAlertFlag:true,
 		source:this.constructor._fullName
  	});
+ 	
+ 	this.options=options;
 
 	this.initControlProperties();
 	this.initDisplayProperties();
@@ -32,7 +35,14 @@ init: function(el, options) {
 	options=options?options:{};
 	if (options.initialStatusMessage){this.initialStatusMessage=options.initialStatusMessage;}
 
-	this.initDisplay();
+	switch(this.options.specialDisplayOption){
+		default:
+			this.initDisplay();
+			break;
+		case 'showCartPopup':
+			this.displayCartPopup();
+			break;
+	}
 
 },
 
@@ -42,6 +52,7 @@ update:function(control, parameter){
 			this.updatePurchase();
 			break;
 		default:
+			if (typeof(control)=='object'){ this.options=$.extend(this.options, control);}
 			if (typeof(parameter)=='object'){ this.options=$.extend(this.options, parameter);}
 			this.init(this.element, this.options);
 			break;
@@ -54,6 +65,8 @@ initDisplayProperties:function(){
 
 	name='priceDisplayContainer'; nameArray.push({name:name});
 	name='priceHoverIdClass'; nameArray.push({name:name});
+	name='cartPopupContainer'; nameArray.push({name:name});
+	name='cartPopupBackground'; nameArray.push({name:name});
 
 //	name='cancelButton'; nameArray.push({name:name, handlerName:name+'Handler', targetDivId:name+'Target'});
 
@@ -252,6 +265,28 @@ writePriceDisplay:function(){
 		})
 		);
 	$('#'+this.displayParameters.priceDisplayContainer.divId).html(html);
+},
+
+displayCartPopup:function(){
+
+	var list=this.productInfo,
+		outString='';
+	for (var i in list){
+		var element=list[i];
+		outString+="<tr><td style='text-align:left;'>"+element.quantity+"</td><td>"+element.name+"</td><td style='text-align:right;'>$"+(1.0*element.price).toFixed(2)+"</td></tr>";
+	}
+	outString="<table style='border-collapse:separate;border-spacing: 10px 15px;font-weight:normal;font-size:10pt;padding:30px 15px;width:500px;text-align:left;background:rgba(200,255,255,1);color:black;margin:0px auto;'>"+outString+"</table>";
+
+			this.assertModalScreen($('body'), {
+				message:outString,
+				version:2,
+				backgroundClickFunction:function(){ $(this).hide(); },
+				fadeParms:{duration:3000},
+				messagePosition:'window'
+				
+			
+			});
+
 }
 
 })

@@ -54,8 +54,13 @@ init: function(el, options) {
 
 	options=options?options:{};
 	if (options.initialStatusMessage){this.initialStatusMessage=options.initialStatusMessage;}
-
-	this.initDisplay();
+	
+	if (this.options.showCartPopup){
+		this.cartPopupDisplay();
+	}
+	else{
+		this.initDisplay();
+	}
 
 },
 
@@ -64,6 +69,13 @@ update:function(control, parameter){
 		case 'display':
 			if (typeof(parameter)=='object'){ this.options=$.extend(this.options, parameter);}
 			this.options.deferAppearance=false;
+			this.options.showCartPopup=false;
+			this.init(this.element, this.options);
+			break;
+		case 'showCartPopup':
+			if (typeof(parameter)=='object'){ this.options=$.extend(this.options, parameter);}
+			this.options.deferAppearance=false;
+			this.options.showCartPopup=true;
 			this.init(this.element, this.options);
 			break;
 		case 'addEventObjToCart':
@@ -86,6 +98,7 @@ initDisplayProperties:function(){
 
 	nameArray=[];
 
+
 	name='productListContainer'; nameArray.push({name:name});
 	name='paymentFormContainer'; nameArray.push({name:name});
 
@@ -100,11 +113,7 @@ initControlProperties:function(){
 	this.viewHelper=new viewHelper2();
 	this.purchaseData={}; //communication object, subordinate controllers write to this
 
-	if (typeof(this.productInfo)=='undefined'){
-		this.productInfo=Widgets.Models.LocalStorage.getCookieData('cart').data; //shopping cart is same format as file-based productInfo
-		this.cartExists='true';
-	}
-	else{ this.cartExists=false; }
+	this.updateProductInfo();
 	
 	this.simpleStore.showShippingOptions=this.needShipping(this.productInfo);
 
@@ -124,9 +133,6 @@ initDisplay:function(inData){
 },
 
 initDomElements:function(){
-
-	name='productListContainer'; nameArray.push({name:name});
-	name='paymentFormContainer'; nameArray.push({name:name});
 
 	var displayItem=this.displayParameters.productListContainer;
 	$('#'+displayItem.divId).widgets_simple_store_product_selector({
@@ -225,7 +231,9 @@ addToCart:function(newProductChoice){
 	else{
 		existingObject.quantity=(1.0*existingObject.quantity)+newProductChoice.quantity;
 	}
-
+	
+	this.productInfo=incumbentCart;
+	
 	Widgets.Models.LocalStorage.setCookie('cart', incumbentCart);
 	this.cartExists=true;
 },
@@ -244,6 +252,27 @@ needShipping:function(productInfo){
 		}
 	}
 	return false;
+},
+
+updateProductInfo:function(forceCookieRefresh){
+		if (typeof(this.productInfo)=='undefined' || forceCookieRefresh){
+		this.productInfo=Widgets.Models.LocalStorage.getCookieData('cart').data; //shopping cart is same format as file-based productInfo
+		this.cartExists='true';
+	}
+	else{ this.cartExists=false; }
+},
+
+cartPopupDisplay:function(){
+
+		
+		this.element.widgets_simple_store_product_selector({
+				specialDisplayOption:'showCartPopup',
+				productInfo:this.productInfo,
+				purchaseData:this.purchaseData,
+				infoDispatchHandler:this.displayParameters.infoDispatch.handler
+		});
+
+
 }
 
 })
