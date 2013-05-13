@@ -168,21 +168,52 @@ initDisplay:function(){
 			var size=Widgets.Models.Browser.windowSize(),
 				windowHeight=size.height,
 				windowWidth=size.width,
+				windowCenterH=(windowHeight/2).toFixed(0),
+				windowCenterW=(windowWidth/2).toFixed(0),
 			
 				panelHeight=this.progressMessageObj.css('height').replace(/px/, ''),
 				panelWidth=this.progressMessageObj.css('width').replace(/px/, ''),
-				emptySpaceWidth=windowWidth-panelWidth,
-				emptySpaceHeight=windowHeight-panelHeight,
+				panelCenterH=(panelHeight/2).toFixed(0),
+				panelCenterW=(panelWidth/2).toFixed(0),
 				
-				marginWidth=(emptySpaceWidth/2).toFixed(0),
-				marginHeight=(emptySpaceHeight/2).toFixed(0);
+				toppH=windowCenterH-panelCenterH,
+				toppW=windowCenterW-panelCenterW,
+				
+				setPanelHeight,
+				setPanelWidth
+				;
+
+				if (toppW<0){toppW=0}
+				if (toppH<0){toppH=0}
+				
+				if (windowHeight<panelHeight){
+					setPanelHeight=windowHeight; 
+					this.progressMessageObj.css({
+						height:setPanelHeight+'px'
+					});
+					
+					}
+				else if (windowWidth<panelWidth){
+					setPanelWidth=windowWidth;
+					
+					this.progressMessageObj.css({
+						width:setPanelWidth+'px'
+					});
+					}
+				
+				
+// 			var emptySpaceWidth=windowWidth-panelWidth,
+// 				emptySpaceHeight=windowHeight-panelHeight,
+// 				
+// 				marginWidth=(emptySpaceWidth/2).toFixed(0),
+// 				marginHeight=(emptySpaceHeight/2).toFixed(0);
 				
 
 
 			this.progressMessageObj.css({
 				position:'fixed',
-				top:marginHeight+'px',
-				left:marginWidth+'px'
+				top:toppH+'px',
+				left:toppW+'px'
 			});
 	
 	
