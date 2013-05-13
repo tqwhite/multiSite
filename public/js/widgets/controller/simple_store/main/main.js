@@ -42,7 +42,7 @@ init: function(el, options) {
 		targetScope: this, //will add listed items to targetScope
 		propList:[
 			{name:'productInfo', importance:'optional'}, //if not here, initControlProperties fills in from cookie
-			{name:'confirmationPageTemplate'},
+			{name:'pageFormTemplates'},
 			{name:'simpleStore'}
 		],
 		showAlertFlag:true,
@@ -88,6 +88,7 @@ update:function(control, parameter){
 				}
 			break;
 		default:
+			if (typeof(control)=='object'){ this.options=$.extend(this.options, control);}
 			if (typeof(parameter)=='object'){ this.options=$.extend(this.options, parameter);}
 			this.init(this.element, this.options);
 			break;
@@ -138,7 +139,8 @@ initDomElements:function(){
 	$('#'+displayItem.divId).widgets_simple_store_product_selector({
 			productInfo:this.productInfo,
 			purchaseData:this.purchaseData,
-			infoDispatchHandler:this.displayParameters.infoDispatch.handler
+			infoDispatchHandler:this.displayParameters.infoDispatch.handler,
+			pageFormTemplates:this.pageFormTemplates
 	});
 
 	var displayItem=this.displayParameters.paymentFormContainer;
@@ -247,7 +249,7 @@ needShipping:function(productInfo){
 	var list=[];
 	for (var i in productInfo){
 		var element=productInfo[i];
-		if (element.requiresShipping===1){
+		if (element.requiresShipping==1){
 			return true;
 		}
 	}
@@ -269,7 +271,8 @@ cartPopupDisplay:function(){
 				specialDisplayOption:'showCartPopup',
 				productInfo:this.productInfo,
 				purchaseData:this.purchaseData,
-				infoDispatchHandler:this.displayParameters.infoDispatch.handler
+				infoDispatchHandler:this.displayParameters.infoDispatch.handler,
+				pageFormTemplates:this.pageFormTemplates
 		});
 
 

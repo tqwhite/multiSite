@@ -21,7 +21,18 @@ init: function(el, options) {
 			{name:'productInfo'},
 			{name:'purchaseData'}, //communication object, owned by employer (main.js)
 			{name:'infoDispatchHandler'},
-			{name:'specialDisplayOption', importance:'optional'}
+			{name:'specialDisplayOption', importance:'optional'},
+			{name:'pageFormTemplates'}
+		],
+		showAlertFlag:true,
+		source:this.constructor._fullName
+ 	});
+
+	qtools.validateProperties({
+		targetObject:options,
+		targetScope: this, //will add listed items to targetScope
+		propList:[
+			{name:'cartPopup.ini', importance:'optional'}
 		],
 		showAlertFlag:true,
 		source:this.constructor._fullName

@@ -78,20 +78,19 @@ else{
 	$outString=$catalogProcessResult['outString'];
 
 
-$confirmationTemplate=$this->contentArray['pageFormTemplates.ini']['confirmationPageTemplate'];
-$confirmationPageTemplate=\Q\Utils::htmlEntities($confirmationTemplate);
-$confirmationPageTemplate=json_encode($confirmationPageTemplate);
+$pageFormTemplates=$this->contentArray['pageFormTemplates'];
+$pageFormTemplates=\Q\Utils::htmlEntities($pageFormTemplates);
+$pageFormTemplates=json_encode($pageFormTemplates);
 
 $simpleStore=$this->simpleStore;
 $simpleStore=\Q\Utils::htmlEntities($simpleStore);
 $simpleStore=json_encode($simpleStore);
 
-//I believe that $confirmationPageTemplate is NO LONGER USED by the UI. The message is now generated on the server.
-//Remove this reference at the earliest convenience. tqii
 
 $outString="
-<div class='serverData' id='confirmationPageTemplate' style='display:none;'>$confirmationPageTemplate</div>
+<div class='serverData' id='pageFormTemplates' style='display:none;'>$pageFormTemplates</div>
 <div class='serverData' id='simpleStore' style='display:none;'>$simpleStore</div>
+
 <div class='mainContentContainer' style='overflow:hidden;position:relative;'>
 
 	$outString

@@ -264,12 +264,10 @@ switchPanels:function(info){
 		if (info.controlClickedState){
 			var displayItem=this.displayParameters['shippingPanel'];
 			displayItem.domObj[displayItem.controllerName]('show')
-			console.log('showing');
 		}
 		else{
 			var displayItem=this.displayParameters['shippingPanel'];
 			displayItem.domObj[displayItem.controllerName]('hide')
-			console.log('hiding');
 		}
 				
 				
