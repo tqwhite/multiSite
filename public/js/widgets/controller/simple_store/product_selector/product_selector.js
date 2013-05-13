@@ -30,9 +30,18 @@ init: function(el, options) {
 
 	qtools.validateProperties({
 		targetObject:options,
-		targetScope: this, //will add listed items to targetScope
 		propList:[
 			{name:'cartPopup.ini', importance:'optional'}
+		],
+		showAlertFlag:true,
+		source:this.constructor._fullName
+ 	});
+
+	qtools.validateProperties({
+		targetObject:options.pageFormTemplates['cartPopup.ini'],
+		targetScope: this, //will add listed items to targetScope
+		propList:[
+			{name:'cartPopup', importance:'optional'}
 		],
 		showAlertFlag:true,
 		source:this.constructor._fullName
@@ -281,12 +290,30 @@ writePriceDisplay:function(){
 displayCartPopup:function(){
 
 	var list=this.productInfo,
-		outString='';
-	for (var i in list){
-		var element=list[i];
-		outString+="<tr><td style='text-align:left;'>"+element.quantity+"</td><td>"+element.name+"</td><td style='text-align:right;'>$"+(1.0*element.price).toFixed(2)+"</td></tr>";
+		outString='',
+		itemTemplate, blockTemplate,
+		transformations={
+			price:function(replaceObject){return (1.0*replaceObject.price).toFixed(2) ; }
+		};
+		
+	if (typeof(this.cartPopup)=='object' && this.cartPopup.itemTemplate){
+		itemTemplate=this.cartPopup.itemTemplate;
 	}
-	outString="<table style='border-collapse:separate;border-spacing: 10px 15px;font-weight:normal;font-size:10pt;padding:30px 15px;width:500px;text-align:left;background:rgba(200,255,255,1);color:black;margin:0px auto;'>"+outString+"</table>";
+	else{
+		itemTemplate="<tr><td style='text-align:left;'><!quantity!></td><td><!name!></td><td style='text-align:right;'>$<!price!></td></tr>";
+
+	}
+		
+	if (typeof(this.cartPopup)=='object' && this.cartPopup.blockTemplate){
+		blockTemplate=this.cartPopup.blockTemplate;
+	}
+	else{
+		blockTemplate="<table style='border-collapse:separate;border-spacing: 10px 15px;font-weight:normal;font-size:10pt;padding:30px 15px;width:500px;text-align:left;background:rgba(200,255,255,1);color:black;margin:0px auto;'><!blockString!></table>";
+
+	}
+	
+	outString=qtools.templateReplaceArray({template:itemTemplate, replaceArray:list, transformations:transformations});
+	outString=qtools.templateReplace({template:blockTemplate, replaceObject:{bodyText:outString}, transformations:transformations});
 
 			this.assertModalScreen($('body'), {
 				message:outString,
@@ -294,8 +321,6 @@ displayCartPopup:function(){
 				backgroundClickFunction:function(){ $(this).hide(); },
 				fadeParms:{duration:3000},
 				messagePosition:'window'
-				
-			
 			});
 
 }

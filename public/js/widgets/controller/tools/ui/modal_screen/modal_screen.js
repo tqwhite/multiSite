@@ -132,7 +132,7 @@ employerReceiver:function(control, parameter){
 
 initDisplay:function(){
 
-	html=$.View('//widgets/controller/tools/ui/modal_screen/views/versionTwo.ejs', {
+	var html=$.View('//widgets/controller/tools/ui/modal_screen/views/versionTwo.ejs', {
 		divPrefix:this.divPrefix,
 
 		screenId:this.screenId,
@@ -143,9 +143,17 @@ initDisplay:function(){
 
 	this.element.prepend(html);
 	
+	
 	this.modalObj=$('#'+this.screenId);
-	this.progressMessageObj=$('#'+this.progressMessageId).children();
-	this.progressMessageObj=$(this.progressMessageObj[0]);
+
+// 	this.progressMessageObj=$('#'+this.progressMessageId).children();
+// 	this.progressMessageObj=$(this.progressMessageObj[0]);
+	
+	this.progressMessageObj=$('#'+this.progressMessageId);
+	var progressChildren=this.progressMessageObj.children();
+	if(progressChildren.length>0){
+		this.progressMessageObj=$(progressChildren[0]);
+	}
 	
 	var height=this.element.height();
 	this.modalObj.height(height);
