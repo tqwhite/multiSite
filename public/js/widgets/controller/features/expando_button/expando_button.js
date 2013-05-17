@@ -52,8 +52,8 @@ update:function(control, parameter){
 },
 	
 	expandHandler:function(eventObj){
-		var target=$(eventObj.target)
-			parent=target.parent()
+		var target=$(eventObj.target),
+			parent=target.parent(),
 			buttonHeight=$(target).height(),
 			content=$(this.contentSelector);
 	
