@@ -97,7 +97,7 @@ update:function(control, parameter){
 
 addSpacer:function(parent, buttonHeight){
 	if (!this.alreadySpaced){
-		parent.append("<div style='height:"+buttonHeight+"px;'>&nbsp;</div>");
+		$(parent).append("<div style='height:"+buttonHeight+"px;'>&nbsp;</div>");
 	}
 	this.alreadySpace=true;
 

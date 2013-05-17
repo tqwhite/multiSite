@@ -1,11 +1,13 @@
 <?php
+
 \Q\Utils::validateProperties(array(
 	'validatedEntity'=>$this,
 	'source'=>__file__,
 	'propertyList'=>array(
 		array('name'=>'codeNav'),
 		array('name'=>'contentArray'),
-		array('name'=>'simpleStore')
+		array('name'=>'simpleStore'),
+		array('name'=>'productSectionArray')
 	)));
 
 $contentArray=$this->contentArray;
@@ -36,9 +38,9 @@ if (isset($displayTemplates['transformations.php'])){
 $referenceData=array();
 $outString='';
 
-foreach ($productSectionArray as $label=>$productSection){
+foreach ($productSectionArray as $label=>$productSection){ //this corresponds to the number of keywords plus uncategorized
 		$fileName=str_replace(' ', '_', $label);
-		
+	
 	if (isset($contentArray['categoryTemplates']) && isset($contentArray['categoryTemplates'][$fileName.'.html'])){
 
 		$blockTemplate=$contentArray['categoryTemplates'][$fileName.'.html'];
@@ -52,12 +54,14 @@ foreach ($productSectionArray as $label=>$productSection){
 		'itemTemplate'=>$displayTemplates['productListingTemplate.html'],
 		'blockTemplate'=>$blockTemplate,
 		'transformations'=>$transformations,
-		'referenceData'=>array('categoryInfo'=>array('name'=>$label))
+		'referenceData'=>array('categoryInfo'=>array('name'=>$label)),
+		'debug'=>true
 	
 	));
 
 	$outString.=$itemProcessResult['outString'];
 }
+
 
 
 

@@ -6,6 +6,8 @@
  	private $alreadyExistsList;
 
 	 public function direct($directories) {
+	 
+echo "<div style='background:gray;margin:5px 0px;' tqdebug>".__FILE__.", line ".__LINE__."</div>";  
 		$this->alreadyExistsList=array();
 
 		$this->routeDirectory=$this->getRouteDirectory();
