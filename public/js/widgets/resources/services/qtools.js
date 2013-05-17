@@ -186,7 +186,7 @@ tmpRep:function(template, replaceObject){
 
 templateReplaceArray:function(args){
 	var outString='';
-	for (var i=0, len=args.replaceArray.length; i<len; i++){
+	for (var i in args.replaceArray){
 		args.replaceObject=args.replaceArray[i];
 		args.indexNumber=i;
 		outString+=this.templateReplace(args);

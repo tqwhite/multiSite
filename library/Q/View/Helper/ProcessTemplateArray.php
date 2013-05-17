@@ -82,16 +82,16 @@ class Q_View_Helper_ProcessTemplateArray extends Zend_View_Helper_Abstract {
 		
 		$referenceDataTagList = $this->prepareReferenceData($referenceData);
 
-if ($debug){
-echo "===";
-	\Q\Utils::dumpCli($referenceDataTagList, "referenceDataTagList");
-	echo htmlentities($itemTemplate);
-echo "===";
-	}
+
 			
 		for ($i = 0, $len = count($sourceData); $i < $len; $i++) {
 			$itemRec = $sourceData[$i];
-			
+if ($debug &&!is_array($itemRec)){
+echo "===";
+	\Q\Utils::dumpCli($itemRec, "itemRec");
+	echo htmlentities($itemTemplate);
+echo "===";
+	}			
 			$transformationResult = $this->executeTransformations($transformations, array_merge($itemRec, $referenceDataTagList), $referenceDataTagList);
 			
 			$enhancedItemRec = array_merge($itemRec, $transformationResult, $referenceDataTagList);
