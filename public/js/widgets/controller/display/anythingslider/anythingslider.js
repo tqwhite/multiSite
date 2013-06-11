@@ -30,7 +30,7 @@ Widgets.Controller.Base.extend('Widgets.Controller.Display.Anythingslider',
 /** @Prototype */
 {
 	init : function(el, options){
-
+console.log('goodbye');
 	qtools.validateProperties({
 		targetObject:options,
 		targetScope: this, //will add listed items to targetScope
@@ -237,6 +237,10 @@ Widgets.Controller.Base.extend('Widgets.Controller.Display.Anythingslider',
 			}
 
 	},
+	
+update:function(options){
+	this.init(this.element, this.options);
+},
 
 initControlParameters:function(){
 	if (typeof(this.sliderParms)=='undefined'){this.sliderParms={};}
