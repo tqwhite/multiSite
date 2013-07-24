@@ -24,6 +24,14 @@ else{
 $contentString=$this->layout()->content;
 $contentString=$this->mapServableToHash($this->contentArray, $contentString);
 
+if (APPLICATION_ENV=='production'){
+	$widgetScriptCall="<script type='text/javascript' src='/js/steal/steal.production.js?widgets'></script>";
+}
+else{
+	$widgetScriptCall="<script type='text/javascript' src='/js/steal/steal.js?widgets'></script>";
+}
+$jqueryReadyScript=$this->buildJqueryReadyCall($this->contentArray);
+
  ?>
 <!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
    'http://www.w3.org/TR/html4/strict.dtd'>
@@ -55,6 +63,10 @@ routeName: <?php echo $this->codeNav['routeName']; ?><br/>
 controller: <?php echo $this->codeNav['controller']; ?><br/>
 content: <?php echo $this->codeNav['contentDirPath']; ?><br/>
 layout: <?php echo $this->codeNav['actualLayoutFullPath']; ?><br/>
--->
-$analyticsString
+-->	
+<?php
+echo $widgetScriptCall;
+echo $jqueryReadyScript;
+echo $analyticsString;
+?>
 </html>
