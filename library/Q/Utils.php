@@ -347,6 +347,78 @@ static function makeArrayNumericIndexed($inArray){
 	return $outArray;
 }
 
+
+// 
+// 
+// templateReplaceArray:function(args){
+// 	var outString='';
+// 	for (var i in args.replaceArray){
+// 		args.replaceObject=args.replaceArray[i];
+// 		args.indexNumber=i;
+// 		outString+=this.templateReplace(args);
+// 	}
+// 	return outString;
+// },
+// 
+// templateReplace:function(args){
+// 	var template=args.template,
+// 		replaceObject=args.replaceObject,
+// 		leaveUnmatchedTagsIntact=args.leaveUnmatchedTagsIntact,
+// 		transformations=args.transformations,
+// 
+// 		outString='',
+// 		localReplaceObject={};
+// 
+// 
+// 	$.extend(this, {localReplaceObject:qtools.passByValue(replaceObject)}, args); //clones replaceObject
+// 	this.localReplaceObject['leaveUnmatchedTagsIntact']=leaveUnmatchedTagsIntact?leaveUnmatchedTagsIntact:false;
+// 	this.localReplaceObject['indexNumber']=args.indexNumber?args.indexNumber:0;
+// 
+// 	if (qtools.isNotEmpty(transformations)){
+// 		for (var fieldName in transformations){
+// 			this.localReplaceObject[fieldName]=transformations[fieldName](replaceObject);
+// 		}
+// 	}
+// 
+// 	outString=template.replace(/<!([a-zA-Z0-9]+)!>/g, this.evaluatorFunction);
+// 
+// //	outString='ttt'+outString+'qqq';
+// 	return outString;
+// },
+// 
+
+static function templateReplace($args){
+	$template=$args['template'];
+	$replaceObject=$args['replaceObject'];
+	
+	$name='leaveUnmatchedTagsIntact'; $defaultValue=false; if (isset($args[$name])) {$$name=$args[$name];} else{$$name=$defaultValue;};
+	$name='transformations'; $defaultValue=array(); if (isset($args[$name])) {$$name=$args[$name];} else{$$name=$defaultValue;};
+	$name='indexNumber'; $defaultValue=0; if (isset($args[$name])) {$$name=$args[$name];} else{$$name=$defaultValue;};
+
+	
+	$outString=$template;
+	$localReplaceObject=$replaceObject;
+	$localReplaceObject['indexNumber']=$indexNumber;
+	
+	if (count($transformations)!=0){
+		foreach ($transformations as $label=>$data){
+			$localReplaceObject[$label]=$data($replaceObject);
+		}
+	}
+	
+	foreach ($localReplaceObject as $label=>$data){
+		$outString=str_replace('<!'.$label.'!>', $data, $outString);
+	}
+	
+	if ($leaveUnmatchedTagsIntact){
+		$outString=preg_replace('/<!.*!>/', '', $outString);
+	}
+	
+	return $outString;
+
+}
+
+
 }//end of class
 
 

@@ -29,34 +29,12 @@ Widgets.Controller.Base.extend('Widgets.Controller.Session.Dispatch',
 	},
 
 	getServerData:function(){
-		var serverControlDomObj=$('#serverControl'), //'#serverData' is defined in Q_Controller_Action_Helper_WriteServerCommDiv()
-			formParams;
 
-			if (serverControlDomObj.length>0){
-				formParams=serverControlDomObj.formParams();
-				this.serverControlDomObj=serverControlDomObj;
-			}
-			else{
-				formParams={};
-			}
+		this.controllerStartupList=Widgets.Models.HtmlData.getControllerStartupList();
 
-			this.controllerStartupList=(typeof(formParams.controller_startup_list)!='undefined')?formParams.controller_startup_list:[];
+		this.serverData=Widgets.Models.HtmlData.getServerData();
+		Widgets.Models.Session.keep('serverData', this.serverData);
 
-
-
-
-	var serverDataDomObj=$('.serverData'),
-		serverData={};
-
-	var list=serverDataDomObj;
-		this.serverData={};
-
-	for (var i=0, len=list.length; i<len; i++){
-		var element=$(list[i]);
-		serverData[element.attr('id')]=JSON.parse(element.text());
-	}
-		this.serverData=serverData;
-		Widgets.Models.Session.keep('serverData', serverData);
 	},
 
 	receiveSessionStartup:function(inData){
