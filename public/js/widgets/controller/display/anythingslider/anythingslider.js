@@ -237,6 +237,10 @@ Widgets.Controller.Base.extend('Widgets.Controller.Display.Anythingslider',
 			}
 
 	},
+	
+update:function(options){
+	this.init(this.element, this.options);
+},
 
 initControlParameters:function(){
 	if (typeof(this.sliderParms)=='undefined'){this.sliderParms={};}

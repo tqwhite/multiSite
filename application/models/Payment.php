@@ -62,7 +62,7 @@ static function moneris($orderId, $cardData, $purchaseData, $priceSummary, $parm
 
 
 	if ($production){
-		$amount=number_format($priceSummary['grandTotal'], 2);
+		$amount=number_format($priceSummary['grandTotal'], 2, '.', '');  //need to prevent it from inserting a comma, moneris doesn't like it
 		$pan=$cardData['number'];
 		$expiry_date=$cardData['expYear'].$cardData['expMonth'];
 

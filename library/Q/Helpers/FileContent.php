@@ -176,15 +176,25 @@ private function getContents($filePath){
 		break;
 	}
 
-	if (isset($mimeArray[0]))
-		{$switchVar=$mimeArray[0];}
-	else
-		{$switchVar='default';}
+	if (isset($mimeArray[0])){
+		switch($mimeArray[0]){
+		case 'application':
+			$switchVar=$mimeArray[1];
+			break;
+		default:
+			$switchVar=$mimeArray[0];
+			break;
+		}
+		}
+	else{$switchVar='default';}
 
 //echo "$switchVar=$filePath<br/>"; //sometimes images arrive in weird condition, this helps.
 
 	switch ($switchVar){
 		default:
+			return $contents;
+		break;
+		case 'pdf; charset=binary':
 			return $contents;
 		break;
 		case 'image':

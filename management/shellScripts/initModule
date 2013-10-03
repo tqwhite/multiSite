@@ -1,8 +1,8 @@
 No, this isn't a real script. It's a reminder of the commands to do things
 
-./zf.sh create module pictureShow
-./zf.sh create controller Generate 1 pictureShow
-./zf.sh create action Container Generate 1 pictureShow
+./zf.sh create module categoryFront2
+./zf.sh create controller Generate 1 categoryFront2
+./zf.sh create action Container Generate 1 categoryFront2
 
 Don't forget to change this controller segment:
 
