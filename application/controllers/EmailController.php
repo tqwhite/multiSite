@@ -173,7 +173,7 @@ class EmailController extends Q_Controller_Base
 
 		$mail->addTo($destAdr);
 		$mail->addTo($destAdr);
-		if (isset($this->contentObj->contentArray['attachments'])){$this->addAttachments($mail, $this->contentObj->contentArray['attachments']);}
+		if (isset($this->contentObj->contentArray['ATTACHMENTS'])){$this->addAttachments($mail, $this->contentObj->contentArray['attachments']);}
 		$mail->addBcc('tqwhite@erdc.k12.mn.us');
 
 

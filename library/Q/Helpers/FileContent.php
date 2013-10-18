@@ -208,7 +208,22 @@ private function getContents($filePath){
 
 private function putToMediaHash($filePath){
 
-	$hash=md5($filePath);
+	$neuteredFilePath=str_replace('/', '_', $filePath);
+	$hash=$neuteredFilePath.'_'.md5($filePath);
+	$maxLen=254;
+	if (strlen($hash)>$maxLen){
+		$replacementText='_NAMETOOLONG_';
+		$replacementLen=strlen($replacementText);
+		
+		$origLen=strlen($hash);
+		$excessLen=$origLen-$maxLen+$replacementLen;
+		$startDiscard=floor($origLen/2-$excessLen/2);
+		$middle=substr($hash, $startDiscard, $excessLen); 
+
+		$hash=str_replace($middle, $replacementText, $hash);
+		$finalLen=strlen($hash);
+	} 
+	$hash=$hash.'_'.strlen($hash);
 	$hashPath=$this->hashDir.$hash;
 	$hashUrl=str_replace(DOCROOT_DIRECTORY_PATH, '',  $hashPath);
 	if (!is_readable($hashPath)){
@@ -246,46 +261,67 @@ public function __set($property, $value){
 }
 
 public function promoteGlobals(){
+
+		$this->promoteComponents();
+		
+		$this->promoteOneGlobal('IMAGES', 'images'); //HACKERY: this lower case upper case dichotomy is horrible, they should all be the same. I promist to rewrite someday, tqii
+		$this->promoteOneGlobal('ATTACHMENTS', 'ATTACHMENTS');
+
+		//CSS does the promotion by inserting into page in correct order 
+		
+}
+
+private function promoteOneGlobal($globalFolderName, $localFolderName){
+
+
+		if (isset($this->contentArray['globalItems']) &&
+			isset($this->contentArray['globalItems'][$globalFolderName]) &&
+			isset($this->contentArray['globalItems'])){
+			
+			$list=$this->contentArray['globalItems'][$globalFolderName];
+			if (!isset($this->contentArray[$localFolderName]) || !is_array($this->contentArray[$localFolderName])){$this->contentArray[$localFolderName]=array();}
+			foreach ($list as $label=>$data){
+
+				if (!isset($this->contentArray[$localFolderName][$label])){
+
+						$this->contentArray[$localFolderName][$label]=$data;
+				}
+			}
+		}
+
+		if (isset($this->contentArray['superGlobalItems']) &&
+			isset($this->contentArray['superGlobalItems'][$globalFolderName]) &&
+			isset($this->contentArray['superGlobalItems'])){
+			
+			$list=$this->contentArray['superGlobalItems'][$globalFolderName];
+			if (!isset($this->contentArray[$localFolderName]) || !is_array($this->contentArray[$localFolderName])){$this->contentArray[$localFolderName]=array();}
+			foreach ($list as $label=>$data){
+
+				if (!isset($this->contentArray[$localFolderName][$label])){
+
+						$this->contentArray[$localFolderName][$label]=$data;
+				}
+			}
+		}
+}
+
+private function promoteComponents(){
+		
+		//These are different because I think of them as macros, not servable
+		//probably not valid and can be rewritten when the upper/lower dichotomy is fixed
+
 		$list=$this->contentArray['globalItems']['COMPONENTS'];
 		foreach ($list as $label=>$data){
 			if (!isset($this->contentArray[$label])){
 					$this->contentArray[$label]=$data;
 			}
 		}
-
-		if (isset($this->contentArray['globalItems']) &&
-			isset($this->contentArray['globalItems']['IMAGES']) &&
-			isset($this->contentArray['globalItems'])){
-			
-			$list=$this->contentArray['globalItems']['IMAGES'];
-			if (!isset($this->contentArray['images']) || !is_array($this->contentArray['images'])){$this->contentArray['images']=array();}
-			foreach ($list as $label=>$data){
-
-				if (!isset($this->contentArray['images'][$label])){
-
-						$this->contentArray['images'][$label]=$data;
-				}
+		$list=$this->contentArray['superGlobalItems']['COMPONENTS'];
+		foreach ($list as $label=>$data){
+			if (!isset($this->contentArray[$label])){
+					$this->contentArray[$label]=$data;
 			}
 		}
-
-		if (isset($this->contentArray['superGlobalItems']) &&
-			isset($this->contentArray['superGlobalItems']['IMAGES']) &&
-			isset($this->contentArray['superGlobalItems'])){
-			
-			$list=$this->contentArray['superGlobalItems']['IMAGES'];
-			if (!isset($this->contentArray['images']) || !is_array($this->contentArray['images'])){$this->contentArray['images']=array();}
-			foreach ($list as $label=>$data){
-
-				if (!isset($this->contentArray['images'][$label])){
-
-						$this->contentArray['images'][$label]=$data;
-				}
-			}
-		}
-
-
-		//CSS does the promotion by inserting into page in correct order 
-		
 }
 
 }//end of class
