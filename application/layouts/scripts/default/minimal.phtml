@@ -32,13 +32,17 @@ $codeNavHtml=$this->showCodeNav($this->codeNav);
 
 
 
+
 //PARAMETERS (for JS widgets) =========================================================================
+	
+	$routeName=Zend_Controller_Front::getInstance()->getRouter()->getCurrentRouteName();
 
 	$serverData='';
-	$parameters=array();
+	$parameters=array('processContentSourceRouteName'=>$routeName);
+
 	
 	if (isset($this->contentArray['globalItems']['_PARAMETERS'])){
-		$parameters=$this->contentArray['globalItems']['_PARAMETERS'];
+		$parameters=array_merge($parameters, $this->contentArray['globalItems']['_PARAMETERS']);
 	}
 
 	if (isset($this->contentArray['_PARAMETERS'])){
@@ -50,6 +54,9 @@ $codeNavHtml=$this->showCodeNav($this->codeNav);
 		$parameters=json_encode($parameters);
 		$serverData.="<div class='serverData' id='parameters' style='display:none;'>$parameters</div>";
 	}
+
+
+//NEXT SECTION =========================================================================
 
 
 if (APPLICATION_ENV=='production' && isset($this->contentArray['analytics.js']) && $this->contentArray['analytics.js']){
@@ -96,7 +103,6 @@ $jqueryReadyScript=$this->buildJqueryReadyCall($this->contentArray);
 
 <?php echo $contentString; ?>
 
-<?/*php echo $this->headScript()->appendFile('/js/steal/steal.js?widgets'); */?>
 
 </body>
 <!--
