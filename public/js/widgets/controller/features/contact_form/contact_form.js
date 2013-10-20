@@ -20,7 +20,6 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ContactForm',
 			propList:[
 				{name:'event'},
 				{name:'parameterFileName'}
-
 			],
 			source:this.constructor._fullName
 		});
@@ -51,7 +50,7 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ContactForm',
 		this.viewHelper=new viewHelper2();
 		this.enterKeyEnabled=false;
 		
-		this.serverData=Widgets.Models.Session.get('serverData');
+		this.serverData=Widgets.Models.Session.get('serverData');		
 
 		qtools.validateProperties({
 			targetObject:this.serverData, targetScope: this, //will add listed items to targetScope
@@ -59,7 +58,7 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ContactForm',
 		});
 		qtools.validateProperties({
 			targetObject:this.serverData['parameters'], targetScope: this, //will add listed items to targetScope
-			propList:[{name:this.parameterFileName}], source:this.constructor._fullName, showAlertFlag:true
+			propList:[{name:this.parameterFileName}, {name:'processContentSourceRouteName'}], source:this.constructor._fullName, showAlertFlag:true
 		});
 	
 		this.clickedButtonObj=$(this.event.target);
@@ -160,7 +159,8 @@ saveButtonHandler:function(control, parameter){
 
 		Widgets.Models.Email.send({
 			formParams:$.extend(this.displayPanel.formParams(), {buttonId:buttonId}),
-			mailParams:this.formParameters
+			mailParams:this.formParameters,
+			serverManagement:{processContentSourceRouteName:this.processContentSourceRouteName}
 			
 			}, this.callback('resetAfterSave'));
 
