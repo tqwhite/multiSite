@@ -22,6 +22,11 @@
 			$cssString=$viewObj->mapServableToHash($contentArray, $contentArray['globalItems']['CSS']);
 			array_map('applyStyle', $cssString);
 		}
+		
+		if (isset($contentArray['CSS'])){
+			$cssString=$viewObj->mapServableToHash($contentArray, $contentArray['CSS']);
+			array_map('applyStyle', $cssString);
+		}
 
 	 }
 

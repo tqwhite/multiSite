@@ -1,6 +1,6 @@
 <?php
 
-class CategoryFront1_GenerateController extends Q_Controller_Base
+class CategoryFront2_GenerateController extends Q_Controller_Base
 {
     public function init() //this is called by the Zend __construct() method
     {
@@ -14,8 +14,8 @@ class CategoryFront1_GenerateController extends Q_Controller_Base
 
     public function containerAction()
     {
-    
-mail('tq@justkidding.com', "tqwhite.org multiSite", print_r($_SERVER, true), 'FROM: website');
+       $this->setVariationLayout('layout');
+
 
 		$serverComm[]=array("fieldName"=>"message", "value"=>'hello from the server via javascript');
 

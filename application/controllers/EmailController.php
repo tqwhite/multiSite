@@ -48,7 +48,14 @@ class EmailController extends Q_Controller_Base
     		));
     		
 		}
-		else{
+		elseif (isset($inData['mailParams']['internalBodyTemplate'])){
+				$emailMessage=\Q\Utils::templateReplace(array(
+					'replaceObject'=>$inData['formParams'],
+					'template'=>$inData['mailParams']['internalBodyTemplate']
+				));
+			
+			}
+		else {
 			$emailMessage=$view->render('simple-array.phtml');
 		}
 		
@@ -60,7 +67,19 @@ class EmailController extends Q_Controller_Base
 		));
 		
 		if (isset($mailParams['ccAddress'])){
-			$emailMessage=$view->render('simple-array.phtml');
+		
+		
+			if (isset($inData['mailParams']['internalBodyTemplate'])){
+				$emailMessage=\Q\Utils::templateReplace(array(
+					'replaceObject'=>$inData['formParams'],
+					'template'=>$inData['mailParams']['internalBodyTemplate']
+				));
+			
+			}
+			else{
+				$emailMessage=$view->render('simple-array.phtml');
+			}
+		
 			$ccStatus=$this->sendMarketingData(array(
 				'emailMessage'=>$emailMessage,
 				'formParams'=>$inData['formParams'],
@@ -114,11 +133,13 @@ class EmailController extends Q_Controller_Base
 		}
     }
     
-    private function addAttachments($mail, $list){
+    private function addAttachments($mail, $list, $contentList){
 		foreach ($list as $label=>$data){
 
-			$at = new Zend_Mime_Part($data);
-			$at->filename = basename($label);
+			if (!isset($contentList[$data])){die(__FILE__.", line ".__LINE__." says, There is no items called '$data' in the ATTACHMENTS folder");}
+
+			$at = new Zend_Mime_Part($contentList[$data]);
+			$at->filename = basename($data);
 			$at->disposition = Zend_Mime::DISPOSITION_INLINE;
 			$at->encoding = Zend_Mime::ENCODING_BASE64;
 			$at->type = 'application/pdf';
@@ -156,7 +177,7 @@ class EmailController extends Q_Controller_Base
 		
 // 		$tr=new Zend_Mail_Transport_Smtp('mail.justkidding.com', array(
 // 			'username'=>'tq@justkidding.com',
-// 			'password'=>'xx',
+// 			'password'=>'**',
 // 			'auth'=>'login'
 // 		));
 // 		
@@ -173,8 +194,16 @@ class EmailController extends Q_Controller_Base
 
 		$mail->addTo($destAdr);
 		$mail->addTo($destAdr);
-		if (isset($this->contentObj->contentArray['attachments'])){$this->addAttachments($mail, $this->contentObj->contentArray['attachments']);}
-		$mail->addBcc('tqwhite@erdc.k12.mn.us');
+		
+		if (isset($mailParams['attachments']) && count($mailParams['attachments'])>0){
+		if (isset($this->contentObj->contentArray['ATTACHMENTS'])){$this->addAttachments($mail, $mailParams['attachments'], $this->contentObj->contentArray['ATTACHMENTS']);}
+		else{ die(__FILE__.", line ".__LINE__." says, There is no ATTACHMENTS folder");}
+		
+		}
+		
+		if(!isset($mailParams['noBccTq']) || $mailParams['noBccTq']!='true'){
+			$mail->addBcc('tq@justkidding.com');
+		}
 
 
 
@@ -192,7 +221,6 @@ class EmailController extends Q_Controller_Base
     
     private function sendMarketingData($args){
     
-
     	$emailMessage=$args['emailMessage'];
     	$mailParams=$args['mailParams'];
     	$emailSubject=$mailParams['mailSubject'];
@@ -234,7 +262,10 @@ class EmailController extends Q_Controller_Base
 
 		$this->addToList($mail, $mailParams['ccAddress']);
 		$mail->addTo($destAdr);
-		$mail->addBcc('tqwhite@erdc.k12.mn.us');
+
+		if(!isset($mailParams['noBccTq']) || $mailParams['noBccTq']!=true){
+			$mail->addBcc('tq@justkidding.com');
+		}
 		
 
 		if (true||getenv('APPLICATION_ENV')!='development'){

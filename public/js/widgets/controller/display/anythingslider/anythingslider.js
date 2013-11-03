@@ -30,7 +30,7 @@ Widgets.Controller.Base.extend('Widgets.Controller.Display.Anythingslider',
 /** @Prototype */
 {
 	init : function(el, options){
-console.log('goodbye');
+
 	qtools.validateProperties({
 		targetObject:options,
 		targetScope: this, //will add listed items to targetScope
