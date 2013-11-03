@@ -23,6 +23,15 @@ getControllerStartupList:function(){
 		}
 
 		controllerStartupList=(typeof(formParams.controller_startup_list)!='undefined')?formParams.controller_startup_list:[];
+
+		for (var i in controllerStartupList){
+			if (typeof(controllerStartupList[i].parameters)!='undefined'){
+				controllerStartupList[i].parameters=$.parseJSON(controllerStartupList[i].parameters);
+			}
+		}
+		
+		
+		
 		return controllerStartupList;
 },
 
