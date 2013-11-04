@@ -14,11 +14,7 @@ class CategoryFront1_GenerateController extends Q_Controller_Base
 
     public function containerAction()
     {
-    
-mail('tq@justkidding.com', "tqwhite.org multiSite", print_r($_SERVER, true), 'FROM: website');
-
 		$serverComm[]=array("fieldName"=>"message", "value"=>'hello from the server via javascript');
-
 
 		$jsControllerList[]=array(
 		"domSelector"=>"#contentList",
