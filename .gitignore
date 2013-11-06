@@ -1,9 +1,10 @@
 .DS_Store
 ._.DS_Store
+._*
 
 /application/configs/*
-application/configs/application.ini
 /library/Credentials/*
+
 
 /tmp/*
 
