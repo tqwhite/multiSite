@@ -28,6 +28,9 @@ getControllerStartupList:function(){
 			if (typeof(controllerStartupList[i].parameters)!='undefined'){
 				controllerStartupList[i].parameters=$.parseJSON(controllerStartupList[i].parameters);
 			}
+			else{
+				controllerStartupList[i].parameters={};
+			}
 		}
 		
 		
