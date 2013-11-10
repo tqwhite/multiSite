@@ -168,7 +168,7 @@ p{
 .modal1{
 	display:none;
 	background:rgba(100,100,255,.5);
-	position:absolute;
+	position:relative;
 	top:0;
 	left:0;
 

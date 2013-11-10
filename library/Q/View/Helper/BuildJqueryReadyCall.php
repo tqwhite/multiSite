@@ -53,18 +53,26 @@
 		$localScript=$contentArray;
 	}
 
+if (isset($contentArray['layoutJs'])){
+	$layoutJs=$contentArray['layoutJs'];
+}
+else{
+	$layoutJs='';
+}
+
 if ($globalScript || $localScript){
 	$outString="
 		<script type='text/javascript'>
 			/* <![CDATA[ */
 			var initFunction=function(){
-	
+				
+				$layoutJs
+				
 				$globalScript
 	
 				$localScript
 	
-	
-			};
+			}; //end of initFunction()
 			
 			if (typeof(steal)=='function'){
 				steal.then(initFunction);
