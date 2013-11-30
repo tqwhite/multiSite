@@ -7,24 +7,6 @@
 		array('name'=>'contentArray')
 	)));
 
-
-
-
-//DEFAULT STYLES (for this page type) =========================================================================
-
-$styleString="
-
-
-
-";
-
-
-$this->headStyle()->appendStyle($styleString);
-
-
-
-
-
 //INIT =========================================================================
 
 
@@ -38,10 +20,44 @@ $tabString='';
 $panelContentString='';
 		$list=$contentArray['panelItems'];
 		foreach ($list as $label=>$element){
-			$id=md5($label);
-			$tabLabel=$this->filenameToLabel($label);
-			$panelContentString.="<li class='switchablePanel' id='$id'>$element</li>";
-			$tabString.="<li class='panelTab'><div class='tabControlGuts'><a class='contentListActivator' href='#$id'>$tabLabel</a></div></li>";
+				
+		$id=md5($label);
+		$tabLabel=$this->filenameToLabel($label);
+		$tabString.="<li class='panelTab'><div class='tabControlGuts'><a class='contentListActivator' href='#$id'>$tabLabel</a></div></li>";
+
+
+			if (is_array($element)){
+			
+				$breakout=explode('/', $element['templateName']);
+				$container=$breakout[0];
+				$filename=$breakout[1];
+				if (!isset($contentArray[$container]) || !isset($contentArray[$container][$filename])){
+					$elementString="The template {$element['templateName']} is not defined for $label<br/";
+				}
+				else{
+			
+					$elementString=\Q\Utils::templateReplace(Array(
+						'template'=>$contentArray[$container][$filename],
+						'replaceObject'=>$element['data']
+					
+					));
+					// templateReplace($args){
+					// 	$template=$args['template'];
+					// 	$replaceObject=$args['replaceObject'];
+					// 	
+					// 	
+					// \Q\Utils::templateReplace(array(
+					// 	'template'=>$
+					// ));
+			
+				}
+
+				$panelContentString.="<li class='switchablePanel' id='$id'>$elementString</li>";
+			}
+			else{		
+				$panelContentString.="<li class='switchablePanel' id='$id'>$element</li>";
+			}
+
 		}
 $panelContentString="<ul id='contentList'>$panelContentString</ul>";
 
