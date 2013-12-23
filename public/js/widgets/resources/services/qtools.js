@@ -1186,6 +1186,31 @@ intoSortedArray:function(inObj, newPropertyName){
 	
 	outArray=workArray.sort(qtools.byObjectProperty(newPropertyName));
 	return outArray;
-}
+},
+
+changeCssDefinedProperty:function(sheetName, className, propertyName, newValue, includeDescendents) {
+		var ending = '$';
+		setValue = '';
+		if (includeDescendents === true) {
+			ending = '';
+		}
+		if (typeof(newValue) != 'undefined') {
+			setValue = newValue;
+		}
+		var list = document.styleSheets;
+		for (var i = 0, len = list.length; i < len; i++) {
+			var element = list[i];
+			if (element['href'] && element['href'].match(new RegExp('jquery\.qtip'))) {
+				var cssRules = element.cssRules;
+				for (j = 0, len2 = cssRules.length; j < len2; j++) {
+					var rule = cssRules[j];
+					if (rule.selectorText.match(new RegExp(className + ending))) {
+						cssRules[j].style.backgroundColor = setValue;
+						console.log(cssRules[j].style.backgroundColor);
+					}
+				}
+			}
+		}
+	}
 
 }
