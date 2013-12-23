@@ -40,6 +40,22 @@
 		}
 	 	
 	 }
+		
+	 if (isset($contentArray) &&
+	 	isset($contentArray['JS']) &&
+	 	is_array($contentArray['JS'])){
+	 	
+	 	foreach ($contentArray['JS'] as $label=>$data){
+
+			$globalScript.="
+			
+				//$label
+				$data
+			
+			";
+		}
+	 	
+	 }
 
 
 	if (isset($contentArray['jqueryReadyScript.js']) && $contentArray['jqueryReadyScript.js']){
