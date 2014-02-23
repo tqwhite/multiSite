@@ -1206,7 +1206,6 @@ changeCssDefinedProperty:function(sheetName, className, propertyName, newValue, 
 					var rule = cssRules[j];
 					if (rule.selectorText.match(new RegExp(className + ending))) {
 						cssRules[j].style.backgroundColor = setValue;
-						console.log(cssRules[j].style.backgroundColor);
 					}
 				}
 			}
