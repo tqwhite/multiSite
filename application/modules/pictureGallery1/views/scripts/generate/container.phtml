@@ -1,0 +1,148 @@
+<?php
+\Q\Utils::validateProperties(array(
+	'validatedEntity'=>$this,
+	'source'=>__file__,
+	'propertyList'=>array(
+		array('name'=>'codeNav'),
+		array('name'=>'contentArray')
+	)));
+
+//INIT =========================================================================
+
+
+$contentArray=$this->contentArray;
+
+
+
+//MAIN CONTENT SECTION =========================================================================
+
+$tabString='';
+$panelContentString='';
+		$list=$contentArray['panelImages'];
+		if (is_array($contentArray['parameterFiles'])){
+			$parameterFiles=$contentArray['parameterFiles'];
+		}
+		else{
+			$parameterFiles=array();
+		}
+		if (is_array($contentArray['templates'])){
+			$templates=$contentArray['templates'];
+		}
+		else{
+			$templates=array();
+		}
+		if (is_array($contentArray['controlParameters.ini'])){
+			$controlParameters=$contentArray['controlParameters.ini'];
+		}
+		else{
+			$controlParameters=array();
+		}
+		
+		$showTabs=!isset($controlParameters['showTabs']) ||(isset($controlParameters['showTabs']) && $controlParameters['showTabs']);
+
+
+		if (isset($controlParameters['tabLabelType'])){
+			$tabLabelType=$controlParameters['tabLabelType'];
+		}
+		else{
+			$tabLabelType='';
+		}
+		$counter=0;
+		foreach ($list as $label=>$element){
+			$counter++;
+			$id=md5($label);
+		if ($showTabs){
+
+			switch ($tabLabelType){
+				case 'index':
+					$tabLabel=$counter;
+					break;
+				default:
+					$tabLabel=$this->filenameToLabel($label);
+					break;
+			}
+			
+			$tabString.="<li class='panelTab'><div class='tabControlGuts'><a class='contentListActivator' href='#$id'>$tabLabel</a></div></li>";
+		}
+		else{
+		//figure out how to tell anySlider not to show the tabs		
+		}
+
+			$tmp=explode('.', $label);
+			$parameterFileName=$tmp[0].'.ini';
+	
+			if (isset($parameterFiles[$parameterFileName])){
+				$parameterFile=$parameterFiles[$parameterFileName];
+			}
+			elseif (isset($parameterFiles['_default'])){
+				$parameterFile=$parameterFiles['_default'];
+			}
+			else{
+				$parameterFile=array();
+			}
+			
+			$parameterFile['imageLink']=$element;
+			$parameterFile['imageName']=$label;
+
+			if (isset($parameterFile['templateName'])){
+			
+				$templateName=$parameterFile['templateName'];
+			}
+			else{
+				$templateName='templates/_default.html';
+			}
+			
+				$breakout=explode('/', $templateName);
+				$container=$breakout[0];
+				$fileName=$breakout[1];
+		
+				if (!isset($contentArray[$container]) || !isset($contentArray[$container][$fileName])){
+					$template="The template {$element['templateName']} is not defined for $label<br/";
+				}
+				else{
+					$template=$contentArray[$container][$fileName];
+				}
+	
+			
+			$templateResult=\Q\Utils::templateReplace(Array(
+				'template'=>$template,
+				'replaceObject'=>$parameterFile
+			
+			));
+
+			if (isset($contentArray['wrapperTemplate.html'])){
+				$wrapperTemplate=$contentArray['wrapperTemplate.html'];
+			}
+			else{
+				$wrapperTemplate="<!templateResult!>";
+			}
+
+			$elementString=\Q\Utils::templateReplace(Array(
+				'template'=>$wrapperTemplate,
+				'replaceObject'=>array('templateResult'=>$templateResult)
+			
+			));
+			
+			$panelContentString.="<li class='switchablePanel' id='$id'>$elementString</li>";
+
+		}
+$panelContentString="<ul id='contentList'>$panelContentString</ul>";
+
+$headBanner=$contentArray['headBanner.html'];
+
+$panelString="
+<div class='mainContentContainer'>
+	<div id='panelContainer'>
+		<div id='tabList' style='display:none;'>$tabString</div>
+		<div id='tabDisplayContainer' class='sliderTopControls'></div>
+		<div class='masterPanelList' style='clear:both;'>
+			$panelContentString
+		</div>
+	</div>
+</div>
+";
+
+//OUTPUT SECTION =========================================================================
+
+
+echo $panelString;
