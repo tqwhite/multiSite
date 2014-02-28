@@ -1210,6 +1210,24 @@ changeCssDefinedProperty:function(sheetName, className, propertyName, newValue, 
 				}
 			}
 		}
+	},
+
+findAttributeInParents:function(domObj, attrName){
+
+	for (var i=0; i<25; i++){	
+		var	attribute=domObj.attr(attrName);
+		if (typeof(attribute)!='undefined'){
+			return attribute;
+		}
+		domObj=domObj.parent();
+		if (domObj[0].nodeName=='BODY'){
+			return '';
+		}
 	}
+	
+	return ''; //this is not really needed. I just don't trust them not to change the spelling of BODY someday
+
+}
+
 
 }

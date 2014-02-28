@@ -62,7 +62,7 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ContactForm',
 		});
 	
 		this.clickedButtonObj=$(this.event.target);
-		var	formName=this.clickedButtonObj.attr('formName');
+		var	formName=qtools.findAttributeInParents(this.clickedButtonObj, 'formName');
 		
 		if (this.serverData.parameters[this.parameterFileName][formName]){
 			this.formParameters=this.serverData.parameters[this.parameterFileName][formName];
