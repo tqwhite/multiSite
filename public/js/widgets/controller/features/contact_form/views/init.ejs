@@ -15,5 +15,11 @@ qtools.validateProperties({
 	],
  source:'session.login.mainPanel' });
  
+ 
+ var outString=qtools.templateReplace({
+ 	template:this.formData.entryForm.html,
+ 	replaceObject:this.formData
+ });
+ 
  %>
-<%==this.formData.entryForm.html %>
+<%==outString %>

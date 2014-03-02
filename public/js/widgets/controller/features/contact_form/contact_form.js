@@ -19,7 +19,8 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ContactForm',
 			targetScope: this, //will add listed items to targetScope
 			propList:[
 				{name:'event'},
-				{name:'parameterFileName'}
+				{name:'parameterFileName'},
+				{name:'calculatedFormData', optional:true}
 			],
 			source:this.constructor._fullName
 		});
@@ -74,13 +75,14 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ContactForm',
 	},
 
 initDisplay:function(inData){
-
+	
+	var formData=qtools.mergeRecursive(this.calculatedFormData, this.formParameters);
 
 	var html=$.View('//widgets/controller/features/contact_form/views/init.ejs',
 		$.extend(inData, {
 			displayParameters:this.displayParameters,
 			viewHelper:this.viewHelper,
-			formData:this.formParameters,
+			formData:formData,
 			message:'hip hooray'
 		})
 		);
