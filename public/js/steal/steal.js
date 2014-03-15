@@ -2062,8 +2062,13 @@ if (support.interactive) {
 				steals.push.apply(steals, startFiles)
 			}
 			// either instrument is in this page (if we're the window opened from steal.browser), or its opener has it
-			if ( options.instrument || (!options.browser && win.top && win.top.opener &&
-					win.top.opener.steal && win.top.opener.steal.options.instrument) ) {
+			
+			//tqii: new browser security policies make accessing win.top.opener illegal when redirected from https to http, as in facebook to brochure site
+			//I do not use steal/instrument and don't imagine I will need to use it during a redirect so I have removed the condition that deals with the latter condition.
+			if (typeof(console)!='undefined' && typeof(console.warn)=='function'){console.warn('public/js/steal/steal.js says: Distribution code changed 2068');}
+			// options.instrument || (!options.browser && win.top && win.top.opener && win.top.opener.steal && win.top.opener.steal.options.instrument) 
+			
+			if (options.instrument) {
 				// force startFiles to load before instrument
 				steals.push(function(){}, {
 					src: "steal/instrument",
