@@ -1,0 +1,21 @@
+<?php
+\Q\Utils::validateProperties(array(
+	'validatedEntity'=>$this,
+	'source'=>__file__,
+	'propertyList'=>array(
+		array('name'=>'codeNav'),
+		array('name'=>'contentArray')
+	)));
+
+//INIT =========================================================================
+
+
+$contentArray=$this->contentArray;
+
+$targetUrl=$contentArray['redirectParms.ini']['target']['url'];
+
+
+$targetUrl=$this->translateUrls($targetUrl);
+
+
+header("Location: $targetUrl");
