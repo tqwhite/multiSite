@@ -72,6 +72,8 @@ Widgets.Controller.Base.extend('Widgets.Controller.Features.ContactForm',
 		else{
 			alert('_PARAMETERS/"+this.parameterFileName+" contains no spec for :'+formName+" in either the site or page directory");
 		}
+		
+		if (typeof(this.calculatedFormData)=='undefined'){ this.calculatedFormData={};}
 	},
 
 initDisplay:function(inData){
