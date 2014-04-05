@@ -31,7 +31,7 @@ $panelContentString='';
 		else{
 			$templates=array();
 		}
-		if (is_array($contentArray['controlParameters.ini'])){
+		if (isset($contentArray['controlParameters.ini']) && is_array($contentArray['controlParameters.ini'])){
 			$controlParameters=$contentArray['controlParameters.ini'];
 		}
 		else{
@@ -97,7 +97,7 @@ $panelContentString='';
 				$fileName=$breakout[1];
 		
 				if (!isset($contentArray[$container]) || !isset($contentArray[$container][$fileName])){
-					$template="The template {$element['templateName']} is not defined for $label<br/";
+					$template="<div class='panelItem'><img src='<!imageLink!>'/></div>";
 				}
 				else{
 					$template=$contentArray[$container][$fileName];
