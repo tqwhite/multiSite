@@ -13,6 +13,8 @@ steal(
 	'./resources/jqueryPlugins/jquery.md5.js',
 	'./resources/jqueryPlugins/jquery.qprompt.js',
 	'./resources/jqueryPlugins/spin.js',
+	'./resources/jqueryPlugins/jquery.scrollTo.js',
+	
 
 	'./resources/jqueryPlugins/qtip/jquery.qtip.min.css',
 	'./resources/jqueryPlugins/qtip/jquery.qtip.min.js',
