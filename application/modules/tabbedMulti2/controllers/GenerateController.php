@@ -20,6 +20,27 @@ class TabbedMulti2_GenerateController extends Q_Controller_Base
 		$serverComm[]=array("fieldName"=>"message", "value"=>'hello from the server via javascript');
 
 
+if ($this->contentObj->contentArray['pageControls.ini'] && $this->contentObj->contentArray['pageControls.ini']['jsControllerList']){
+
+		$jsControllerList=$this->contentObj->contentArray['pageControls.ini']['jsControllerList'];
+		
+		for ($i=0, $len=count($jsControllerList); $i<$len; $i++){
+			$jsControllerList[$i]['parameters']=json_encode($jsControllerList[$i]['parameters']);
+		}
+		
+		/*
+
+		pageControls.ini example:
+			jsControllerList.0.domSelector="#contentList";
+			jsControllerList.0.controllerName="widgets_display_tab_panel";
+			jsControllerList.0.parameters.tabDisplayContainerIdName="tabDisplayContainer";
+			jsControllerList.0.parameters.tabListIdName="tabList";
+			jsControllerList.0.parameters.switchableContentListId="contentList";
+
+		*/
+
+}
+else{
 		$jsControllerList[]=array(
 		"domSelector"=>"#contentList",
 		"controllerName"=>'widgets_display_tab_panel',
@@ -29,6 +50,9 @@ class TabbedMulti2_GenerateController extends Q_Controller_Base
 						'switchableContentListId'=>'contentList'
 					))
 	);
+}
+
+
      	$serverComm=$this->_helper->ArrayToServerCommList('controller_startup_list', $jsControllerList);
 
 		$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
