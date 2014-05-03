@@ -574,6 +574,8 @@ getDottedPath:function(baseObj, subPathString, debug){
 		elements;
 		this.getDottedPathLastProgressiveString='';
 
+	if (baseObj==null){throw "qtools.getDottedPath() says, baseObj cannot be null";};
+
 	if (subPathString.toString().match(/\./)){
 		var elements=subPathString.split('.');
 	}
