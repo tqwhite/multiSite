@@ -310,17 +310,24 @@ private function promoteComponents(){
 		//These are different because I think of them as macros, not servable
 		//probably not valid and can be rewritten when the upper/lower dichotomy is fixed
 
+		if (!isset($this->contentArray['globalItems'])){
+		die("site globalItems directory is missing");
+		}
+		
 		$list=$this->contentArray['globalItems']['COMPONENTS'];
 		foreach ($list as $label=>$data){
 			if (!isset($this->contentArray[$label])){
 					$this->contentArray[$label]=$data;
 			}
 		}
+		
+		if (isset($this->contentArray['superGlobalItems']['COMPONENTS'])){
 		$list=$this->contentArray['superGlobalItems']['COMPONENTS'];
 		foreach ($list as $label=>$data){
 			if (!isset($this->contentArray[$label])){
 					$this->contentArray[$label]=$data;
 			}
+		}
 		}
 }
 
