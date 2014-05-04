@@ -198,5 +198,16 @@ $outputString="
 
 $outputString=$this->translateUrls($outputString);
 
+if (isset($this->contentArray['MACROS'])){
+	$outputString=$this->applyMacros($this->contentArray['MACROS'], $outputString); //apply page level macros
+}
+
+if (isset($this->contentArray["globalItems"]['MACROS'])){
+$outputString=$this->applyMacros($this->contentArray["globalItems"]['MACROS'], $outputString);
+}
+
+if (isset($this->contentArray["superGlobalItems"]['MACROS'])){
+$outputString=$this->applyMacros($this->contentArray["superGlobalItems"]['MACROS'], $outputString);
+}
 $outputString=$this->mapServableToHash($this->contentArray, $outputString);
 echo $outputString;

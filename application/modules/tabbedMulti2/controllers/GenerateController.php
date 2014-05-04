@@ -20,7 +20,7 @@ class TabbedMulti2_GenerateController extends Q_Controller_Base
 		$serverComm[]=array("fieldName"=>"message", "value"=>'hello from the server via javascript');
 
 
-if ($this->contentObj->contentArray['pageControls.ini'] && $this->contentObj->contentArray['pageControls.ini']['jsControllerList']){
+if (isset($this->contentObj->contentArray['pageControls.ini']) && isset($this->contentObj->contentArray['pageControls.ini']['jsControllerList'])){
 
 		$jsControllerList=$this->contentObj->contentArray['pageControls.ini']['jsControllerList'];
 		
