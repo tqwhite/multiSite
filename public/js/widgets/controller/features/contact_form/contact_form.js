@@ -161,12 +161,13 @@ saveButtonHandler:function(control, parameter){
 		
 		var buttonId=this.clickedButtonObj.attr('buttonId');
 
-		Widgets.Models.Email.send({
+//		Widgets.Models.Email.send({
+		Widgets.Models.Email.sendPlus({
 			formParams:$.extend(this.displayPanel.formParams(), {buttonId:buttonId}),
 			mailParams:this.formParameters,
 			serverManagement:{processContentSourceRouteName:this.processContentSourceRouteName}
 			
-			}, this.callback('resetAfterSave'));
+			}, this.displayPanel, this.callback('resetAfterSave'));
 
 		break;
 		case 'setAccessFunction':

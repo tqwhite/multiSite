@@ -107,7 +107,9 @@ class TestController extends Zend_Controller_Action
 //     $response = new Zend_Controller_Response_Http();
 // 
 //     $frontController->dispatch($newRequest, $response);
-	
+
+//phpinfo();
+
 	$this->view->message='hello from test/utility<br/>';
 
     }
