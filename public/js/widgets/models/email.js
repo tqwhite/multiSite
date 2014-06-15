@@ -31,7 +31,7 @@ steal('jquery/model', function() {
 				return;
 			}
 
-			if (typeof (data.formDomObj) != 'undefined') {
+			if (typeof (formDomObj) != 'undefined') {
 				this.sendFiles(formDomObj, success, error); //this is async:FALSE
 
 				if (this.sendFilesResult.status===0){
@@ -77,6 +77,7 @@ var toServer=data;
 			return false; 
 			}
 			
+			var a = formDomObj.find('form');
 			var formName = a.attr('name');
 
 			var formData = new FormData(document.forms.namedItem(formName));
