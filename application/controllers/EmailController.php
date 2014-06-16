@@ -94,7 +94,12 @@ class EmailController extends Q_Controller_Base
 				'fileList'=>$fileList
 			));
 		}
-			
+
+	
+		if (is_array($fileList) && count($fileList)>0){
+				$this->removeUploads($fileList);
+		}			
+		
 		$this->_helper->json(array(
 			'status'=>$status,
 			'messages'=>$this->errorList,
@@ -184,9 +189,13 @@ $extension=array_search(
 			$at->type = $mimeType;
         
 			$mail->addAttachment($at);
-		
-		exec("rm $filePath");
 			
+		}
+    }
+    
+    private function removeUploads($fileList){
+		foreach ($fileList as $fileId=>$filePath){
+			exec("rm $filePath");
 		}
     }
     
