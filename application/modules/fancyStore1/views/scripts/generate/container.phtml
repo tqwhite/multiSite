@@ -49,6 +49,9 @@ foreach ($productSectionArray as $label=>$productSection){ //this corresponds to
 		$blockTemplate=$contentArray['categoryTemplates']['categoryDefaultTemplate.html'];
 	}
 
+// For some reason I don't understand, processTemplateArray() below is a special version For
+// this fancyStore view file. I intend to fix that, asap. If I haven't done it yet, sorry. tqii
+
 	$itemProcessResult=$this->processTemplateArray(array(
 		'sourceData'=>$productSection,
 		'itemTemplate'=>$displayTemplates['productListingTemplate.html'],

@@ -1,6 +1,11 @@
 <?php
 class Q_View_Helper_ProcessTemplateArray extends Zend_View_Helper_Abstract {
-	
+
+// PLEASE DO NOT USE THIS!! So far, it's only used once and that needs to change.
+// This is, for some reason I don't understand, specific to module/fancyStore.
+// At my next convenience, I intend to move ProcessTemplateArray to q/utils and
+// get rid of this. If I haven't done it yet. Sorry. tqii
+
 	public function processTemplateArray($args) {
 		
 		\Q\Utils::validateProperties(array(
