@@ -35,11 +35,17 @@ class EmailController extends Q_Controller_Base
 		$inData=$this->inData;
 		$formParams=$inData['formParams'];
 		$mailParams=$inData['mailParams'];
+
+		if (isset($inData['fileList'])){
+			$fileList=$inData['fileList'];
+		}
+		else{
+			$fileList='';
+		}
 			
 		$view = new Zend_View();
 		$view->setScriptPath(APPLICATION_PATH.'/views/scripts/email');
 		$view->mailArray=$formParams;
-
 
 		if (isset($inData['mailParams']['mailBodyTemplate'])){
 			$emailMessage=\Q\Utils::templateReplace(array(
@@ -62,7 +68,8 @@ class EmailController extends Q_Controller_Base
 		$status=$this->sendMail(array(
 			'emailMessage'=>$emailMessage,
 			'formParams'=>$inData['formParams'],
-			'mailParams'=>$inData['mailParams']
+			'mailParams'=>$inData['mailParams'],
+			'fileList'=>$fileList
 
 		));
 		
@@ -83,10 +90,16 @@ class EmailController extends Q_Controller_Base
 			$ccStatus=$this->sendMarketingData(array(
 				'emailMessage'=>$emailMessage,
 				'formParams'=>$inData['formParams'],
-				'mailParams'=>$inData['mailParams']
+				'mailParams'=>$inData['mailParams'],
+				'fileList'=>$fileList
 			));
 		}
-			
+
+	
+		if (is_array($fileList) && count($fileList)>0){
+				$this->removeUploads($fileList);
+		}			
+		
 		$this->_helper->json(array(
 			'status'=>$status,
 			'messages'=>$this->errorList,
@@ -150,12 +163,50 @@ class EmailController extends Q_Controller_Base
 		}
     }
     
+    private function addUploads($mail, $fileList, $fileNamePrefix=''){
+		foreach ($fileList as $fileId=>$filePath){
+		
+			$fileContent=file_get_contents($filePath);
+			
+			
+		$finfo = new finfo(FILEINFO_MIME_TYPE);
+		$mimeType = $finfo->file($filePath);
+		
+$extension=array_search(
+			$mimeType,
+			array(
+				'jpg' => 'image/jpeg',
+				'png' => 'image/png',
+				'gif' => 'image/gif',
+			),
+			true
+		);
+
+			$at = new Zend_Mime_Part($fileContent);
+			$at->filename = basename($fileNamePrefix.$fileId.'\.'.$extension);
+			$at->disposition = Zend_Mime::DISPOSITION_INLINE;
+			$at->encoding = Zend_Mime::ENCODING_BASE64;
+			$at->type = $mimeType;
+        
+			$mail->addAttachment($at);
+			
+		}
+    }
+    
+    private function removeUploads($fileList){
+		foreach ($fileList as $fileId=>$filePath){
+			exec("rm $filePath");
+		}
+    }
+    
     private function sendMail($args){
     
 
     	$emailMessage=$args['emailMessage'];
     	$mailParams=$args['mailParams'];
     	$emailSubject=$mailParams['mailSubject'];
+    	$fileList=$args['fileList'];
+    	$formParams=$args['formParams'];
     	
     	$destInfo=$this->sortDestName($args);
     	$destAdr=$destInfo['address'];
@@ -175,12 +226,12 @@ class EmailController extends Q_Controller_Base
     	
 		$tr=new Zend_Mail_Transport_Sendmail();
 		
-// 		$tr=new Zend_Mail_Transport_Smtp('mail.justkidding.com', array(
+// 		$tr=new Zend_Mail_Transport_Smtp('smtp.mandrillapp.com', array(
 // 			'username'=>'tq@justkidding.com',
 // 			'password'=>'**',
 // 			'auth'=>'login'
 // 		));
-// 		
+		
 	
 		Zend_Mail::setDefaultTransport($tr);
 		Zend_Mail::setDefaultFrom($fromAdr, $fromName);
@@ -194,10 +245,21 @@ class EmailController extends Q_Controller_Base
 
 		$mail->addTo($destAdr);
 		$mail->addTo($destAdr);
+	
+		if (is_array($fileList) && count($fileList)>0){
+		
+				$uploadFilePrefix=$mailParams['uploadFilePrefix'];
+				foreach ($formParams as $label=>$data){
+					$uploadFilePrefix=str_replace("<!$label!>", $data, $uploadFilePrefix);
+				}
+
+				$this->addUploads($mail, $fileList, $uploadFilePrefix);
+				
+		}
 		
 		if (isset($mailParams['attachments']) && count($mailParams['attachments'])>0){
-		if (isset($this->contentObj->contentArray['ATTACHMENTS'])){$this->addAttachments($mail, $mailParams['attachments'], $this->contentObj->contentArray['ATTACHMENTS']);}
-		else{ die(__FILE__.", line ".__LINE__." says, There is no ATTACHMENTS folder");}
+			if (isset($this->contentObj->contentArray['ATTACHMENTS'])){$this->addAttachments($mail, $mailParams['attachments'], $this->contentObj->contentArray['ATTACHMENTS']);}
+			else{ die(__FILE__.", line ".__LINE__." says, There is no ATTACHMENTS folder");}
 		
 		}
 		
@@ -224,6 +286,7 @@ class EmailController extends Q_Controller_Base
     	$emailMessage=$args['emailMessage'];
     	$mailParams=$args['mailParams'];
     	$emailSubject=$mailParams['mailSubject'];
+    	$fileList=$args['fileList'];
     	
     	$destInfo=$this->sortDestName($args);
     	$destAdr=$destInfo['address'];
@@ -262,6 +325,11 @@ class EmailController extends Q_Controller_Base
 
 		$this->addToList($mail, $mailParams['ccAddress']);
 		$mail->addTo($destAdr);
+	
+		if (is_array($fileList) && count($fileList)>0){
+				$this->addUploads($mail, $fileList, $mailParams['uploadFilePrefix']);
+		}
+		
 
 		if(!isset($mailParams['noBccTq']) || $mailParams['noBccTq']!=true){
 			$mail->addBcc('tq@justkidding.com');

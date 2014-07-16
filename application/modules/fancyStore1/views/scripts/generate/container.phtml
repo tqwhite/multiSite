@@ -47,11 +47,18 @@ foreach ($productSectionArray as $label=>$productSection){ //this corresponds to
 	}
 	else{
 		$blockTemplate=$contentArray['categoryTemplates']['categoryDefaultTemplate.html'];
+		$blockTemplate=str_replace('<!category!>', $label, $blockTemplate);
 	}
 
+// For some reason I don't understand, processTemplateArray() below is a special version For
+// this fancyStore view file. I intend to fix that, asap. If I haven't done it yet, sorry. tqii
+	
+	$itemTemplate=$displayTemplates['productListingTemplate.html'];
+		$itemTemplate=str_replace('<!category!>', $label, $itemTemplate);
+	
 	$itemProcessResult=$this->processTemplateArray(array(
 		'sourceData'=>$productSection,
-		'itemTemplate'=>$displayTemplates['productListingTemplate.html'],
+		'itemTemplate'=>$itemTemplate,
 		'blockTemplate'=>$blockTemplate,
 		'transformations'=>$transformations,
 		'referenceData'=>array('categoryInfo'=>array('name'=>$label)),

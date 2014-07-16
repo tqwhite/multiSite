@@ -50,6 +50,10 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="form"/>
         </controllerFile>
+        <controllerFile controllerName="Upload">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="file"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
       <layoutsDirectory>
@@ -575,6 +579,12 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Email">
             <viewScriptFile forActionName="form"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Upload">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Upload">
+            <viewScriptFile forActionName="file"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
