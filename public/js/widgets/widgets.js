@@ -29,6 +29,7 @@ steal(
 	
 	'./controller/features/expando_button/expando_button.js',
 	'./controller/features/contact_form/contact_form.js',
+	'./controller/features/contact_button/contact_button.js',
 	
 	'./controller/apps/bookmark/create/create.js',
 

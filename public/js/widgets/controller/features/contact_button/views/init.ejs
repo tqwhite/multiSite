@@ -1,0 +1,25 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'displayParameters'},
+		{name:'viewHelper'},
+		{name:'formData'}
+	],
+ source:'session.login.mainPanel' });
+ 
+qtools.validateProperties({
+	targetObject:this.formData,
+	propList:[
+		{name:'html'}
+	],
+ source:'session.login.mainPanel' });
+ 
+ 
+ var outString=qtools.templateReplace({
+ 	template:this.formData.entryForm.html,
+ 	replaceObject:this.formData
+ });
+ 
+ %>
+<%==outString %>
