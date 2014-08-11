@@ -267,6 +267,7 @@ public function promoteGlobals(){
 		$this->promoteOneGlobal('IMAGES', 'images'); //HACKERY: this lower case upper case dichotomy is horrible, they should all be the same. I promist to rewrite someday, tqii
 		$this->promoteOneGlobal('ATTACHMENTS', 'ATTACHMENTS');
 
+		//at present, _PARAMETERS is merged in default/layout.phtml
 		//CSS does the promotion by inserting into page in correct order 
 		
 }
