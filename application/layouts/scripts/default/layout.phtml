@@ -127,7 +127,6 @@ else{
 	if (isset($this->contentArray['_PARAMETERS'])){
 		if (!is_array($parameters)){$parameters=array();}
 			foreach ($this->contentArray['_PARAMETERS'] as $label=>$data){
-			echo "$label= >$data<br/>";
 				if (is_array($parameters[$label])){
 					$parameters[$label]=array_merge($parameters[$label], $data);
 				}
