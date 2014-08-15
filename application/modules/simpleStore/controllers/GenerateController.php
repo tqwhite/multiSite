@@ -656,8 +656,7 @@ PRODUCTS;
 	private function getConfirmationTemplate($productCatalogInfo) {
 		
 		$contentArray = $this->contentObj->contentArray;
-
-		if (isset($productCatalogInfo['confirmationMessageTemplateName']) && $productCatalogInfo['confirmationMessageTemplateName']!='') {
+		if (isset($productCatalogInfo['confirmationMessageTemplateName']) || $productCatalogInfo['confirmationMessageTemplateName']=='') {
 			$outString = $contentArray['productConfirmationMessageTemplates'][$productCatalogInfo['confirmationMessageTemplateName']];
 		} else {
 			$outString = '';
@@ -674,7 +673,7 @@ PRODUCTS;
 			$productCatalogInfo = \Q\Utils::lookupDottedPath($productSpecs, 'prodCode', $element['prodCode']);
 			
 			
-			if (isset($productCatalogInfo['confirmationMessageTemplateName'])  && $productCatalogInfo['confirmationMessageTemplateName']!='') {
+			if (isset($productCatalogInfo['confirmationMessageTemplateName'])  || $productCatalogInfo['confirmationMessageTemplateName']!='') {
 				
 				$name = $productCatalogInfo['confirmationMessageTemplateName'];
 				
