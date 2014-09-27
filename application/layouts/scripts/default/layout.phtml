@@ -77,7 +77,7 @@ $footer="
 
 $codeNavHtml=$this->showCodeNav($this->codeNav);
 
-if (APPLICATION_ENV=='production'){
+if (false && APPLICATION_ENV=='production'){
 	$widgetScriptCall="<script type='text/javascript' src='/js/steal/steal.production.js?widgets'></script>";
 }
 else{
@@ -125,7 +125,16 @@ else{
 	}
 
 	if (isset($this->contentArray['_PARAMETERS'])){
-		$parameters=array_merge($parameters, $this->contentArray['_PARAMETERS']);
+		if (!is_array($parameters)){$parameters=array();}
+			foreach ($this->contentArray['_PARAMETERS'] as $label=>$data){
+				if (is_array($parameters[$label])){
+					$parameters[$label]=array_merge($parameters[$label], $data);
+				}
+				else{
+					$parameters[$data]=$data;
+				}
+
+		}
 	}
 	
 	if (count($parameters)>0){
