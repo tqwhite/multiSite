@@ -32,6 +32,7 @@ steal(
 	'./controller/features/contact_button/contact_button.js',
 	
 	'./controller/apps/bookmark/create/create.js',
+	'./controller/apps/simple_data_entry/simple_data_entry.js',
 
 	'./controller/simple_store/main/main.js',
 	'./controller/simple_store/product_selector/product_selector.js',
