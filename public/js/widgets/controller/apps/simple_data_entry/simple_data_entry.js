@@ -36,8 +36,7 @@ steal('jquery/controller', 'jquery/view/ejs')
 			});
 
 
-
-			this.initControlProperties();
+			this.initControlProperties(options);
 			this.initDisplayProperties();
 			this.initDisplay({});
 
@@ -112,8 +111,11 @@ steal('jquery/controller', 'jquery/view/ejs')
 
 		},
 
-		initControlProperties: function() {
+		initControlProperties: function(options) {
 			this.viewHelper = new viewHelper2();
+			
+			
+			this.controlParameters=options;
 
 		},
 
@@ -194,7 +196,7 @@ steal('jquery/controller', 'jquery/view/ejs')
 					var formParams = this.element.formParams();
 					Widgets.Models.SimpleData.save({
 						formParams: formParams,
-						mailParams: this.formParameters,
+						controlParameters: this.controlParameters,
 						serverManagement: {
 							processContentSourceRouteName: this.processContentSourceRouteName
 						}

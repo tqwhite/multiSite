@@ -1,6 +1,6 @@
 <?php
 
-class SimpledataController extends Zend_Controller_Action
+class SimpledataController  extends Q_Controller_Base
 {
 
 
@@ -37,72 +37,20 @@ class SimpledataController extends Zend_Controller_Action
 	
 		$inData=$this->inData;
 		$formParams=$inData['formParams'];
-\Q\Utils::dumpCli($inData, "inData");exit;
 		
-		if (isset($inData['fileList'])){
-			$fileList=$inData['fileList'];
-		}
-		else{
-			$fileList='';
-		}
-			
-		$view = new Zend_View();
-		$view->setScriptPath(APPLICATION_PATH.'/views/scripts/email');
-		$view->mailArray=$formParams;
-
-		if (isset($inData['mailParams']['mailBodyTemplate'])){
-			$emailMessage=\Q\Utils::templateReplace(array(
-    			'replaceObject'=>$inData['formParams'],
-    			'template'=>$inData['mailParams']['mailBodyTemplate']
-    		));
-    		
-		}
-		elseif (isset($inData['mailParams']['internalBodyTemplate'])){
-				$emailMessage=\Q\Utils::templateReplace(array(
-					'replaceObject'=>$inData['formParams'],
-					'template'=>$inData['mailParams']['internalBodyTemplate']
-				));
-			
-			}
-		else {
-			$emailMessage=$view->render('simple-array.phtml');
-		}
+		$contentArray=$this->contentObj->contentArray;	
 		
-		$status=$this->sendMail(array(
-			'emailMessage'=>$emailMessage,
-			'formParams'=>$inData['formParams'],
-			'mailParams'=>$inData['mailParams'],
-			'fileList'=>$fileList
-
-		));
+		$folderName=$this->inData['controlParameters']['parameterFolderName'];
+		$fileName=$this->inData['controlParameters']['parameterFileName'];
 		
-		if (isset($mailParams['ccAddress'])){
-		
-		
-			if (isset($inData['mailParams']['internalBodyTemplate'])){
-				$emailMessage=\Q\Utils::templateReplace(array(
-					'replaceObject'=>$inData['formParams'],
-					'template'=>$inData['mailParams']['internalBodyTemplate']
-				));
-			
-			}
-			else{
-				$emailMessage=$view->render('simple-array.phtml');
-			}
-		
-			$ccStatus=$this->sendMarketingData(array(
-				'emailMessage'=>$emailMessage,
-				'formParams'=>$inData['formParams'],
-				'mailParams'=>$inData['mailParams'],
-				'fileList'=>$fileList
-			));
-		}
+		$parameters=$contentArray[$folderName][$fileName];
 
 	
-		if (is_array($fileList) && count($fileList)>0){
-				$this->removeUploads($fileList);
-		}			
+		$simpleData=new \Application_Model_SimpleData($parameters);
 		
+		$status=$simpleData->save();
+		
+
 		$this->_helper->json(array(
 			'status'=>$status,
 			'messages'=>$this->errorList,
