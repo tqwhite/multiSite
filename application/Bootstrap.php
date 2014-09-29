@@ -5,6 +5,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
 private $initFlag;
 
+
+public function _initDatabaseStuff(){
+	$config=$this->getOptions();
+	Zend_Registry::set('databaseSpecs', $config['databaseSpecs']);
+}
+
 public function _initExposeStructures(){
 
 $front = Zend_Controller_Front::getInstance();

@@ -42,13 +42,14 @@ class SimpledataController  extends Q_Controller_Base
 		
 		$folderName=$this->inData['controlParameters']['parameterFolderName'];
 		$fileName=$this->inData['controlParameters']['parameterFileName'];
-		
 		$parameters=$contentArray[$folderName][$fileName];
 
 	
 		$simpleData=new \Application_Model_SimpleData($parameters);
 		
-		$status=$simpleData->save();
+		$status=$simpleData->updateColumns($formParams);
+		
+		$status=$simpleData->save($formParams);
 		
 
 		$this->_helper->json(array(
