@@ -19,6 +19,7 @@ steal('jquery/controller', 'jquery/view/ejs')
 		init: function(element, options) {
 			this.baseInits();
 			this.element = $(element);
+			this.options=options;
 
 
 			qtools.validateProperties({
@@ -261,12 +262,13 @@ steal('jquery/controller', 'jquery/view/ejs')
 		saveStatusCallback: function(status) {
 			if (status.status==1){
 			if (status.data.type=='insert'){
-				this.statusDiv.text("Record added to database");
+				this.statusDiv.text("Record added to database (id="+status.data.formParams.refId+")");
 			}
 			else{
-				this.statusDiv.text("Existing record updated");
+				this.statusDiv.text("Existing record updated (id="+status.data.formParams.refId+")");
 			}
 			this.clearEntryFields();
+			this.update('', {});
 			}
 			else{
 				this.statusDiv.text("Problem: "+status.message);
@@ -275,6 +277,11 @@ steal('jquery/controller', 'jquery/view/ejs')
 		
 		clearEntryFields:function(){
 			var fields=this.element.find('input');
+	for (var i=0, len=fields.length; i<len; i++){
+		var element=fields[i];
+		$(element).val('');
+	}
+			var fields=this.element.find('textarea');
 	for (var i=0, len=fields.length; i<len; i++){
 		var element=fields[i];
 		$(element).val('');

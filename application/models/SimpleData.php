@@ -100,7 +100,8 @@ class Application_Model_SimpleData
 		$this->args['Application_Model_SimpleData.save'] = 'Got Here, too';
 		return array(
 			"status"=>1,
-			"type"=>$type
+			"type"=>$type,
+			"formParams"=>$formParams
 		);
 	}
 	
