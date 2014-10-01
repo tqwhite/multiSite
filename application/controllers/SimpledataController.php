@@ -53,11 +53,9 @@ class SimpledataController  extends Q_Controller_Base
 		
 
 		$this->_helper->json(array(
-			'status'=>$status,
+			'status'=>$status['status'],
 			'messages'=>$this->errorList,
-			'data'=>array(
-				$emailMessage
-				)
+			'data'=>$status
 		));
 		
 		

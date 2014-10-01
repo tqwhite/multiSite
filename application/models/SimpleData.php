@@ -31,7 +31,11 @@ class Application_Model_SimpleData
 		$db                      = new Zend_Db_Adapter_Pdo_Mysql($databaseSpecs);
 		
 		if (!$this->checkIfUserTableExists($db, $userTablename)) {
-			$aql = "CREATE TABLE `$userDbname`.`$userTablename` (`refId` varchar(36) NOT NULL, PRIMARY KEY (`refId`));";
+			$aql = "CREATE TABLE `$userDbname`.`$userTablename` (
+					`refId` varchar(36) NOT NULL,
+					created datetime,
+					modified datetime, 
+					PRIMARY KEY (`refId`));";
 			$test = $db->query($aql);
 		}
 		
@@ -77,16 +81,27 @@ class Application_Model_SimpleData
 	
 		$sql="select * from {$this->tablename} where refId='{$formParams['refId']}'";
 		$result=$this->dbConnection->fetchAssoc($sql);
+		
+		$date = Zend_Date::now();
+		$date = $date->toString('YYYY-MM-dd HH:mm:ss');
 
-		if (!count($result)){
+		if (count($result)===0){
+			$formParams['created']=$date;
+			$formParams['modified']=$date;
 			$this->dbConnection->insert($this->tablename, $formParams);
+			$type='insert';
 		}
 		else{
-			$this->dbConnection->update($this->tablename, $formParams);
+			$formParams['modified']=$date;
+			$this->dbConnection->update($this->tablename, $formParams, "refid='{$formParams['refId']}'");
+			$type='update';
 		}
 	
 		$this->args['Application_Model_SimpleData.save'] = 'Got Here, too';
-		return $this->args;
+		return array(
+			"status"=>1,
+			"type"=>$type
+		);
 	}
 	
 	private function checkIfUserDbExists($db, $userDbname)

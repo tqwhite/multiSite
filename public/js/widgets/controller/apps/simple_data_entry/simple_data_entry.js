@@ -73,7 +73,7 @@ steal('jquery/controller', 'jquery/view/ejs')
 
 			this.serverData = Widgets.Models.Session.get('serverData');
 
-			console.dir(this.serverData);
+			qtools.consoleMessage(this.serverData);
 
 			qtools.validateProperties({
 				targetObject: this.serverData,
@@ -105,6 +105,11 @@ steal('jquery/controller', 'jquery/view/ejs')
 				name: name,
 				handlerName: name + 'Handler',
 				targetDivId: name + 'Target'
+			});
+			
+			
+			name = 'statusDiv'; nameArray.push({
+				name: name
 			});
 
 			this.displayParameters = $.extend(this.componentDivIds, this.assembleComponentDivIdObject(nameArray));
@@ -171,7 +176,18 @@ steal('jquery/controller', 'jquery/view/ejs')
 			.addClass('basicButton');
 
 			this.element.find('input').qprompt();
-
+			
+			var name='statusDiv',
+			displayItem = this.displayParameters[name];
+			displayItem.domObj=$('#'+name);
+			
+			if (!displayItem.domObj.length){
+				this.element.prepend("<div id='statusDiv' class='statusDiv'></div>");
+				displayItem.domObj=$('#'+name);
+			}
+			
+			this.statusDiv=displayItem.domObj;
+			
 		},
 
 		//BUTTON HANDLERS =========================================================================================================
@@ -193,7 +209,23 @@ steal('jquery/controller', 'jquery/view/ejs')
 						eventObj.preventDefault(); return;
 					}
 
-					var formParams = this.element.formParams();
+					var rawParams = this.element.formParams(),
+						formParams={};
+					
+
+					for (var i in rawParams){
+						var item=rawParams[i],
+							type=$(this.element).find('[name="'+i+'"]').attr('type');
+
+						if (type=='radio'){
+							formParams[i]=(item && item[0])?item[0]:item;
+						}
+						else{
+							formParams[i]=item;
+						}
+					}
+					
+					
 					Widgets.Models.SimpleData.save({
 						formParams: formParams,
 						controlParameters: this.controlParameters,
@@ -227,7 +259,26 @@ steal('jquery/controller', 'jquery/view/ejs')
 		},
 
 		saveStatusCallback: function(status) {
-			console.dir(status);
+			if (status.status==1){
+			if (status.data.type=='insert'){
+				this.statusDiv.text("Record added to database");
+			}
+			else{
+				this.statusDiv.text("Existing record updated");
+			}
+			this.clearEntryFields();
+			}
+			else{
+				this.statusDiv.text("Problem: "+status.message);
+			}
+		},
+		
+		clearEntryFields:function(){
+			var fields=this.element.find('input');
+	for (var i=0, len=fields.length; i<len; i++){
+		var element=fields[i];
+		$(element).val('');
+	}
 		}
 	}) //end of method-containing object ===
 
