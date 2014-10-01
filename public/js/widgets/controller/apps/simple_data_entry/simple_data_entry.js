@@ -219,7 +219,12 @@ steal('jquery/controller', 'jquery/view/ejs')
 							type=$(this.element).find('[name="'+i+'"]').attr('type');
 
 						if (type=='radio'){
-							formParams[i]=(item && item[0])?item[0]:item;
+							if (qtools.toType(item)=='array'){
+							formParams[i]=item[0];
+							}
+							else{
+							formParams[i]=item;
+							}
 						}
 						else{
 							formParams[i]=item;
