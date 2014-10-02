@@ -19,7 +19,7 @@ steal('jquery/controller', 'jquery/view/ejs')
 		init: function(element, options) {
 			this.baseInits();
 			this.element = $(element);
-			this.options=options;
+			this.options = options;
 
 
 			qtools.validateProperties({
@@ -74,7 +74,7 @@ steal('jquery/controller', 'jquery/view/ejs')
 
 			this.serverData = Widgets.Models.Session.get('serverData');
 
-			qtools.consoleMessage(this.serverData);
+			qtools.consoleMessage({serverData:this.serverData, options:this.options});
 
 			qtools.validateProperties({
 				targetObject: this.serverData,
@@ -107,8 +107,8 @@ steal('jquery/controller', 'jquery/view/ejs')
 				handlerName: name + 'Handler',
 				targetDivId: name + 'Target'
 			});
-			
-			
+
+
 			name = 'statusDiv'; nameArray.push({
 				name: name
 			});
@@ -119,9 +119,9 @@ steal('jquery/controller', 'jquery/view/ejs')
 
 		initControlProperties: function(options) {
 			this.viewHelper = new viewHelper2();
-			
-			
-			this.controlParameters=options;
+
+
+			this.controlParameters = options;
 
 		},
 
@@ -177,18 +177,18 @@ steal('jquery/controller', 'jquery/view/ejs')
 			.addClass('basicButton');
 
 			this.element.find('input').qprompt();
-			
-			var name='statusDiv',
-			displayItem = this.displayParameters[name];
-			displayItem.domObj=$('#'+name);
-			
-			if (!displayItem.domObj.length){
+
+			var name = 'statusDiv',
+				displayItem = this.displayParameters[name];
+			displayItem.domObj = $('#' + name);
+
+			if (!displayItem.domObj.length) {
 				this.element.prepend("<div id='statusDiv' class='statusDiv'></div>");
-				displayItem.domObj=$('#'+name);
+				displayItem.domObj = $('#' + name);
 			}
-			
-			this.statusDiv=displayItem.domObj;
-			
+
+			this.statusDiv = displayItem.domObj;
+
 		},
 
 		//BUTTON HANDLERS =========================================================================================================
@@ -211,27 +211,25 @@ steal('jquery/controller', 'jquery/view/ejs')
 					}
 
 					var rawParams = this.element.formParams(),
-						formParams={};
-					
+						formParams = {};
 
-					for (var i in rawParams){
-						var item=rawParams[i],
-							type=$(this.element).find('[name="'+i+'"]').attr('type');
 
-						if (type=='radio'){
-							if (qtools.toType(item)=='array'){
-							formParams[i]=item[0];
+					for (var i in rawParams) {
+						var item = rawParams[i],
+							type = $(this.element).find('[name="' + i + '"]').attr('type');
+
+						if (type == 'radio') {
+							if (qtools.toType(item) == 'array') {
+								formParams[i] = item[0];
+							} else {
+								formParams[i] = item;
 							}
-							else{
-							formParams[i]=item;
-							}
-						}
-						else{
-							formParams[i]=item;
+						} else {
+							formParams[i] = item;
 						}
 					}
-					
-					
+
+
 					Widgets.Models.SimpleData.save({
 						formParams: formParams,
 						controlParameters: this.controlParameters,
@@ -265,34 +263,50 @@ steal('jquery/controller', 'jquery/view/ejs')
 		},
 
 		saveStatusCallback: function(status) {
-			if (status.status==1){
-			if (status.data.type=='insert'){
-				this.statusDiv.text("Record added to database (id="+status.data.formParams.refId+")");
-			}
-			else{
-				this.statusDiv.text("Existing record updated (id="+status.data.formParams.refId+")");
-			}
-			this.clearEntryFields();
-			this.update('', {});
-			}
-			else{
-				this.statusDiv.text("Problem: "+status.message);
+			if (status.status == 1) {
+				var info=qtools.templateReplaceObject(this.options.statusInfoTemplate, status.data.formParams);
+				if (status.data.type == 'insert') {
+					this.statusDiv.html("Record added to database (" + info + ")");
+				} else {
+					this.statusDiv.html("Existing record updated (" + info + ")");
+				}
+				this.clearEntryFields();
+				this.update('', {});
+			} else {
+				this.statusDiv.text("Problem: " + status.message);
 			}
 		},
-		
-		clearEntryFields:function(){
-			var fields=this.element.find('input');
-	for (var i=0, len=fields.length; i<len; i++){
-		var element=fields[i];
-		$(element).val('');
-	}
-			var fields=this.element.find('textarea');
-	for (var i=0, len=fields.length; i<len; i++){
-		var element=fields[i];
-		$(element).val('');
-	}
+
+		clearEntryFields: function() {
+
+
+			var fields = this.element.find('input');
+			for (var i = 0, len = fields.length; i < len; i++) {
+				var element = $(fields[i]),
+					type=element.attr('type');
+				
+				switch (type){
+					case 'radio':
+						element.prop('checked', false);
+					break;
+					case 'checkbox':
+						element.prop('checked', false);
+					break;
+					default:
+						element.val('');
+					break;
+				
+				}
+			}
+			
+			var fields = this.element.find('textarea');
+			for (var i = 0, len = fields.length; i < len; i++) {
+				var element = fields[i];
+				$(element).val('');
+			}
 		}
 	}) //end of method-containing object ===
 
 });
+
 
