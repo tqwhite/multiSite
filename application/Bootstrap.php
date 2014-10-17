@@ -9,7 +9,7 @@ private $initFlag;
 public function _initDatabaseStuff(){
 	$config=$this->getOptions();
 	
-	if (isset($config['databaseSpecs')){
+	if (isset($config['databaseSpecs'])){
 		Zend_Registry::set('databaseSpecs', $config['databaseSpecs']);
 	}
 	
