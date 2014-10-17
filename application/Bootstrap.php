@@ -8,7 +8,11 @@ private $initFlag;
 
 public function _initDatabaseStuff(){
 	$config=$this->getOptions();
-	Zend_Registry::set('databaseSpecs', $config['databaseSpecs']);
+	
+	if (isset($config['databaseSpecs')){
+		Zend_Registry::set('databaseSpecs', $config['databaseSpecs']);
+	}
+	
 }
 
 public function _initExposeStructures(){
