@@ -23,11 +23,6 @@ $outBoundPayload=array('transactionInfo'=>$transactionJson, 'productList'=>$prod
 	
 	//	curl_setopt($ch, CURLOPT_PORT, 8080);
 
-	$multiSiteConfig=Zend_Registry::get('multiSite');
-	if ($multiSiteConfig['usePromiscuousCurl']=='true'){
-	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-	}
-
 	curl_setopt($ch, CURLOPT_POST, true);
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $outBoundPayload);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
