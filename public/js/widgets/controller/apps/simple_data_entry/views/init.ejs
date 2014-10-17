@@ -1,0 +1,36 @@
+<%
+qtools.validateProperties({
+	targetObject:this,
+	propList:[
+		{name:'viewHelper'},
+		{name:'displayParameters'},
+		{name:'formData'}
+	],
+ source:'boilerplate.view.name' });
+
+qtools.validateProperties({
+	targetObject:displayParameters,
+	propList:[
+		{name:'contentContainer'},
+		{name:'activationButton'},
+		{name:'placeholder', importance:'optional'}
+	],
+ source:'simple_store.main.init.ejs' });
+ 
+qtools.validateProperties({
+	targetObject:this.formData,
+	propList:[
+		{name:'message'},
+		{name:'placeholder', importance:'optional'}
+	],
+ source:'session.login.mainPanel' });
+ 
+ %>
+<div id='<%==this.displayParameters.contentContainer.divId %>'>
+	<div style='font-size:20px;color:green;margin:50px;'>
+		Hello from <%==this.formData.message %>
+	</div>
+	<div id='<%==this.displayParameters.activationButton.divId %>' style='margin:50px;width:200px;'>
+		Click Me!
+	</div>
+</div>

@@ -1,0 +1,4 @@
+
+cd public/js;
+
+./js jquery/generate/controller Widgets.Controller.Apps.SimpleDataEntry
