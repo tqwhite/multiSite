@@ -36,8 +36,16 @@ $outBoundPayload=array('transactionInfo'=>$transactionJson, 'productList'=>$prod
 // \Q\Utils::dumpCli($transactionInfo, "transactionInfo");
 // \Q\Utils::dumpCli(json_decode($result, true), "json_decode(result, true)");
 // \Q\Utils::dumpCli($result, "result");
-
-	return json_decode($result, true);
+	$finalResult=json_decode($result, true);
+	
+	if (!$finalResult){
+		$finalResult=array(
+			"status"=>-1,
+			"message"=>"Provisioning server did not respond. Fatal Error."
+		);
+	}
+	
+	return $finalResult;
 }
 
 private function cleanCart($shoppingCart){
