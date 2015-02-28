@@ -26,6 +26,8 @@ $front = Zend_Controller_Front::getInstance();
 	$config['multiSite']['rootDomainSegment']=ROOT_DOMAIN_SEGMENT; //this allows links among the multiSites to vary from dev to demo to production
 
 	Zend_Registry::set('multiSite', $config['multiSite']);
+	
+	Zend_Registry::set('emailSender', $config['emailSender']);
 
 	//$multiSite=Zend_Registry::get('multiSite');
 }
