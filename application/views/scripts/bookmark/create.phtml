@@ -25,7 +25,7 @@ position:absolute;
 bottom:15px;
 }
 .editorContainer textarea{
-height:150px;width:375px;padding-left:25px;
+height:50px;width:375px;padding-left:25px;
 }
 .footerContactBlock{
 font-size:8pt;
@@ -54,6 +54,16 @@ $controlSectionId='bookmarkControlId';
 
 $this->jqueryReadyScript="
 $('#$controlSectionId').widgets_apps_bookmark_create();
+$('#pastedEditor').change(function(){
+
+var obj=$('#pastedEditor'),
+valueText=obj.val(),
+quotation=valueText.match(/\"([\s\S]*)\"/),
+improvedText=quotation[1].replace(/[\"“”]/g, \"\'\"),
+quotedText=improvedText.replace(/([\\n\\r][\\n\\r])/g, '$1\"'),
+resultText=valueText.replace(quotation[0], '\"'+quotedText+'\"');
+obj.val(resultText);
+});
 ";
 
 
@@ -79,14 +89,15 @@ href=\"javascript:(function(){var bookmarkUrl=('http://tqwhite.org?uri='+window.
 
 
 <div class='editorContainer'>
-	<textarea>
+<textarea  style='height:125px;' id='pastedEditor'>
+\"PASTEHERE\"
 
+http://<!rootDomainSegment!>?{$bookmark['shortId']}
+</textarea>
+<textarea>
+\"{$bookmark['anchor']}\"
 
-
-
-	{$bookmark['anchor']}
-
-	http://<!rootDomainSegment!>?{$bookmark['shortId']}
+http://<!rootDomainSegment!>?{$bookmark['shortId']}
 </textarea>
 </div>
 
