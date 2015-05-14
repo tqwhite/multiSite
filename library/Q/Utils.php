@@ -265,13 +265,13 @@ getDottedPath:function(baseObj, subPathString, debug){
 },
 */
 
-static function getDottedPath($baseObj, $dottedPath){
+static function getDottedPath($baseObj, $dottedPath, $separator='.'){
 	//basically treats $baseObj.a.b.c as if it were $baseObj['a']['b']['c']
 	//good for constructed indexes and stuff that comes from Javascript
 	$target=$baseObj;
 	$getDottedPathLastProgressiveString='';
 
-	$elements=explode('.', $dottedPath);
+	$elements=explode($separator, $dottedPath);
 
 	if (!$dottedPath){ return $baseObj; }
 
@@ -282,7 +282,8 @@ static function getDottedPath($baseObj, $dottedPath){
 
 				$target=$target[$data];
 
-				$getDottedPathLastProgressiveString.=$data.'.';
+				$getDottedPathLastProgressiveString.=$data.$separator;
+
 				if (!isset($target)){
 			//		echo 'bad path='.$getDottedPathLastProgressiveString."<br/>\n";
 					return '';
