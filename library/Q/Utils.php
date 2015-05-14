@@ -280,6 +280,10 @@ static function getDottedPath($baseObj, $dottedPath, $separator='.'){
 		foreach ($elements as $label=>$data){
 			if ($data){ //mainly eliminates trailing periods but would also eliminate double periods
 
+				if (!isset($target[$data])){
+					return ''; //makes it so that this routine does not throw a warning if an index does not exist
+				}
+				
 				$target=$target[$data];
 
 				$getDottedPathLastProgressiveString.=$data.$separator;
