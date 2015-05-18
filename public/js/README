@@ -1,0 +1,35 @@
+
+
+=================================================Original Layouts
+
+* contactFooter.phtml
+* layout.phtml
+* minimal.phtml
+* nonCmsData.phtml
+* siteDirectory.phtml
+
+Uses this javascript:
+
+jquery - javascript mvc code base
+steal - javascript mvc app builder code
+
+widgets - TQ White II's widget library
+
+Note: jquery-1.6.4.js is called by these layouts.
+
+
+=================================================
+In May 2015, a new layout strategy was added
+
+
+* scroll-feature-default.phtml
+
+It uses this javascript:
+
+foundation
+foundation.min.js
+vendor
+
+Note: jQuery2 is in the vendor folder. These layouts do *not* 
+use jquery-1.6.4.js.
+

@@ -1,8 +1,8 @@
 <?php
- class Q_View_Helper_ApplyMacros extends Zend_View_Helper_Abstract {
+ class Q_View_Helper_Fidgets_ApplyAllMacros extends Zend_View_Helper_Abstract {
 
 	 public function applyAllMacros($contentArray, $inString) {
-
+		$outputString=$inString;
 		if (isset($contentArray['MACROS'])){
 			$outputString=$this->applyMacros($contentArray['MACROS'], $outputString); //apply page level macros
 		}
@@ -15,7 +15,7 @@
 		$outputString=$this->applyMacros($contentArray["superGlobalItems"]['MACROS'], $outputString);
 		}
 		
-		return $outString;
+		return $outputString;
 
 	 }
 

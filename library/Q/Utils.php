@@ -353,17 +353,22 @@ static function makeArrayNumericIndexed($inArray){
 }
 
 
-// 
-// 
-// templateReplaceArray:function(args){
-// 	var outString='';
-// 	for (var i in args.replaceArray){
-// 		args.replaceObject=args.replaceArray[i];
-// 		args.indexNumber=i;
-// 		outString+=this.templateReplace(args);
-// 	}
-// 	return outString;
-// },
+
+
+static function templateReplaceArray($args){
+\Q\Utils::dumpWeb($args, "args");
+
+	$outString='';
+		for ($i=0, $len=count($args->replaceObjectList); $i<$len; $i++){
+			$element=$args->replaceObjectList[$i];
+			$args->replaceObject=$element;
+			$args->index=$i;
+			$outString.=self::templateReplace($args);
+		}
+
+	return outString;
+}
+
 // 
 // templateReplace:function(args){
 // 	var template=args.template,
@@ -393,6 +398,12 @@ static function makeArrayNumericIndexed($inArray){
 // 
 
 static function templateReplace($args){
+
+	$sampleArg=array(
+		"template"=>"<a href='<!url!>'><!title!></a>",
+		"replaceObject"=>array("url"=>"http://blah.com", "title"=>"Go Here")
+	);
+	
 	$template=$args['template'];
 	$replaceObject=$args['replaceObject'];
 	

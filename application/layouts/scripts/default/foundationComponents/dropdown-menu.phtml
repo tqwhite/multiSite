@@ -1,0 +1,14 @@
+<?php
+
+$specs = $this->dropDownParms['specs'];
+$content = $this->dropDownParms['content'];
+
+
+$outString=$this->convertToNavList($content, $specs);
+
+$outString = "
+<section class='top-bar-section'>
+    <!-- Right Nav Section -->
+	$outString
+  </section>";
+echo $outString;

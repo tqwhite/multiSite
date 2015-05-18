@@ -1,0 +1,35 @@
+<?php
+
+$headNavInfo = $this->contentArray['globalItems']['COMPONENTS']['headNav.ini'];
+
+$titleNav = $this->assembleAnchor($headNavInfo['title']);
+
+$right= $headNavInfo['right'];
+
+$this->dropDownParms=array(
+"content"=>$right,
+"specs"=>array(
+"navLocationClass"=>"right"
+)
+);
+$rightMenu=$this->render('default/foundationComponents/dropdown-menu.phtml');
+
+echo "
+  <nav class='top-bar' data-topbar role='navigation'>
+  <ul class='title-area'>
+    <li class='name'>
+      <h1>$titleNav</h1>
+    </li>
+     <!-- Remove the class 'menu-icon' to get rid of menu icon. Take out 'Menu' to just have icon alone -->
+    <li class='toggle-topbar menu-icon'><a href='#'><span>Menu</span></a></li>
+  </ul>
+
+$rightMenu
+
+    <!-- Left Nav Section 
+    <ul class='left'>
+      <li><a href='#'>Left Nav Button</a></li>
+    </ul>
+    Left Nav Section -->
+</nav>
+";

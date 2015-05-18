@@ -59,6 +59,20 @@ class Q_Controller_Base extends Zend_Controller_Action {
 			
 			$this->_helper->layout()->setLayout('layout');
 		}
+		
+		$this->fidgetInits($args);
+	}
+	
+	private function fidgetInits($args){
+		/*
+		;In March 2015, I switched out of Javascript MVC into Foundation, etc.
+		;Of course, the old libraries remain effective.)
+		;To keep organized about the new code, I added this name space.
+		;The old stuff had components named Widgets. In this new, foundation era, I call them Fidgets.
+		;It had to be something.
+		*/
+		$this->view->addHelperPath(APPLICATION_PATH."/../library/Q/View/Helper/Fidgets", 'Q_View_Helper_Fidgets');
+		
 	}
 	
 	private function getSiteDirectoryPath() {
