@@ -27,7 +27,9 @@ $front = Zend_Controller_Front::getInstance();
 
 	Zend_Registry::set('multiSite', $config['multiSite']);
 	
+	if (isset($config['emailSender'])){
 	Zend_Registry::set('emailSender', $config['emailSender']);
+	}
 
 	//$multiSite=Zend_Registry::get('multiSite');
 }
