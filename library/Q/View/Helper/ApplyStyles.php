@@ -1,7 +1,7 @@
 <?php
  class Q_View_Helper_ApplyStyles extends Zend_View_Helper_Abstract {
 
-	 public function applyStyles($viewObj, $contentArray) {
+	 public function applyStyles($viewObj, $contentArray, $options) {
 
 		global $thiss;
 		$thiss=$viewObj;
@@ -11,9 +11,13 @@
 				$thiss->headStyle()->appendStyle($cssString);
 			}
 		}
+		
+		if (!isset($options)){ $options=array();}
+		if (!$options['skipSuperGlobal']){$options['skipSuperGlobal']=false; }
+		
 		//$viewObj->headStyle()->appendStyle($contentArray['globalItems']['CSS']['main.css']);
 
-		if (isset($contentArray['superGlobalItems']['CSS'])){
+		if (isset($contentArray['superGlobalItems']['CSS']) && !$options['skipSuperGlobal']){
 			$cssString=$viewObj->mapServableToHash($contentArray, $contentArray['superGlobalItems']['CSS']);
 			array_map('applyStyle', $cssString);
 		}

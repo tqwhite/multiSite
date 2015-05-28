@@ -15,6 +15,9 @@ if (isset($route['title'])){
 	$title="<TITLE>{$route['title']}</TITLE>";
 }
 
+
+$this->applyStyles($this, $this->contentArray, array('skipSuperGlobal'=>true));
+$headStyle=$this->headStyle();
 $javascript=$this->headScript();
 $contentArray=$this->contentArray;
 $viewContent=$this->layout()->content;
@@ -22,7 +25,15 @@ $viewContent=$this->layout()->content;
 $headNav=$this->render('default/foundationComponents/base-head-nav.phtml');
 
 $this->javascriptCalls('foundation.offcanvas.js', "js/foundation/");
+
 $additionalJsLibItems=$this->javascriptCalls();
+
+$layoutJavascript="
+
+
+";
+
+$userJavascript=$this->buildJqueryReadyCall($this->contentArray);
 
 $outputString="<!doctype html>
 <html class='no-js' lang='en'>
@@ -32,6 +43,11 @@ $outputString="<!doctype html>
     $title
     <link rel='stylesheet' href='css/foundation.css' />
     <script src='js/vendor/modernizr.js'></script>
+    $headStyle
+
+    <link rel='stylesheet' type='text/css' href='js/node_modules/slick-carousel/slick/slick.css'/>
+	<link rel='stylesheet' type='text/css' href='js/node_modules/slick-carousel/slick/slick-theme.css'/>
+
   </head>
   <body>   
   
@@ -45,12 +61,20 @@ $viewContent
     <script>
       $(document).foundation();
 	$(document).ready(function(){
-		$('body').append('<p style=\'margin-top:30px;\'>Thanks for visiting!');
+		$layoutJavascript
+		
 	});
     </script>
+    $userJavascript
+    <script type='text/javascript'>
+	/* <![CDATA[ */
+		$(document).ready(function(){
+			$(document).foundation();
+		});
+	/* ]]> */
+</script>
   </body>
-</html>
-";
+</html>";
 
 $outputString=$this->translateUrls($outputString);
 $outputString=$this->applyAllMacros($this->contentArray, $outputString);

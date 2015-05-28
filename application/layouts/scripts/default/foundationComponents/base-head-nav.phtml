@@ -2,17 +2,16 @@
 
 $headNavInfo = $this->contentArray['globalItems']['COMPONENTS']['headNav.ini'];
 
-$titleNav = $this->assembleAnchor($headNavInfo['title']);
-
-$right= $headNavInfo['right'];
-
-$this->dropDownParms=array(
-"content"=>$right,
-"specs"=>array(
-"navLocationClass"=>"right"
-)
-);
-$rightMenu=$this->render('default/foundationComponents/dropdown-menu.phtml');
+$menuBar = '';
+foreach ($headNavInfo as $label => $data) {
+	
+	if ($label == 'title') {
+		$titleNav = $this->assembleAnchor($headNavInfo['title']);
+	} else {
+		$this->dropDownParms = array("content" => $data, "specs" => array("navLocationClass" => $label));
+		$menuBar.= $this->render('default/foundationComponents/dropdown-menu.phtml');
+	}
+}
 
 echo "
   <nav class='top-bar' data-topbar role='navigation'>
@@ -24,7 +23,9 @@ echo "
     <li class='toggle-topbar menu-icon'><a href='#'><span>Menu</span></a></li>
   </ul>
 
-$rightMenu
+<section class='top-bar-section'>
+$menuBar
+  </section>
 
     <!-- Left Nav Section 
     <ul class='left'>

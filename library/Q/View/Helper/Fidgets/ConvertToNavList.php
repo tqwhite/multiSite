@@ -5,6 +5,7 @@ class Q_View_Helper_Fidgets_ConvertToNavList extends Zend_View_Helper_Abstract {
 	$this->specs=$specs;
 		$outString='';
 		
+		
 		for ($i=0, $len=count($content); $i<$len; $i++){
 			$element=$content[$i];
 			$sectionString=$this->makeSection($element);

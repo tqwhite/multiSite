@@ -1,10 +1,24 @@
 <?php
+$featurePanels=$this->contentArray['featurePanels'];
+$infoPanels=$this->contentArray['infoPanels'];
+$specs=array();
+
+$featureString=$this->convertToUnorderedList($featurePanels, $specs);
+$infoString=$this->convertToUnorderedList($infoPanels, $specs);
+
+$scrollFeature=$this->prepareSlickScroller($featurePanels, 'scroll1Container');
+
+
+$this->javascriptCalls('slick.js', "js/node_modules/slick-carousel/slick/");
 
 $this->javascriptCalls('setDefaultLibrary', "js/foundation/");
 
 
-?>
-<br /><br />
-<div id="view-content">
-	Good Morning from scrollFeature/views/container
+echo "
+<div id='view-content'>
+<div id='scroll1NavContainer' class='genericScrollContainer'>
+$scrollFeature
 </div>
+	$infoString
+</div>
+";
