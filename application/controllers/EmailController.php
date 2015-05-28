@@ -64,7 +64,7 @@ class EmailController extends Q_Controller_Base
 		else {
 			$emailMessage=$view->render('simple-array.phtml');
 		}
-		
+
 		$status=$this->sendMail(array(
 			'emailMessage'=>$emailMessage,
 			'formParams'=>$inData['formParams'],
@@ -202,7 +202,7 @@ $extension=array_search(
     private function sendMail($args){
     
 
-    	$emailMessage=$args['emailMessage'];
+    	$emailMessage=str_replace('\\', '', $args['emailMessage']);
     	$mailParams=$args['mailParams'];
     	$emailSubject=$mailParams['mailSubject'];
     	$fileList=$args['fileList'];
@@ -224,19 +224,23 @@ $extension=array_search(
     		$replyName=$fromName;
     	}
     	
-		$tr=new Zend_Mail_Transport_Sendmail();
-		
-// 		$tr=new Zend_Mail_Transport_Smtp('smtp.mandrillapp.com', array(
-// 			'username'=>'tq@justkidding.com',
-// 			'password'=>'**',
-// 			'auth'=>'login'
-// 		));
-		
+    	$emailSender=Zend_Registry::get('emailSender');
+    	
+    	if (!isset($emailSender)){
+			$tr=new Zend_Mail_Transport_Sendmail();
+		}
+		else{
+			$tr=new Zend_Mail_Transport_Smtp($emailSender['hostName'], array(
+				'username'=>$emailSender['authSet']['username'],
+				'password'=>$emailSender['authSet']['password'],
+				'auth'=>$emailSender['authSet']['auth']
+			));
+
+		}
 	
 		Zend_Mail::setDefaultTransport($tr);
 		Zend_Mail::setDefaultFrom($fromAdr, $fromName);
 		Zend_Mail::setDefaultReplyTo($replyAdr, $replyName);
-
 
 		$mail = new Zend_Mail();
 		$mail->setSubject($emailSubject);
@@ -304,13 +308,19 @@ $extension=array_search(
     		$replyName=$fromName;
     	}
     	
-		$tr=new Zend_Mail_Transport_Sendmail();
-		
-// 		$tr=new Zend_Mail_Transport_Smtp('mail.justkidding.com', array(
-// 			'username'=>'tq@justkidding.com',
-// 			'password'=>'xx',
-// 			'auth'=>'login'
-// 		));
+    	$emailSender=Zend_Registry::get('emailSender');
+    	
+    	if (!isset($emailSender)){
+			$tr=new Zend_Mail_Transport_Sendmail();
+		}
+		else{
+			$tr=new Zend_Mail_Transport_Smtp($emailSender['hostName'], array(
+				'username'=>$emailSender['authSet']['username'],
+				'password'=>$emailSender['authSet']['password'],
+				'auth'=>$emailSender['authSet']['auth']
+			));
+
+		}
 		
 	
 		Zend_Mail::setDefaultTransport($tr);
