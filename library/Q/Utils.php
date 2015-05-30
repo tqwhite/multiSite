@@ -356,8 +356,6 @@ static function makeArrayNumericIndexed($inArray){
 
 
 static function templateReplaceArray($args){
-\Q\Utils::dumpWeb($args, "args");
-
 	$outString='';
 		for ($i=0, $len=count($args->replaceObjectList); $i<$len; $i++){
 			$element=$args->replaceObjectList[$i];

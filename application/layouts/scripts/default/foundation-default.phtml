@@ -17,6 +17,7 @@ if (isset($route['title'])){
 
 
 $this->applyStyles($this, $this->contentArray, array('skipSuperGlobal'=>true));
+
 $headStyle=$this->headStyle();
 $javascript=$this->headScript();
 $contentArray=$this->contentArray;
@@ -41,12 +42,13 @@ $outputString="<!doctype html>
     <meta charset='utf-8' />
     <meta name='viewport' content='width=device-width, initial-scale=1.0' />
     $title
-    <link rel='stylesheet' href='css/foundation.css' />
     <script src='js/vendor/modernizr.js'></script>
-    $headStyle
-
+	
+	<style>html{font-size:62.5%;}</style>
+    <link rel='stylesheet' href='css/foundation.css' />
     <link rel='stylesheet' type='text/css' href='js/node_modules/slick-carousel/slick/slick.css'/>
 	<link rel='stylesheet' type='text/css' href='js/node_modules/slick-carousel/slick/slick-theme.css'/>
+    $headStyle
 
   </head>
   <body>   
@@ -79,4 +81,5 @@ $viewContent
 $outputString=$this->translateUrls($outputString);
 $outputString=$this->applyAllMacros($this->contentArray, $outputString);
 $outputString=$this->mapServableToHash($this->contentArray, $outputString);
+
 echo $outputString;
