@@ -29,7 +29,8 @@ class Q_View_Helper_ApplyStyles extends Zend_View_Helper_Abstract {
 			$cssString = $viewObj->mapServableToHash($contentArray, $cssComponentArray['CSS']);
 			$mediaQueries = $this->constructMediaQueries($cssComponentArray['_mediaQueries']);
 			$finalArray = array_merge($cssString, $mediaQueries);
-			array_map('applyStyle', $finalArray);
+			$finalString=implode("\n\n", $finalArray);
+				$viewObj->headStyle()->appendStyle($finalString);
 		}
 
 		if (isset($contentArray['globalItems']['CSS'])) {
@@ -37,7 +38,8 @@ class Q_View_Helper_ApplyStyles extends Zend_View_Helper_Abstract {
 			$cssString = $viewObj->mapServableToHash($contentArray, $cssComponentArray['CSS']);
 			$mediaQueries = $this->constructMediaQueries($cssComponentArray['_mediaQueries']);
 			$finalArray = array_merge($cssString, $mediaQueries);
-			array_map('applyStyle', $finalArray);
+			$finalString=implode("\n\n", $finalArray);
+				$viewObj->headStyle()->appendStyle($finalString);
 		}
 
 		if (isset($contentArray['CSS'])) {
@@ -46,7 +48,8 @@ class Q_View_Helper_ApplyStyles extends Zend_View_Helper_Abstract {
 			$mediaQueries = $this->constructMediaQueries($cssComponentArray['_mediaQueries']);
 
 			$finalArray = array_merge($cssString, $mediaQueries);
-			array_map('applyStyle', $finalArray);
+			$finalString=implode("\n\n", $finalArray);
+				$viewObj->headStyle()->appendStyle($finalString);
 		}
 
 	}

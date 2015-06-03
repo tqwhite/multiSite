@@ -2,3 +2,5 @@
 cd public/js;
 
 ./js jquery/generate/controller Widgets.Controller.Apps.SimpleDataEntry
+
+//note new scaffolding probably isn't installed in multiSite.

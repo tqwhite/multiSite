@@ -7,18 +7,19 @@ $featureString=$this->convertToUnorderedList($featurePanels, $specs);
 $infoString=$this->convertToUnorderedList($infoPanels, $specs);
 
 $scrollFeature=$this->prepareSlickScroller($featurePanels, 'scroll1Container');
+$infoString=$this->prepareSlickScroller($infoPanels, 'info1Container');
 
 
 $this->javascriptCalls('slick.js', "js/node_modules/slick-carousel/slick/");
 
-$this->javascriptCalls('setDefaultLibrary', "js/foundation/");
+//$this->javascriptCalls('setDefaultLibrary', "js/foundation/");
 
 
 echo "
 <div id='view-content'>
-<div id='scroll1NavContainer' class='genericScrollContainer'>
-$scrollFeature
-</div>
+	<div id='scroll1NavContainer' class='genericScrollContainer'>
+	$scrollFeature
+	</div>
 	$infoString
 </div>
 ";
