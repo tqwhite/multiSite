@@ -10,7 +10,10 @@ $scrollFeature=$this->prepareSlickScroller($featurePanels, 'scroll1Container');
 $infoString=$this->prepareSlickScroller($infoPanels, 'info1Container');
 
 
-$this->javascriptCalls('slick.js', "js/node_modules/slick-carousel/slick/");
+$this->javascriptCalls('slick.js', "js/vendor/node_modules/slick-carousel/slick/");
+
+$this->headLink()->appendStylesheet('js/vendor/node_modules/slick-carousel/slick/slick.css');
+$this->headLink()->appendStylesheet('js/vendor/node_modules/slick-carousel/slick/slick-theme.css');
 
 //$this->javascriptCalls('setDefaultLibrary', "js/foundation/");
 

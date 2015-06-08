@@ -78,13 +78,13 @@ class Q_View_Helper_ApplyStyles extends Zend_View_Helper_Abstract {
 			$cssSelector = (isset($querySpec['_cssSelector'])) ? $querySpec['_cssSelector'] : '';
 
 			if (!$cssSelector) {
-				throw new Exception("Q/View/Helper/ApplySteyles.php says, Missing '_cssSelector' in $filePath");
+				throw new Exception("Q/View/Helper/ApplyStyles.php says, Missing '_cssSelector' in $filePath");
 			}
 
 			foreach ($querySpec as $breakpointName => $propertyValue) {
 				if ($breakpointName != '_cssSelector') {
 					if (!isset($mediaQuerySpecs[$breakpointName])) {
-						throw new Exception("Q/View/Helper/ApplySteyles.php says, Missing media query breakpoint '$breakpointName' in $filePath");
+						throw new Exception("Q/View/Helper/ApplyStyles.php says, Missing media query breakpoint '$breakpointName' in $filePath");
 					} else {
 						$bySizeArray[$breakpointName] = (isset($bySizeArray[$breakpointName])) ? $bySizeArray[$breakpointName] : array();
 						$bySizeArray[$breakpointName][] = array('_cssSelector' => $cssSelector, 'classInfo' => $propertyValue);
@@ -159,11 +159,13 @@ class Q_View_Helper_ApplyStyles extends Zend_View_Helper_Abstract {
 
 		$superGlobal = \Q\Utils::getDottedPath($contentArray, "superGlobalItems,siteSpecs.ini,mediaQueryBreakpoints", ',');
 		$global = \Q\Utils::getDottedPath($contentArray, "globalItems,siteSpecs.ini,mediaQueryBreakpoints", ',');
+		$local = \Q\Utils::getDottedPath($contentArray, "siteSpecs.ini,mediaQueryBreakpoints", ',');
 
 		$superGlobal = (is_array($superGlobal)) ? $superGlobal : array();
 		$global = (is_array($global)) ? $global : array();
+		$local = (is_array($local)) ? $local : array();
 
-		$outArray = array_merge($superGlobal, $global);
+		$outArray = array_merge($superGlobal, $global, $local);
 
 		return count($outArray) ? $outArray : $mediaQueryBreakpoints;
 	}

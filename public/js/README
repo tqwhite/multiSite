@@ -26,10 +26,15 @@ In May 2015, a new layout strategy was added
 
 It uses this javascript:
 
-foundation
-foundation.min.js
+require.js
 vendor
+	foundation
+	foundation.min.js
+	other external libraries
+fidgets
+	whatever TQ writes that uses the stuff
 
 Note: jQuery2 is in the vendor folder. These layouts do *not* 
-use jquery-1.6.4.js.
+use jquery-1.6.4.js or anything else in the js/ folder. Except for those three things,
+the rest is used by the previous, widgets era code.
 
