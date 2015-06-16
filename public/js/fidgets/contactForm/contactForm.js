@@ -75,6 +75,8 @@ define([
 		},
 
 		initDisplay: function() {
+
+			this.disableScrolling();
 			var css = can.view('/js/fidgets/contactForm/local.css');
 			$('body').prepend(css());
 
@@ -102,23 +104,10 @@ define([
 			this.contactVm.attr('isAcceptingInput', false);
 			this.contactVm.attr('isSending', true);
 			this.sendEmail(formParams);
-
-
-			// 					setTimeout(function(){
-			// 					this.contactVm.attr('isSending', false);
-			// 					this.contactVm.attr('isSuccessFinish', true);
-			// 					}.bind(this), 3000);
-			// 					setTimeout(function(){
-			// 					this.contactVm.attr('isSuccessFinish', false);
-			// 					this.contactVm.attr('isErrorFinish', true);
-			// 					}.bind(this), 6000);
-			// 					setTimeout(function(){
-			// 					this.contactVm.attr('isVisible', false);
-			// 					}.bind(this), 9000);
-
 		},
 
 		cancelHandler: function() {
+			this.enableScrolling();
 			this.contactVm.attr('isVisible', false);
 		},
 
@@ -135,11 +124,11 @@ define([
 			}
 
 			var error = function(inData) {
-
-console.dir({"inData.messages.map(function(item){return {message:item}})":inData.messages.map(function(item){return {message:item}})});
-
-
-				this.contactVm.attr('errorList', inData.messages.map(function(item){return {message:item}}));
+				this.contactVm.attr('errorList', inData.messages.map(function(item) {
+					return {
+						message: item
+					}
+				}));
 				this.contactVm.attr('isSending', false);
 				this.contactVm.attr('isErrorFinish', true);
 				this.fadeFromView();
@@ -164,13 +153,29 @@ console.dir({"inData.messages.map(function(item){return {message:item}})":inData
 		fadeFromView: function() {
 			setTimeout(function() {
 				$('#' + this.modalContainerId).fadeOut(2000, function() {
-					this.contactVm.attr('isVisible', false);
+					this.cancelHandler();
 				}.bind(this));
 			}.bind(this), 1000);
+		},
+
+		disableScrolling: function() {
+			//http://stackoverflow.com/questions/3656592/how-to-programmatically-disable-page-scrolling-with-jquery
+			$('html, body').css({
+				'overflow': 'hidden',
+				'height': '100%'
+			});
+		},
+
+		enableScrolling: function() {
+			$('html, body').css({
+				'overflow': 'auto',
+				'height': 'auto'
+			});
 		}
 	});
 
 });
+
 
 
 

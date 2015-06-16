@@ -11,10 +11,6 @@ define([
 	scopeObject.Models.Base.extend(modelName, {
 
 		sendPlus: function(data, formDomObj, success, error) {
-
-console.dir({"dataX":data});
-
-
 			success = success ? success : function() {
 					alert('success');
 				};
