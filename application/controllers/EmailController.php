@@ -226,7 +226,7 @@ $extension=array_search(
     	
     	$emailSender=Zend_Registry::get('emailSender');
     	
-    	if (!isset($emailSender)){
+    	if (!$emailSender){
 			$tr=new Zend_Mail_Transport_Sendmail();
 		}
 		else{

@@ -1,0 +1,93 @@
+<style>
+.shadowBorder{ border:1pt solid gray;
+-moz-border-radius: 4px;
+/* Firefox */ -webkit-border-radius: 4px;
+/* Safari, Chrome */ border-radius: 4px;
+/* CSS3 */ -webkit-box-shadow:2px 3px 5px rgba(0, 0, 0, .5);
+-moz-box-shadow:2px 3px 5px rgba(0, 0, 0, .5);
+box-shadow:2px 3px 5px rgba(0, 0, 0, .5);
+}
+
+.centerContents{
+display:flex;
+-webkit-justify-content:center;
+justify-content:center;
+-webkit-align-items:center;
+align-items:center;
+flex-direction:row;
+-webkit-flex-direction: row;
+}
+
+.button{
+	margin:5%;
+}
+</style>
+
+
+
+<style>
+
+/*from: http://lea.verou.me/2013/11/cleanest-css-spinner-ever/*/
+@keyframes spin {
+	to { transform: rotate(1turn); }
+}
+
+.progress {
+	position: relative;
+	display: inline-block;
+	width: 5em;
+	height: 5em;
+	margin: 0 .5em;
+	font-size: 12px;
+	text-indent: 999em;
+	overflow: hidden;
+	animation: spin 1s infinite steps(8);
+}
+
+.small.progress {
+	font-size: 6px;
+}
+
+.large.progress {
+	font-size: 24px;
+}
+
+.progress:before,
+.progress:after,
+.progress > div:before,
+.progress > div:after {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 2.25em; /* (container width - part width)/2  */
+	width: .5em;
+	height: 1.5em;
+	border-radius: .2em;
+	background: #eee;
+	box-shadow: 0 3.5em #eee; /* container height - part height */
+	transform-origin: 50% 2.5em; /* container height / 2 */
+}
+
+.progress:before {
+	background: #555;
+}
+
+.progress:after {
+	transform: rotate(-45deg);
+	background: #777;
+}
+
+.progress > div:before {
+	transform: rotate(-90deg);
+	background: #999;
+}
+
+.progress > div:after {
+	transform: rotate(-135deg);
+	background: #bbb;
+}
+
+.contactFormModalContainer{
+position:absolute;top:0px;left:0px;width:100vw;height:100vh;background:rgba(134, 192, 144, .5);
+}
+</style>

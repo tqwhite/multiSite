@@ -30,6 +30,10 @@ $front = Zend_Controller_Front::getInstance();
 	if (isset($config['emailSender'])){
 	Zend_Registry::set('emailSender', $config['emailSender']);
 	}
+	else{
+	
+	Zend_Registry::set('emailSender', '');
+	}
 
 	//$multiSite=Zend_Registry::get('multiSite');
 }

@@ -1,7 +1,7 @@
 <?php
  class Q_View_Helper_BuildJqueryReadyCall extends Zend_View_Helper_Abstract {
 
-	 public function buildJqueryReadyCall($contentArray) {
+	 public function buildJqueryReadyCall($contentArray, $codeOnly='') {
 	 
 	 
 	 	$globalScript='';
@@ -77,6 +77,8 @@ else{
 }
 
 if ($globalScript || $localScript){
+	//the widgets era layouts want this to build script tags. Fidgets, not so much.
+	if (!$codeOnly){
 	$outString="
 		<script type='text/javascript'>
 			/* <![CDATA[ */
@@ -100,6 +102,27 @@ if ($globalScript || $localScript){
 			/* ]]> */
 		</script>
 		";
+		}
+		else{
+	$outString="
+			var initFunction=function(){
+				
+				$layoutJs
+				
+				$globalScript
+	
+				$localScript
+	
+			}; //end of initFunction()
+			
+			if (typeof(steal)=='function'){
+				steal.then(initFunction);
+			}
+			else{
+				$(document).ready(initFunction);
+			}
+		";
+		}
 	}
 	else{
 		$outString='';

@@ -24,7 +24,12 @@ class Q_View_Helper_Fidgets_ConvertToNavList extends Zend_View_Helper_Abstract {
 	
 	private function makeSection($contentSection){
 	
+		if (isset($contentSection['url'])){
+		$title=$this->view->assembleAnchor($contentSection);
+		}
+		else{
 		$title=$this->view->assembleAnchor($contentSection['title']);
+		}
 		$links=isset($contentSection['links'])?$contentSection['links']:array();
 		$liString='';
 		
