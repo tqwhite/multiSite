@@ -1,9 +1,9 @@
 {{#if isVisible}}
 
 
-<div id='{{modalContainerId}}' can-click='cancel' class='contactFormModalContainer centerContents' style=''>
+<div id='{{modalContainerId}}' can-click='cancel' class=' centerContents' style='position:absolute;top:0px;left:0px;width:100vw;height:100vh;background:rgba(134, 192, 144, .5);'>
 
-<div class='shadowBorder' style='background:white;' can-click='controlPropagation'>
+<div class='shadowBorder' style='background:white;display: table;' can-click='controlPropagation'>
 
 {{#if isAcceptingInput}}
 {{{entryForm}}}
