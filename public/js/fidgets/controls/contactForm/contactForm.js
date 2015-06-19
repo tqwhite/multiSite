@@ -1,19 +1,40 @@
 define([
 	'/js/fidgets/core/start/setNameSpace.js',
-	'/js/fidgets/core/serverInterface/serverInterface.js', '/js/fidgets/core/base/control.js',
-	'can/construct/super', 'can/control/plugin', 'can/component', 'can/view', 'can/view/stache',
+	'/js/widgets/resources/services/qtools.js',
+	'/js/fidgets/controls/base/control.js',
+	'/js/fidgets/core/serverInterface/serverInterface.js',
+	'/js/vendor/foundation/foundation.min.js',
+	'/js/vendor/foundation/foundation/foundation.abide.js',
+	'can/component', 'can/view', 'can/view/stache',
 	'/js/fidgets/models/sendEmail.js'], function(nameSpace) {
-	var scopeObject = window[nameSpace];
-
-	var controllerName = nameSpace + '.Control.ContactForm';
-
-
+	var scopeObject = window[nameSpace],
+		controllerName = nameSpace + '.Control.ContactForm';
 
 	scopeObject.Control.Base.extend(controllerName, {
 	}, {
 		init: function(element, options) {
-
 			this.controllerName = controllerName;
+			this.directory = '/js/fidgets/controls/contactForm/';
+
+			qtools.validateProperties({
+				targetObject: options,
+				targetScope: this, //will add listed items to targetScope
+				propList: [
+					{
+						name: 'event',
+						optional: false
+					},
+					{
+						name: 'parameterFileName',
+						optional: false
+					},
+					{
+						name: 'clickTarget',
+						optional: false
+					}
+				],
+				source: this.constructor._fullName
+			});
 
 			this.serverData = Fidgets.serverInterface.serverData();
 			this.initControlProperties(options);
@@ -32,18 +53,24 @@ define([
 			this.formName = $(options.event.target).attr('formName');
 			this.customElementName = this.formName.toLowerCase();
 
-
-
-
 			this.userControlObject = this.serverData.parameters[options.parameterFileName][this.formName]
 			if (!this.userControlObject) {
 				alert('_PARAMETERS/"+this.parameterFileName+" contains no spec for :' + formName + " in either the site or page directory");
 			}
 
+			qtools.validateProperties({
+				targetObject: this.userControlObject,
+				propList: [
+					{
+						name: 'entryForm',
+						optional: false
+					}
+				],
+				source: this.constructor._fullName
+			});
 
 			this.buttonId = options.clickTarget ? $(options.clickTarget).attr('buttonId') : '';
-			this.processContentSourceRouteName = this.serverData.parameters.processContentSourceRouteName
-
+			this.processContentSourceRouteName = this.serverData.parameters.processContentSourceRouteName; //set by server
 
 		},
 
@@ -77,14 +104,14 @@ define([
 		initDisplay: function() {
 
 			this.disableScrolling();
-			var css = can.view('/js/fidgets/contactForm/local.css');
+			var css = can.view(this.directory + 'local.css');
 			$('body').prepend(css());
 
 			$('body').append("<script id='contact-" + this.customElementName + "' type='text/mustache'><contact-" + this.customElementName + "></contact-" + this.customElementName + "></script>");
 
 			Fidgets.tmp = can.Component.extend({
 				tag: "contact-" + this.customElementName,
-				template: can.view('/js/fidgets/contactForm/view.stache'),
+				template: can.view(this.directory + 'view.stache'),
 				viewModel: this.contactVm,
 				helpers: {
 					cancel: function() {
@@ -94,10 +121,10 @@ define([
 			});
 
 			$('body').append(can.view('contact-' + this.customElementName, {}));
+			$(document).foundation('abide', 'reflow'); //activate any foundation items, if any
 		},
 
 		//handlers ==================================================
-
 
 		saveHandler: function(viewModel, element, event) {
 			var formParams = this.element.formParams();
@@ -109,6 +136,7 @@ define([
 		cancelHandler: function() {
 			this.enableScrolling();
 			this.contactVm.attr('isVisible', false);
+			$(document).foundation('abide', 'reflow'); //clean up any foundation items, if any
 		},
 
 		sendEmail: function(formParams) {
@@ -145,8 +173,6 @@ define([
 				}
 			};
 
-
-
 			Fidgets.Models.sendEmail.sendPlus(parameters, this.element, success.bind(this), error.bind(this));
 		},
 
@@ -175,14 +201,4 @@ define([
 	});
 
 });
-
-
-
-
-
-
-
-
-
-
 

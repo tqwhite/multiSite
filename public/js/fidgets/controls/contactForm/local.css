@@ -22,5 +22,8 @@ flex-direction:row;
 .button{
 	margin:5%;
 }
-</style>
 
+div.contactContainer{
+padding:3vh 3vw;
+}
+</style>

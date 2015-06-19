@@ -33,8 +33,6 @@ $this->javascriptCalls('modernizr.js', "js/vendor/");
 $this->javascriptCalls('node_modules/withinviewport/withinviewport.js', "js/vendor/");
 $this->javascriptCalls('jquery_downloads/jquery-bullseye-1-0b/jquery.bullseye-1.0.js', "js/vendor/");
 
-$this->javascriptCalls('core/start/fidgets.js', "js/fidgets/");
-
 $requirejsTemplate = array('itemTemplate' => "'<!filePath!>', ", 'cleanupRegEx' => "/, $/", 'wrapper' => "require([<!itemString!>], initFunction);");
 $jsLibAndInit = $this->javascriptCalls('emitJavascript', $requirejsTemplate);
 
@@ -70,14 +68,15 @@ $outputString = "<!doctype html>
 
   </head>
   <body>   
-  
+
+<!-- CONTENT SECTION ================================================== --> 
+$viewContent  
 <!-- NAVIGATION SECTION ================================================== --> 
 $headNav
-<!-- CONTENT SECTION ================================================== --> 
-$viewContent
 <!-- DATA SECTION ================================================== --> 
 $serverComm
 $serverData
+{$this->endOfBodyHtml}
 <!-- SCRIPT SECTION ================================================== -->    
     
     <script src='js/require.js'></script>
@@ -93,7 +92,8 @@ $serverData
 			}
 		});
 		
-		require(['jquery', 'foundation'], function(){
+		require(['jquery', 'foundation', 'can'], function(){
+				//this calls initFunction() below as callback
 				$jsLibAndInit
 			});
 

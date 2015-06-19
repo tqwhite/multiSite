@@ -9,8 +9,14 @@ $infoString=$this->convertToUnorderedList($infoPanels, $specs);
 $scrollFeature=$this->prepareSlickScroller($featurePanels, 'scroll1Container');
 $infoString=$this->prepareSlickScroller($infoPanels, 'info1Container');
 
+// if (!$this->endOfBodyHtml){ $this->endOfBodyHtml='';}
+// $joyrideFeature=$this->fabricateJoyrideList($infoPanels);
+// $this->endOfBodyHtml.=$joyrideFeature;
 
-$this->javascriptCalls('slick.js', "js/vendor/node_modules/slick-carousel/slick/");
+//$this->javascriptCalls('slick.js', "js/vendor/node_modules/slick-carousel/slick/");
+
+$this->javascriptCalls('slickCarousel.js', "/js/fidgets/controls/slickCarousel/");
+$this->javascriptCalls('contactForm.js', "/js/fidgets/controls/contactForm/");
 
 $this->headLink()->appendStylesheet('js/vendor/node_modules/slick-carousel/slick/slick.css');
 $this->headLink()->appendStylesheet('js/vendor/node_modules/slick-carousel/slick/slick-theme.css');

@@ -927,7 +927,7 @@ validateProperties:function(args){
 		alert(outMessage);
 	}
 	else if(outMessage){
-		qtools.consoleMessage(outMessage);
+		qtools.consoleMessage({outMessage:outMessage});
 	}
 
 },

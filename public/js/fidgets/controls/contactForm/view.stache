@@ -3,7 +3,8 @@
 
 <div id='{{modalContainerId}}' can-click='cancel' class=' centerContents' style='position:absolute;top:0px;left:0px;width:100vw;height:100vh;background:rgba(134, 192, 144, .5);'>
 
-<div class='shadowBorder' style='background:white;display: table;' can-click='controlPropagation'>
+<div class='contactContainer shadowBorder' style='background:white;display: table;' can-click='controlPropagation'>
+<form  data-abide>
 
 {{#if isAcceptingInput}}
 {{{entryForm}}}
@@ -16,7 +17,7 @@
 
 {{#if isSending}}
 <div style='padding:5vw;'>
-<img src='/js/fidgets/contactForm/images/ajax-loader.gif' style='width:10vw;'>
+<img src='/js/fidgets/controls/contactForm/images/ajax-loader.gif' style='width:10vw;'>
 </div>
 {{/if}}
 
@@ -40,7 +41,7 @@ Something bad happened:<br/>{{#each errorList}}{{message}}<br/>{{/each}}
 </div>
 {{/if}}
 
-
+</form>
 </div>
 
 

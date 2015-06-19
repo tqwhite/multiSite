@@ -3,10 +3,12 @@ define([
 	'can/control',
 	'can/construct/super',
 	'can/control/plugin'
-], function(nameSpaceName, Control, can, serverInterface, stateInit) {
+], function(nameSpaceName) {
 
 	can.Control.extend('Fidgets.Control.Base', {}, {
-		init: function(element, options) {},
+		init: function() {
+		this.eventNameSpace=Math.random().toString().replace(/0\./,'');
+		},
 
 		update: function(options) {},
 

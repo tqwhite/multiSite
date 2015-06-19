@@ -138,14 +138,7 @@ var toServer=data;
 		},
 
 		contactFormHasEntry: function(inData) {
-
-console.dir({"inData":inData});
-
-
 			for (var inx in inData) {
-console.log("inx="+inx);
-
-
 				if (inData[inx] != '' && inx != 'buttonId') {
 					return true
 				}
@@ -156,9 +149,6 @@ console.log("inx="+inx);
 		},
 
 		validate: function(inData) {
-console.log('\n=-=============   validate  =========================\n');
-
-
 			var name, datum,
 				errors = [];
 
