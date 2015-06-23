@@ -1,0 +1,22 @@
+#!/bin/bash
+
+if [[ -z "$1" ]]; then
+echo -e "\n\nYou must supply a commit message";
+exit;
+fi
+
+pushd '/Volumes/qubuntuFileServer/cmerdc/corporateMultisite/content'; > /dev/null;
+
+git status;
+git add --all .
+git commit -m"$1"
+
+popd > /dev/null;
+
+pushd '/Volumes/qubuntuFileServer/cmerdc/corporateMultisite/website'; > /dev/null;
+
+git status;
+git add --all .
+git commit -m"$1"
+
+popd > /dev/null;
