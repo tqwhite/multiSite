@@ -10,13 +10,15 @@ pushd '/Volumes/qubuntuFileServer/cmerdc/corporateMultisite/content'; > /dev/nul
 git status;
 git add --all .
 git commit -m"$1"
+git push
 
 popd > /dev/null;
 
-pushd '/Volumes/qubuntuFileServer/cmerdc/corporateMultisite/website'; > /dev/null;
+pushd '/Volumes/qubuntuFileServer/cmerdc/corporateMultisite/website' > /dev/null;
 
 git status;
 git add --all .
 git commit -m"$1"
+git push
 
 popd > /dev/null;
