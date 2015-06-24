@@ -61,6 +61,32 @@ define([
 
 		isAcceptingClicks: function() {
 			return this.acceptClicks;
+		},
+		
+		loadCssFile:function(filePath, callback){
+			var link = document.createElement("link");
+			link.type = "text/css";
+			link.rel = "stylesheet";
+			link.href = filePath;
+			document.getElementsByTagName("head")[0].appendChild(link);
+			var count=0,
+			tryAgain=function(){
+				for (var i=0, len=document.styleSheets.length; i<len; i++){
+					var element=document.styleSheets[i];
+					if (element.href && element.href.match(filePath)){
+						callback();
+						return;
+					}
+				}
+						if (count<10){
+							count++;
+							setTimeout(tryAgain, 100);
+						}
+						else{
+							throw "base.control.loadCssFile failed on to find "+filePath;
+						}
+			}
+			setTimeout(tryAgain, 100);
 		}
 	});
 

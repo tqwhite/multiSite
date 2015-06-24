@@ -5,8 +5,7 @@ define([
 	'/js/vendor/foundation/foundation.min.js',
 	'can/component', 'can/view', 'can/view/stache',
 
-	'/js/vendor/jquery_downloads/jquery-bullseye-1-0b/jquery.bullseye-1.0.js',
-	'/js/vendor/jquery_downloads/pagePiling.js-master/jquery.pagepiling.min.js'
+	'/js/vendor/jquery_downloads/jquery-bullseye-1-0b/jquery.bullseye-1.0.js'
 
 ], function(nameSpace) {
 	var scopeObject = window[nameSpace],
@@ -16,6 +15,12 @@ define([
 	}, {
 		init: function(element, options) {
 			this.directory = '/js/fidgets/controls/verticalStructure/';
+			this._super(); //execute base.init(), only works in method 'init'
+			//		this.loadCssFile('/js/vendor/jquery_downloads/pagePiling.js-master/jquery.pagepiling.css', this.startThisController.bind(this, element, options));
+			this.startThisController(element, options);
+		},
+
+		startThisController: function(element, options) {
 
 			qtools.validateProperties({
 				targetObject: options,
@@ -29,9 +34,6 @@ define([
 				source: this.constructor._fullName
 			});
 
-			this._super(); //execute base.init()
-
-
 			this.controllerName = controllerName;
 
 			this.initControlProperties(options);
@@ -39,13 +41,12 @@ define([
 			this.establishViewModel();
 
 			this.initDisplay();
-
 			this.updateDom();
 
 		},
 
 		update: function(options) {
-			this.init(this.element, options);
+			this.startThisController(this.element, options);
 		},
 
 		initControlProperties: function(options) {},
@@ -55,55 +56,43 @@ define([
 		},
 
 		updateDom: function() {
-		
-			this.addEnterViewpointBehavior();
-			//			this.executeBookmark(this.getInxFromLocation());
+
+			this.executeBookmark(this.getInxFromLocation());
 
 			// 			this.setupAnchorClickSupport();
-			// 			this.setupHashUpdateSupport();
+			this.setupHashUpdateSupport();
 		},
 
 		establishViewModel: function() {},
 
-		initDisplay: function() {
-			/*
-			Thought the docs (http://canjs.com/docs/can.view.html) clearly say, "To render to a string",
-			it doesn't. I've tried a lot of things to make it work. I copied and pasted the actual 
-			css into style.stach, which used to be
-				<style>
-					{{styleDefinitions}}
-				</style>
-			I have to move on. Sorry, tqii
-
-					var styleDefinitions=can.view.render('/js/vendor/jquery_downloads/pagePiling.js-master/jquery.pagepiling.css');
-			*/
-			
-			this.injectCss();
-			this.addPagePileingSectionClass();
-			this.element.pagepiling();
-
-
-		},
-
-		injectCss: function() {
-			var renderer = can.view(this.directory + 'style.stache');
-			var html = renderer(
-			{
-				//	styleDefinitions:styleDefinitions
-			});
-			$('body').prepend(html);
-		},
+		initDisplay: function() {},
 
 		setupAnchorClickSupport: function() {
-			$('body').on('click.' + this.eventNameSpace, function(event) {
+			$('body').bind('click.' + this.eventNameSpace, function(event) {
 				this.isAnchor(event.target) && this.executeBookmark(this.getInxFromTarget(event.target))
 			}.bind(this));
 		},
 
 		setupHashUpdateSupport: function() {
-			this.element.on('afterChange.' + this.eventNameSpace, function(element, slick, inx) {
-				this.updateHash(inx)
-			}.bind(this));
+
+			for (var i = 0, len = this.panelDomObjList.length; i < len; i++) {
+				var element = this.panelDomObjList[i];
+				var height = $(element).height()
+				$(element).on('enterviewport.' + this.eventNameSpace, function(event) {
+						this.updateHash(event)
+					}.bind(this))
+					.bullseye({
+						offsetTop: Math.min(200, Math.floor(height / 2))
+					});
+				/*
+					note: this routine works correctly for small panels when scrolling down.
+					When scrolling up, whichever small panels are visible at the bottom of the 
+					screen don't get their hash set on the way back up. I anticipate that panels
+					will tend to be large enough so this won't be a problem. If I'm wrong, I'll 
+					do something more complicated to make it work better.
+				*/
+			}
+
 		},
 
 		createPanelLookupLists: function() {
@@ -119,32 +108,38 @@ define([
 				this.panelInxList.push(id);
 				this.panelDomObjList.push(item);
 
-
 			}.bind(this));
-			console.dir({
-				"this.panelDomObjList": this.panelDomObjList
-			});
-
-
-		},
-
-		addPagePileingSectionClass: function() {
-
-			for (var i = 0, len = this.panelDomObjList.length; i < len; i++) {
-				var element = this.panelDomObjList[i];
-				$(element).addClass('section');;
-
-			}
 
 		},
 
 		executeBookmark: function(inx) {
-			if (inx) {
-				setTimeout(function() {
+			if (!inx) {
+				return;
+			}
 
-					console.log('what tool for this');
-					//			this.element.slick('slickGoTo', inx, true);
-				}.bind(this), 2000);
+			if (inx) {
+
+				var target = this.panelDomObjList[inx];
+				if (target) {
+					target = $(target);
+
+					var transparent = {
+							zoom: '1',
+							filter: 'alpha(opacity=20)',
+							opacity: '0.2'
+						},
+						opaque = {
+							zoom: '1',
+							filter: 'alpha(opacity=100)',
+							opacity: '1',
+							scrollTop: target.offset().top
+						};
+
+					$("html, body").css(transparent).animate(opaque, 1000, function() {
+						this.updateHash(inx);
+					}.bind(this));
+				}
+
 				return true;
 			}
 
@@ -170,41 +165,17 @@ define([
 			return this.getInxFromLocation(href);
 		},
 
-		updateHash: function(inx) {
-			var id = this.panelInxList[inx];
-			window.location.hash = '#id=' + id;
-		},
-
-		addEnterViewpointBehavior: function() {
-
-return;
-
-			for (var i = 0, len = this.panelDomObjList.length; i < len; i++) {
-				var element = this.panelDomObjList[i];
-				$(element)
-					// 				.css({
-					// 						zoom: ' 1',
-					// 						filter: ' alpha(opacity=50)',
-					// 						opacity: ' 0.5'
-					// 					})
-					.on('enterviewport', function(event) {
-						setTimeout(this.updateHash.bind(this, event), 500);
-					}.bind(this))
-					// 					.on('leaveviewport', function() {
-					// 						setTimeout(function(){ $(this).css({ zoom: ' 1', filter: ' alpha(opacity=50)', opacity: '.5' });}.bind(this), 500);
-					// 					})
-					// 			.on('leaveviewport', function(){$(this).css({zoom:' 1',
-					// filter:' alpha(opacity=50)',
-					// opacity:' 0.5'});})
-					.bullseye();
-
+		updateHash: function(arg) {
+			if (!arg) {
+				return;
 			}
+			if (typeof (arg) == 'object') {
+				var item = $(arg.target),
+					id = $(item).attr('id');
+			} else {
 
-		},
-
-		updateHash: function(event) {
-			var item = $(event.target),
-				id = $(item).attr('id');
+				var id = this.panelInxList[arg];
+			}
 
 			window.location.hash = "#id=" + id;
 
@@ -212,15 +183,4 @@ return;
 	});
 
 });
-
-
-
-
-
-
-
-
-
-
-
 

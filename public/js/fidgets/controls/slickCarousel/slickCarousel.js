@@ -139,6 +139,7 @@ define([
 		},
 
 		updateHash: function(inx) {
+		if (!inx){return;}
 			var id = this.panelInxList[inx];
 			window.location.hash = '#id=' + id;
 		}

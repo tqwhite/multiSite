@@ -1,0 +1,24 @@
+<?php
+\Q\Utils::validateProperties(array(
+	'validatedEntity'=>$this,
+	'source'=>__file__,
+	'propertyList'=>array(
+		array('name'=>'codeNav'),
+		array('name'=>'contentArray')
+	)));
+
+
+$contentArray=$this->contentArray;
+
+
+$outString=$contentArray['index.html'];
+$elementList=$contentArray['elements'];
+
+if (is_array($elementList)){
+	foreach ($elementList as $label=>$data){
+		$outString=str_replace("elements/$label", $data, $outString);
+	}
+}
+
+?>
+<?php  echo $outString;?>
