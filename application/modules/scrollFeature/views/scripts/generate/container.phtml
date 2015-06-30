@@ -8,13 +8,14 @@ $infoString=$this->convertToUnorderedList($infoPanels, $specs);
 
 $scrollFeature=$this->prepareSlickScroller($featurePanels, 'scroll1Container');
 $scrollFeature="
-<div id='scroll1NavContainer' class='genericScrollContainer'>
+<div id='introduction' class='genericScrollContainer'>
 	$scrollFeature
 </div>
 ";
 $infoPanels['!_feature']=$scrollFeature;
 ksort($infoPanels);
 $infoString=$this->prepareSlickScroller($infoPanels, 'info1Container');
+
 
 // if (!$this->endOfBodyHtml){ $this->endOfBodyHtml='';}
 // $joyrideFeature=$this->fabricateJoyrideList($infoPanels);

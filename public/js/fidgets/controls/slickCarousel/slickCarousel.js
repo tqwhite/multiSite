@@ -115,7 +115,9 @@ define([
 
 		getInxFromLocation: function(href) {
 			var sourceString = href || window.location.hash || window.location.search,
-				match = sourceString.match(/id=(.*)(\W*)/),
+				hashMatch = sourceString.match(/\#id=(.*)(\W*)/),
+				searchMatch = sourceString.match(/\?id=(.*)(\W*)/),
+				match = hashMatch?hashMatch:searchMatch,
 				id = match ? match[1] : '',
 				inx = this.panelIdList[id];
 			return inx;

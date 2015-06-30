@@ -2,7 +2,9 @@
 
 class SimpledataController  extends Q_Controller_Base
 {
-
+/*
+	this is used for the entry form data utility
+*/
 
 
     public function init()

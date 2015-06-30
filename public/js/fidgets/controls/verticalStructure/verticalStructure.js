@@ -27,7 +27,7 @@ define([
 				targetScope: this, //will add listed items to targetScope
 				propList: [
 					{
-						name: 'placeholder',
+						name: 'defaultPanelId', //go to this if bookmark happens that's not in me
 						optional: true
 					}
 				],
@@ -59,7 +59,7 @@ define([
 
 			this.executeBookmark(this.getInxFromLocation());
 
-			// 			this.setupAnchorClickSupport();
+			 			this.setupAnchorClickSupport();
 			this.setupHashUpdateSupport();
 		},
 
@@ -113,11 +113,11 @@ define([
 		},
 
 		executeBookmark: function(inx) {
-			if (!inx) {
-				return;
+			if (typeof(inx)=='undefined') {
+				return false;
 			}
 
-			if (inx) {
+			else{
 
 				var target = this.panelDomObjList[inx];
 				if (target) {
@@ -138,9 +138,9 @@ define([
 					$("html, body").css(transparent).animate(opaque, 1000, function() {
 						this.updateHash(inx);
 					}.bind(this));
+				return true;
 				}
 
-				return true;
 			}
 
 			return false;
@@ -148,9 +148,13 @@ define([
 
 		getInxFromLocation: function(href) {
 			var sourceString = href || window.location.hash || window.location.search,
-				match = sourceString.match(/id=(.*)(\W*)/),
+				hashMatch = sourceString.match(/\#id=(.*)(\W*)/),
+				searchMatch = sourceString.match(/\?id=(.*)(\W*)/),
+				match = hashMatch?hashMatch:searchMatch,
 				id = match ? match[1] : '',
 				inx = this.panelIdList[id];
+				
+				inx=inx?inx:this.panelIdList[this.defaultPanelId]
 			return inx;
 
 		},
@@ -183,4 +187,5 @@ define([
 	});
 
 });
+
 

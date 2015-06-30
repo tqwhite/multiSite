@@ -13,6 +13,7 @@ class Q_Controller_Base extends Zend_Controller_Action {
 	private $contentDirectoryPath;
 	private $globalItemsDirectoryPath;
 	private $routeName;
+	private $fileContentAccessParameters;
 	
 	private $contentObj;
 	private $layoutContainer;
@@ -133,6 +134,10 @@ class Q_Controller_Base extends Zend_Controller_Action {
 		return $codeNav;
 	}
 	
+	public function getFileContentAccessParameters(){
+		return $this->fileContentAccessParameters;
+	}
+	
 	protected function setVariationLayout($layoutName) {
 		/*
 		Sets the layout in the SITE_VARIATION folder if it exists
@@ -175,13 +180,17 @@ class Q_Controller_Base extends Zend_Controller_Action {
 				if (isset($this->contentObj)) {
 					return $this->contentObj;
 				}
-				$this->contentObj = new Q\Helpers\FileContent(array(
+				
+				$this->fileContentAccessParameters=array(
 					'contentDirPath' => $this->contentDirectoryPath,
 					'superGlobalItemsDirectoryPath' => $this->superGlobalItemsDirectoryPath,
 					'globalItemsDirectoryPath' => $this->globalItemsDirectoryPath,
 					'employer' => $this,
-					'validatorName' => 'validateContentStructure'
-				));
+					'validatorName' => 'validateContentStructure',
+					'routeName'=>$this->routeName
+				);
+		
+				$this->contentObj = new Q\Helpers\FileContent($this->fileContentAccessParameters);
 				
 				return $this->contentObj;
 				break;

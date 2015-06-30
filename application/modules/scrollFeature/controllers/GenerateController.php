@@ -16,9 +16,11 @@ class ScrollFeature_GenerateController extends Q_Controller_Base {
 		$contentArray = $this->contentObj->contentArray;
 		$this->setLayoutName();
 		$this->setJsActivationList();
+		
 
 		$this->view->contentArray = $this->contentObj->contentArray;
 		$this->view->codeNav = $this->getCodeNav(__method__);
+		$this->view->accessOtherPageSupport=$this->getFileContentAccessParameters();
 	}
 
 	private function setJsActivationList() {

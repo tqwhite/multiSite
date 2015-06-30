@@ -71,6 +71,8 @@ routes.sitemap.defaults.action =container			;always the same
 defaultRoute;
 
 
+		Zend_Registry::set('defaultRouteName', '_default');
+
 	$directories=array(
 		$multiSite['content']['path']=>'',
 		$multiSite['content']['path'].'/'.SITE_VARIATION=>array(

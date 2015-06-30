@@ -2,9 +2,10 @@
 
 $specs = $this->dropDownParms['specs'];
 $content = $this->dropDownParms['content'];
+$contentArray = $this->dropDownParms['contentArray'];
+$accessOtherPageSupport=$this->dropDownParms['accessOtherPageSupport'];
 
-
-$outString=$this->convertToNavList($content, $specs);
+$outString=$this->convertToNavList($content, $specs, $contentArray, $accessOtherPageSupport);
 
 
 echo $outString;

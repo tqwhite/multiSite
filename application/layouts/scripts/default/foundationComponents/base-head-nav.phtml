@@ -8,7 +8,9 @@ foreach ($headNavInfo as $label => $data) {
 	if ($label == 'title') {
 		$titleNav = $this->assembleAnchor($headNavInfo['title']);
 	} else {
-		$this->dropDownParms = array("content" => $data, "specs" => array("navLocationClass" => $label));
+		$this->dropDownParms = array("content" => $data, "specs" => array("navLocationClass" => $label), "contentArray"=>$this->contentArray,
+		'accessOtherPageSupport'=>$this->accessOtherPageSupport
+		);
 		$menuBar.= $this->render('default/foundationComponents/dropdown-menu.phtml');
 	}
 }
