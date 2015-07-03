@@ -1,20 +1,29 @@
 <?php
-$featurePanels=$this->contentArray['featurePanels'];
-$infoPanels=$this->contentArray['infoPanels'];
+$featurePanels=isset($this->contentArray['featurePanels'])?$this->contentArray['featurePanels']:'';
+$infoPanels=isset($this->contentArray['infoPanels'])?$this->contentArray['infoPanels']:'';
 $specs=array();
 
-$featureString=$this->convertToUnorderedList($featurePanels, $specs);
-$infoString=$this->convertToUnorderedList($infoPanels, $specs);
-
+if ($featurePanels){
 $scrollFeature=$this->prepareSlickScroller($featurePanels, 'scroll1Container');
 $scrollFeature="
 <div id='introduction' class='genericScrollContainer'>
 	$scrollFeature
 </div>
 ";
-$infoPanels['!_feature']=$scrollFeature;
-ksort($infoPanels);
-$infoString=$this->prepareSlickScroller($infoPanels, 'info1Container');
+}
+else{
+	$scrollFeature='';
+}
+
+
+if (count($infoPanels)){
+	$infoPanels['!_feature']=$scrollFeature;
+	ksort($infoPanels);
+	$infoString=$this->prepareSlickScroller($infoPanels, 'info1Container');
+}
+else{
+$infoString=$scrollFeature;
+}
 
 
 // if (!$this->endOfBodyHtml){ $this->endOfBodyHtml='';}
@@ -26,6 +35,7 @@ $infoString=$this->prepareSlickScroller($infoPanels, 'info1Container');
 $this->javascriptCalls('slickCarousel.js', "/js/fidgets/controls/slickCarousel/");
 $this->javascriptCalls('contactForm.js', "/js/fidgets/controls/contactForm/");
 $this->javascriptCalls('verticalStructure.js', "/js/fidgets/controls/verticalStructure/");
+$this->javascriptCalls('featureOverlay.js', "/js/fidgets/controls/featureOverlay/");
 
 $this->headLink()->appendStylesheet('js/vendor/node_modules/slick-carousel/slick/slick.css');
 $this->headLink()->appendStylesheet('js/vendor/node_modules/slick-carousel/slick/slick-theme.css');

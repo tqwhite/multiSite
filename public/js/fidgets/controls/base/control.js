@@ -87,6 +87,10 @@ define([
 						}
 			}
 			setTimeout(tryAgain, 100);
+		},
+		
+		callback:function(methodName){
+			return this[methodName].bind(this);
 		}
 	});
 

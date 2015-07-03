@@ -16,7 +16,10 @@ define([
 			targetObject:options,
 			targetScope: this, //will add listed items to targetScope
 			propList:[
-				{name:'slickParms', optional:false}
+				{name:'slickParms', optional:false},
+				{name:'startup', optional:true},
+				{name:'onShow', optional:true},
+				{name:'onHide', optional:true}
 			],
 			source:this.constructor._fullName
 		});
@@ -76,6 +79,61 @@ define([
 
 		},
 
+		updateDom: function() {
+			this.executestartup();
+			this.initSlideChangeEvents();
+
+			this.executeBookmark(this.getInxFromLocation());
+			this.setupAnchorClickSupport();
+			this.setupHashUpdateSupport();
+		},
+		
+		initSlideChangeEvents:function(){
+			if (qtools.isNotEmpty(this.onShow)){
+				this.element.bind('afterChange', this.callback('executeSlideChangeList'))
+			}
+		},
+		
+		executestartup:function(){
+			if (!this.startup){ return;}
+
+			for (var i=0, len=this.startup.length; i<len; i++){
+				var element=this.startup[i];
+				for (var j=0, len2=this.panels.length; j<len2; j++){
+					var item=this.panels[j];
+					$(item).find(element.selector)[element.pluginName](element.parameters);
+				}
+			}
+
+
+		},
+		
+		executeSlideChangeList:function(event, slickObject){
+
+			var currentSlide=slickObject.currentSlide,
+				currentDomObj=$('#'+this.panelInxList[currentSlide]);
+
+			
+
+				
+			if (currentDomObj.length===0){ return;}
+			
+			for (var i=0, len=this.onShow.length; i<len; i++){
+				var element=this.onShow[i];
+				currentDomObj.find(element.selector)[element.pluginName](element.parameters);
+			}
+			
+			var previousDomObj=$('#'+this.panelInxList[this.previousIndex]);
+			
+			for (var i=0, len=this.onHide.length; i<len; i++){
+				var element=this.onHide[i];
+				previousDomObj.find(element.selector)[element.pluginName](element.parameters);
+			}
+
+			this.previousIndex=currentSlide;
+
+		},
+
 		setupAnchorClickSupport: function() {
 			$('body').on('click.' + this.eventNameSpace, function(event) {
 				this.isAnchor(event.target) && this.executeBookmark(this.getInxFromTarget(event.target))
@@ -92,6 +150,7 @@ define([
 			var panels = this.element.children();
 			this.panelIdList = {};
 			this.panelInxList = [];
+			this.panels=panels;
 
 			panels.each(function(inx, item, all) {
 				var id = $(item).attr('id');
