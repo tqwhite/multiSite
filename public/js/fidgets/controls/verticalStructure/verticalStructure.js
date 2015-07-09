@@ -135,7 +135,9 @@ define([
 							scrollTop: target.offset().top
 						};
 
-					$("html, body").css(transparent).animate(opaque, 1000, function() {
+					$("html, body")
+					//.css(transparent)
+					.animate(opaque, 1000, function() {
 						this.updateHash(inx);
 					}.bind(this));
 				return true;
