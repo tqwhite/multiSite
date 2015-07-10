@@ -55,10 +55,10 @@ define([
 			this.slickParms=qtools.extendToNew({
 				dots: true,
 				infinite: true,
+				arrows: true,
 				speed: 300,
 				autoplay: false,
-				arrows: true,
-				appendArrows: $('#scroll1NavContainer'),
+				appendArrows: this.element,
 				fade: true,
 				mobileFirst: true
 			}, this.slickParms);
@@ -101,7 +101,7 @@ define([
 				var element=this.startup[i];
 				for (var j=0, len2=this.panels.length; j<len2; j++){
 					var item=this.panels[j];
-					$(item).find(element.selector)[element.pluginName](element.parameters);
+					item.find(element.selector)[element.pluginName](element.parameters);
 				}
 			}
 
@@ -150,12 +150,13 @@ define([
 			var panels = this.element.children();
 			this.panelIdList = {};
 			this.panelInxList = [];
-			this.panels=panels;
+			this.panels=[];
 
 			panels.each(function(inx, item, all) {
 				var id = $(item).attr('id');
 				this.panelIdList[id] = inx;
 				this.panelInxList.push(id);
+				this.panels.push($(item));
 
 
 			}.bind(this));
