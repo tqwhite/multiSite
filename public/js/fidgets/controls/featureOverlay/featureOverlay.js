@@ -62,6 +62,7 @@ define([
 			switch(this.action){
 				case 'hide':
 					this.element.hide();
+					this.hidden=true;
 				break;
 				default:
 					this.startFadeDelay();
@@ -69,7 +70,8 @@ define([
 			}
 		},
 
-		initControlProperties: function(options) {},
+		initControlProperties: function(options) {
+		},
 
 		initDisplayParameters: function() {},
 
@@ -77,6 +79,7 @@ define([
 
 		initDisplay: function() {
 			this.element.hide();
+			this.hidden=true;
 		},
 
 		updateDom: function() {
@@ -85,12 +88,14 @@ define([
 		},
 		
 		startFadeDelay:function(){
-					
+			if (!this.hidden){ return;}
 			setTimeout(this.callback('executeFade'), this.delay || 1000);
 		},
 		
 		executeFade:function(){
-			this.element.fadeIn(this.speed || 1000);
+			this.element.fadeIn(this.speed || 1000, function(){
+				this.hidden=false;
+			}.bind(this));
 		}
 	});
 });

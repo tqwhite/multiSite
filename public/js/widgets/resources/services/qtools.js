@@ -905,7 +905,7 @@ validateProperties:function(args){
 		element=inObj[name];
 
 		if (importance!='optional' && typeof(element)=='undefined'){
-			outList.push(source+' says, '+name+' is missing');
+			//outList.push(source+' says, '+name+' is missing');
 		}
 		if (requiredType && qtools.toType(element)==requiredType){
 			outList.push(source+' says, '+name+' is not of type '+requiredType);

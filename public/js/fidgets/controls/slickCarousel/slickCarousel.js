@@ -101,7 +101,12 @@ define([
 				var element=this.startup[i];
 				for (var j=0, len2=this.panels.length; j<len2; j++){
 					var item=this.panels[j];
+					if (typeof(element)=='function'){
+						element(j, this.panels)
+					}
+					else{
 					item.find(element.selector)[element.pluginName](element.parameters);
+					}
 				}
 			}
 
@@ -204,6 +209,19 @@ define([
 		if (!inx){return;}
 			var id = this.panelInxList[inx];
 			window.location.hash = '#id=' + id;
+		},
+		
+		'click':function(event, element){
+			if (this.paused){
+			this.element.slick('play');
+			this.paused=false;
+			}
+			else{
+			this.element.slick('pause');
+			this.paused=true;
+			}
+
+
 		}
 	});
 
