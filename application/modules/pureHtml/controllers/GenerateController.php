@@ -29,8 +29,9 @@ class PureHtml_GenerateController extends Q_Controller_Base
 			'validatedEntity'=>$contentArray,
 			'source'=>__file__,
 			'propertyList'=>array(
-				array('name'=>'index.html'),
-				array('name'=>'elements')
+				array('name'=>'index.html')
+// 				,
+// 				array('name'=>'elements')
 			)));
 
 	}
@@ -73,11 +74,12 @@ $index="<div style='margin:20px;'>$index</div>";
 			'ROOTFILES'=>array(  //ROOTFILES is the keyword for files that are peered at the base level of the route.
 				'index.html'=>$index
 
-			),
-			'elements'=>array(  //ROOTFILES is the keyword for files that are peered at the base level of the route.
-				'README'=>'fill this directory with image files used by your page'
-
 			)
+// 			,
+// 			'elements'=>array(  //ROOTFILES is the keyword for files that are peered at the base level of the route.
+// 				'README'=>'fill this directory with image files used by your page'
+// 
+// 			)
 
 		);
 
