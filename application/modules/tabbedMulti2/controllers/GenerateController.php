@@ -14,9 +14,7 @@ class TabbedMulti2_GenerateController extends Q_Controller_Base
 
     public function containerAction()
     {
-       $this->setVariationLayout('layout');
-
-
+		$this->setLayoutName(); //accesses $this->contentObj->contentArray
 		$serverComm[]=array("fieldName"=>"message", "value"=>'hello from the server via javascript');
 
 
@@ -58,9 +56,11 @@ else{
 		$this->view->serverComm=$this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
 		$this->view->contentArray=$this->contentObj->contentArray;
 		$this->view->codeNav=$this->getCodeNav(__method__);
+		$this->view->accessOtherPageSupport=$this->getFileContentAccessParameters();
+
     }
 
-	public function validateContentStructure($contentArray){
+	public function XXXvalidateContentStructure($contentArray){
 		//this is passed to QHelpersFileContent ($this->FileContainer) by Q_Controller_Base::init()
 		if (!$contentArray){$contentArray=$this->contentArray;}
 		\Q\Utils::validateProperties(array(
@@ -68,7 +68,7 @@ else{
 			'source'=>__file__,
 			'propertyList'=>array(
 				array('name'=>'headNav.ini'),
-				array('name'=>'headBanner.html'),
+	//			array('name'=>'headBanner.html'),
 				array('name'=>'panelItems', 'assertNotEmptyFlag'=>true)
 			)));
 
