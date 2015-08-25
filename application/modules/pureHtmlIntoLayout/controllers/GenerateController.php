@@ -15,7 +15,7 @@ class PureHtmlIntoLayout_GenerateController extends Q_Controller_Base
 	public function containerAction() {
 
 		$contentArray = $this->contentObj->contentArray;
-		$this->setLayoutName();
+		$this->setLayoutName(); //accesses $this->contentObj->contentArray
 		
 
 		$this->view->contentArray = $this->contentObj->contentArray;
