@@ -178,6 +178,7 @@ class Q_Controller_Base extends Zend_Controller_Action {
 		switch ($property) {
 			case 'contentObj':
 				if (isset($this->contentObj)) {
+				echo "getting contentObj<BR>";
 					return $this->contentObj;
 				}
 				
@@ -218,13 +219,13 @@ class Q_Controller_Base extends Zend_Controller_Action {
 	}
 	
 
-	protected function setLayoutName() {
-		$userLayoutName = \Q\Utils::getDottedPath($this->contentObj->contentArray, 'globalItems,siteSpecs.ini,layoutName', ',');
+	protected function setLayoutName($defaultLayoutName='layout') {
+		$userLayoutName = \Q\Utils::getDottedPath($this->__get('contentObj')->contentArray, 'globalItems,siteSpecs.ini,layoutName', ',');
 
 		if ($userLayoutName) {
 			$this->setVariationLayout(str_replace('.phtml', '', $userLayoutName));
 		} else {
-			$this->setVariationLayout('foundation-default');
+			$this->setVariationLayout($defaultLayoutName);
 		}
 	}
 }
