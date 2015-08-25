@@ -216,6 +216,17 @@ class Q_Controller_Base extends Zend_Controller_Action {
 			die("No directory initialization available");
 		}
 	}
+	
+
+	protected function setLayoutName() {
+		$userLayoutName = \Q\Utils::getDottedPath($this->contentObj->contentArray, 'globalItems,siteSpecs.ini,layoutName', ',');
+
+		if ($userLayoutName) {
+			$this->setVariationLayout(str_replace('.phtml', '', $userLayoutName));
+		} else {
+			$this->setVariationLayout('foundation-default');
+		}
+	}
 }
 
 

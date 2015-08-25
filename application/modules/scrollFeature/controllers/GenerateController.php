@@ -39,14 +39,4 @@ class ScrollFeature_GenerateController extends Q_Controller_Base {
 		$this->view->serverComm = $this->_helper->WriteServerCommDiv($serverComm); //named: Q_Controller_Action_Helper_WriteServerCommDiv
 		
 	}
-
-	private function setLayoutName() {
-		$userLayoutName = \Q\Utils::getDottedPath($this->contentObj->contentArray, 'globalItems,siteSpecs.ini,layoutName', ',');
-
-		if ($userLayoutName) {
-			$this->setVariationLayout(str_replace('.phtml', '', $userLayoutName));
-		} else {
-			$this->setVariationLayout('foundation-default');
-		}
-	}
 }
