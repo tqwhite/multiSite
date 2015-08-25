@@ -60,7 +60,7 @@ else{
 
     }
 
-	public function XXXvalidateContentStructure($contentArray){
+	public function validateContentStructure($contentArray){
 		//this is passed to QHelpersFileContent ($this->FileContainer) by Q_Controller_Base::init()
 		if (!$contentArray){$contentArray=$this->contentArray;}
 		\Q\Utils::validateProperties(array(
