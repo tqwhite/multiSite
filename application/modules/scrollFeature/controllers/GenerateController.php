@@ -14,7 +14,7 @@ class ScrollFeature_GenerateController extends Q_Controller_Base {
 	public function containerAction() {
 
 		$contentArray = $this->contentObj->contentArray;
-		$this->setLayoutName();
+		$this->setLayoutName('foundation-default'); //accesses $this->contentObj->contentArray to see if override default
 		$this->setJsActivationList();
 		
 

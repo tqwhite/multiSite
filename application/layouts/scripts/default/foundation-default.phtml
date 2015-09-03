@@ -47,8 +47,11 @@ $userJavascript = $this->buildJqueryReadyCall($this->contentArray, 'noScriptTag'
 
 
 $serverData=$this->formatServerData($this->contentArray);
-
-
+					
+if (!$this->endOfBodyHtml){ $this->endOfBodyHtml='';}
+if (isset($contentArray['COMPONENTS']) && isset($contentArray['COMPONENTS']['endOfBodyHtml.html']) && $contentArray['COMPONENTS']['endOfBodyHtml.html']){
+$this->endOfBodyHtml.=$contentArray['COMPONENTS']['endOfBodyHtml.html'];
+}
 
 
 
