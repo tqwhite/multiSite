@@ -145,6 +145,7 @@ class Q_View_Helper_Fidgets_ConvertToNavList extends Zend_View_Helper_Abstract {
 		$routeName=$remotePageSpec['routeName'];
 		
 		$this->accessOtherPageSupport['contentDirPath'] = preg_replace('/' . $this->accessOtherPageSupport['routeName'] . '$/', $routeName, $this->accessOtherPageSupport['contentDirPath']);
+		$this->accessOtherPageSupport['validationDoesNotApply']=true; //reaching out to a different directory, $this->validation doesn't apply to it
 		$foreignContentObj = new Q\Helpers\FileContent($this->accessOtherPageSupport);
 		$foreignContentArray=$foreignContentObj->contentArray;
 		$foreignContentFolderArray=(isset($foreignContentArray[$remotePageSpec['folderName']]))?$foreignContentArray[$remotePageSpec['folderName']]:array();

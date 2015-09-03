@@ -53,6 +53,16 @@ class Q_Controller_Base extends Zend_Controller_Action {
 			$this->globalItemsDirectoryPath      = $this->getGlobalItemsDir();
 			$this->setVariationLayout('layout'); //set default
 			
+				
+			$this->fileContentAccessParameters=array(
+				'contentDirPath' => $this->contentDirectoryPath,
+				'superGlobalItemsDirectoryPath' => $this->superGlobalItemsDirectoryPath,
+				'globalItemsDirectoryPath' => $this->globalItemsDirectoryPath,
+				'employer' => $this,
+				'validatorName' => 'validateContentStructure',
+				'routeName'=>$this->routeName
+			);
+			
 			//echo Zend_Layout::getMvcInstance()->getLayoutPath(); exit;
 		} elseif (isset($args['controllerType']) && $args['controllerType'] == 'json') {
 			
@@ -178,18 +188,8 @@ class Q_Controller_Base extends Zend_Controller_Action {
 		switch ($property) {
 			case 'contentObj':
 				if (isset($this->contentObj)) {
-				echo "getting contentObj<BR>";
 					return $this->contentObj;
 				}
-				
-				$this->fileContentAccessParameters=array(
-					'contentDirPath' => $this->contentDirectoryPath,
-					'superGlobalItemsDirectoryPath' => $this->superGlobalItemsDirectoryPath,
-					'globalItemsDirectoryPath' => $this->globalItemsDirectoryPath,
-					'employer' => $this,
-					'validatorName' => 'validateContentStructure',
-					'routeName'=>$this->routeName
-				);
 		
 				$this->contentObj = new Q\Helpers\FileContent($this->fileContentAccessParameters);
 				

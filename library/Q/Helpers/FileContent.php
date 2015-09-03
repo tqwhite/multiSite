@@ -286,7 +286,8 @@ class FileContent {
 				$employer = $this->employer;
 				$validatorName = $this->validatorName;
 				
-				if ($this->employer && $this->validatorName && method_exists($employer, $validatorName)) {
+
+				if ($this->employer && $this->validatorName && method_exists($employer, $validatorName) && (!isset($this->args['validationDoesNotApply']) || !$this->args['validationDoesNotApply'])) {
 					$employer->$validatorName($this->contentArray);
 				}
 				return $this->contentArray;
@@ -306,6 +307,10 @@ class FileContent {
 		
 		$this->promoteOneGlobal('IMAGES', 'images'); //HACKERY: this lower case upper case dichotomy is horrible, they should all be the same. I promist to rewrite someday, tqii
 		$this->promoteOneGlobal('ATTACHMENTS', 'ATTACHMENTS');
+		$this->promoteOneGlobal('COMPONENTS', 'COMPONENTS');
+		$this->promoteOneGlobal('MACROS', 'MACROS');
+		$this->promoteOneGlobal('CSS', 'CSS');
+		$this->promoteOneGlobal('JS', 'JS');
 		
 		//at present, _PARAMETERS is merged in default/layout.phtml
 		//CSS does the promotion by inserting into page in correct order
