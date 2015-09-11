@@ -220,7 +220,7 @@ define([
 			isSlickNavControl=isSlickNavControl || ($(element.target).parent().parent().attr('class') && objClass.match(/slick-dots/));
 			
 			
-			if (this.paused){
+			if (!isSlickNavControl && this.paused){
 			this.element.slick('play');
 			this.element.slick('setOption', "autoplay", true, true);
 			this.paused=false;
