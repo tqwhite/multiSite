@@ -62,7 +62,8 @@ define([
 				fade: true,
 				mobileFirst: true
 			}, this.slickParms);
-		
+			
+			this.paused=!this.slickParms.autoplay;
 		},
 
 		updateDom: function() {
@@ -212,12 +213,21 @@ define([
 		},
 		
 		'click':function(event, element){
-			if (this.paused){
+			var elementObj=$(element.target),
+			objClass=elementObj.attr('class'),
+			isSlickNavControl=objClass && objClass.match(/slick-prev|slick-next/);
+			objClass=$(element.target).parent().parent().attr('class');
+			isSlickNavControl=isSlickNavControl || ($(element.target).parent().parent().attr('class') && objClass.match(/slick-dots/));
+			
+			
+			if (!isSlickNavControl && this.paused){
 			this.element.slick('play');
+			this.element.slick('setOption', "autoplay", true, true);
 			this.paused=false;
 			}
 			else{
 			this.element.slick('pause');
+			this.element.slick('setOption', "autoplay", false, false);
 			this.paused=true;
 			}
 
