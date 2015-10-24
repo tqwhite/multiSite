@@ -83,6 +83,19 @@ $panelContentString='';
 			
 			$parameterFile['imageLink']=$element;
 			$parameterFile['imageName']=$label;
+			
+			preg_match('/[a-zA-Z]+_(.*?)\..*$/', $label, $extractedBits);
+
+			$parameterFile['imageLabel']=$extractedBits[1];
+			
+			$tmp=explode('_', $parameterFile['imageLabel']);
+		
+	
+			$parameterFile['imageLabelPart1']=isset($tmp[0])?$tmp[0]:'';
+			$parameterFile['imageLabePart2']=isset($tmp[1])?$tmp[1]:'';
+			$parameterFile['imageLabelPart3']=isset($tmp[2])?$tmp[2]:'';
+			$parameterFile['imageLabelPart4']=isset($tmp[3])?$tmp[3]:'';
+	
 
 			if (isset($parameterFile['templateName'])){
 			
