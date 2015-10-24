@@ -86,7 +86,7 @@ $panelContentString='';
 			
 			preg_match('/[a-zA-Z]+_(.*?)\..*$/', $label, $extractedBits);
 
-			$parameterFile['imageLabel']=$extractedBits[1];
+			$parameterFile['imageLabel']=str_replace('_', ' ', $extractedBits[1]);
 			
 			$tmp=explode('_', $parameterFile['imageLabel']);
 		
