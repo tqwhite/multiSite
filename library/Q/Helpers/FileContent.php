@@ -310,7 +310,7 @@ class FileContent {
 		$this->promoteOneGlobal('COMPONENTS', 'COMPONENTS');
 		$this->promoteOneGlobal('MACROS', 'MACROS');
 		$this->promoteOneGlobal('CSS', 'CSS');
-		$this->promoteOneGlobal('JS', 'JS');
+		//don't need to do JS because BuildJqueryReadyCall() inserts all levels
 		
 		//at present, _PARAMETERS is merged in default/layout.phtml
 		//CSS does the promotion by inserting into page in correct order
