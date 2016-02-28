@@ -59,6 +59,8 @@ $panelContentString='';
 					break;
 				default:
 					$tabLabel=$this->filenameToLabel($label);
+echo "<div style='color:black;margin-bottom:10px;'>tabLabel={$tabLabel}</div>";
+
 					break;
 			}
 			
@@ -86,7 +88,12 @@ $panelContentString='';
 			
 			preg_match('/[a-zA-Z]+_(.*?)\..*$/', $label, $extractedBits);
 
+			if (isset($extractedBits[1])){
 			$parameterFile['imageLabel']=str_replace('_', ' ', $extractedBits[1]);
+			}
+			else{
+				$parameterFile['imageLabel']='a_'.$label;
+			}
 			
 			$tmp=explode('_', $parameterFile['imageLabel']);
 		

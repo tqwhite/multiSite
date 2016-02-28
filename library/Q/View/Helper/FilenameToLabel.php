@@ -8,7 +8,11 @@
 		$extension=isset($extensionArray[0])?$extensionArray[0]:'';
 
 	 	$elementArray=explode('_', $filename);
-
+	 	
+	 	if (count($elementArray)==1){
+	 	$elementArray=explode('_', 'a_'.$filename);
+	 	}
+	 	
 	 	$elementArray=array_splice($elementArray, 1); //starts with 1 to omit sequencing prefix
 		$labelString=implode(' ', $elementArray);
 		$labelString=str_replace($extension, '', $labelString);
