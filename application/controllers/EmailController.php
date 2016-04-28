@@ -233,6 +233,8 @@ $extension=array_search(
 			$tr=new Zend_Mail_Transport_Smtp($emailSender['hostName'], array(
 				'username'=>$emailSender['authSet']['username'],
 				'password'=>$emailSender['authSet']['password'],
+				'port'=>$emailSender['authSet']['port'],
+				'ssl'=>$emailSender['authSet']['ssl'],
 				'auth'=>$emailSender['authSet']['auth']
 			));
 
