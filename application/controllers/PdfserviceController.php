@@ -16,12 +16,12 @@ class PdfserviceController extends Zend_Controller_Action
 
     public function watermarkAction()
     {
-    
+
     $parameters=$this->getRequest()->getParams();
     
-    $outPath="/home/tqwhite/cmerdc/corporateMultisite/website/public/media/tmpPlans/pdf/";
+    $outPath="media/tmpPlans/pdf/";
 
-	$testPath="/home/tqwhite/cmerdc/corporateMultisite/libPdf/".$parameters['templateFileName'];
+	$testPath="media/tmpPlans/libPdf/".$parameters['templateFileName'];
 	$outFile="$outPath{$parameters['fileNameSuggestion']}.pdf";
 	
 	$uri="/media/tmpPlans/pdf/{$parameters['fileNameSuggestion']}.pdf";
