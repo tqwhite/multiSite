@@ -54,6 +54,10 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="file"/>
         </controllerFile>
+        <controllerFile controllerName="Pdfservice">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="watermark"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
       <layoutsDirectory>
@@ -666,6 +670,12 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Upload">
             <viewScriptFile forActionName="file"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Pdfservice">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Pdfservice">
+            <viewScriptFile forActionName="watermark"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
