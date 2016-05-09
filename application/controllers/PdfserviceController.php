@@ -50,7 +50,7 @@ if (!isset($parameters[$name])){
 	$testPath="media/tmpPlans/libPdf/".$parameters['templateFileName'];
 	$outFile="$outPath{$parameters['fileNameSuggestion']}.pdf";
 	
-	$uri="{$_SERVER{'SERVER_PROTOCOL]}://{$_SERVER['HTTP_HOST']}/media/tmpPlans/pdf/{$parameters['fileNameSuggestion']}.pdf";
+	$uri="{$_SERVER['SERVER_PROTOCOL']}://{$_SERVER['HTTP_HOST']}/media/tmpPlans/pdf/{$parameters['fileNameSuggestion']}.pdf";
 	
 	$text=$parameters['watermark']['text'];
 
