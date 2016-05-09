@@ -31,19 +31,19 @@ if (!isset($parameters[$name])){
 	exit;
 }
 
-$name='fileNameSuggestion';
-if (!isset($parameters[$name])){
-        header('Content-type: application/json');
-	echo json_encode(Array("status"=>0, "message"=>"missing parameter: $name"));
-	exit;
-}
+	$name='fileNameSuggestion';
+	if (!isset($parameters[$name])){
+			header('Content-type: application/json');
+		echo json_encode(Array("status"=>0, "message"=>"missing parameter: $name"));
+		exit;
+	}
 
-$name='watermark';
-if (!isset($parameters[$name])){
-        header('Content-type: application/json');
-	echo json_encode(Array("status"=>0, "message"=>"missing parameter: $name"));
-	exit;
-}
+	$name='watermark';
+	if (!isset($parameters[$name])){
+			header('Content-type: application/json');
+		echo json_encode(Array("status"=>0, "message"=>"missing parameter: $name"));
+		exit;
+	}
 
     $outPath="media/tmpPlans/pdf/";
 
