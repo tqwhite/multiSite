@@ -53,7 +53,6 @@ if (!isset($parameters[$name])){
 	$uri="/media/tmpPlans/pdf/{$parameters['fileNameSuggestion']}.pdf";
 	
 	$text=$parameters['watermark']['text'];
-	$text=$_SERVER['REQUEST_URI'];
 
 	$font = Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA);
 	$pdf = Zend_Pdf::load($testPath);
