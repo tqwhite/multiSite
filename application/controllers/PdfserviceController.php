@@ -18,11 +18,6 @@ class PdfserviceController extends Zend_Controller_Action
     public function watermarkAction()
     {
     $parameters=$this->getRequest()->getParams();
-// $parameters=array(
-// 'templateFileName'=>"WorkEnvironmentPreferences.pdf",
-// 'fileNameSuggestion'=>"tq",
-// 'watermark'=>array('text'=>'HELLO!')
-// );
 
 $name='templateFileName';
 if (!isset($parameters[$name])){
@@ -60,7 +55,7 @@ if (!isset($parameters[$name])){
 
 	$pdf->pages[] = $pdf->newPage(Zend_Pdf_Page::SIZE_LETTER);
 	$page=$pdf->pages[0];	
-	$page->setFont($font, 10); //10 points
+	$page->setFont($font, 50); //10 points
 	
 	$width  = $page->getWidth();
 	$height = $page->getHeight();
