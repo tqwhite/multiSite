@@ -10,15 +10,41 @@ class PdfserviceController extends Zend_Controller_Action
 
     public function indexAction()
     {
-    
+    echo json_encode("hello from Pdfservice");
+    exit;
         // action body
     }
 
     public function watermarkAction()
     {
-
     $parameters=$this->getRequest()->getParams();
-    
+// $parameters=array(
+// 'templateFileName'=>"WorkEnvironmentPreferences.pdf",
+// 'fileNameSuggestion'=>"tq",
+// 'watermark'=>array('text'=>'HELLO!')
+// );
+
+$name='templateFileName';
+if (!isset($parameters[$name])){
+        header('Content-type: application/json');
+	echo json_encode(Array("status"=>0, "message"=>"missing parameter: $name", "<br><br>PARAMETERS"=>$parameters, "<br><br>_SERVER"=>$_SERVER));
+	exit;
+}
+
+$name='fileNameSuggestion';
+if (!isset($parameters[$name])){
+        header('Content-type: application/json');
+	echo json_encode(Array("status"=>0, "message"=>"missing parameter: $name"));
+	exit;
+}
+
+$name='watermark';
+if (!isset($parameters[$name])){
+        header('Content-type: application/json');
+	echo json_encode(Array("status"=>0, "message"=>"missing parameter: $name"));
+	exit;
+}
+
     $outPath="media/tmpPlans/pdf/";
 
 	$testPath="media/tmpPlans/libPdf/".$parameters['templateFileName'];
@@ -27,13 +53,14 @@ class PdfserviceController extends Zend_Controller_Action
 	$uri="/media/tmpPlans/pdf/{$parameters['fileNameSuggestion']}.pdf";
 	
 	$text=$parameters['watermark']['text'];
+	$text=$_SERVER['REQUEST_URI'];
 
 	$font = Zend_Pdf_Font::fontWithName(Zend_Pdf_Font::FONT_HELVETICA);
 	$pdf = Zend_Pdf::load($testPath);
 
 	$pdf->pages[] = $pdf->newPage(Zend_Pdf_Page::SIZE_LETTER);
 	$page=$pdf->pages[0];	
-	$page->setFont($font, 20); //10 points
+	$page->setFont($font, 10); //10 points
 	
 	$width  = $page->getWidth();
 	$height = $page->getHeight();
@@ -61,9 +88,11 @@ class PdfserviceController extends Zend_Controller_Action
         	"status"=>"1",
         	"created"=>"1",
         	"uri"=>$uri,
-        	"templateFileName"=>$parameters['templateFileName'],
-        	"note:"=>"successful round trip of parameters to resultsX"
+        	"templateFileName"=>$parameters['templateFileName']
+        	,"<br><br>PARAMETERS"=>$parameters, 
+        	"<br><br>_SERVER"=>$_SERVER,
         );
+        header('Content-type: application/json');
         echo json_encode($status);
         exit;
     }
