@@ -250,7 +250,6 @@ $extension=array_search(
 
 
 		$mail->addTo($destAdr);
-		$mail->addTo($destAdr);
 	
 		if (is_array($fileList) && count($fileList)>0){
 		
